@@ -28,6 +28,4 @@ key: page-about
 
 ![planet7](assets/planet7.png)
 
-Welcome to my blog.
-
-This blog is built with [jekyll](http://jekyllrb.com/) and the [TeXt](https://github.com/kitian616/jekyll-TeXt-theme) theme and hosted with [github](https://github.com/).
+Welcome to my blog. I probably mostly will write about python sciency things I make. This blog is built with [jekyll](http://jekyllrb.com/) and the [TeXt](https://github.com/kitian616/jekyll-TeXt-theme) theme and hosted with [github](https://github.com/).
