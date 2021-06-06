@@ -7,6 +7,7 @@
 
 ## => Site Settings
 ##############################
+theme: jekyll-text-theme
 text_skin: forest # "default" (default), "dark", "forest", "ocean", "chocolate", "orange"
 highlight_theme: tomorrow-night-eighties # "default" (default), "tomorrow", "tomorrow-night", "tomorrow-night-eighties", "tomorrow-night-blue", "tomorrow-night-bright"
 url     : "thomasburgess.github.io" # the base hostname & protocol for your site e.g. https://www.someone.com
@@ -14,10 +15,6 @@ baseurl : # does not include hostname
 title   : Thomas T Burgess's Blog
 description: > # this means to ignore newlines until "Language & timezone"
   This is Thomas blog.
-
-
-theme: jekyll-text-theme
-
 ## => Language and Timezone
 ##############################
 lang: en # the language of your site, default as "en"
