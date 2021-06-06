@@ -7,7 +7,9 @@
 
 ## => Site Settings
 ##############################
-theme: jekyll-theme-cayman
+
+theme: jekyll-text-theme
+
 text_skin: forest # "default" (default), "dark", "forest", "ocean", "chocolate", "orange"
 highlight_theme: tomorrow-night-eighties # "default" (default), "tomorrow", "tomorrow-night", "tomorrow-night-eighties", "tomorrow-night-blue", "tomorrow-night-bright"
 url     : "thomasburgess.github.io" # the base hostname & protocol for your site e.g. https://www.someone.com
@@ -15,6 +17,7 @@ baseurl : # does not include hostname
 title   : Thomas T Burgess's Blog
 description: > # this means to ignore newlines until "Language & timezone"
   This is Thomas blog.
+
 ## => Language and Timezone
 ##############################
 lang: en # the language of your site, default as "en"
@@ -97,7 +100,7 @@ sources: # bootcdn (default), unpkg
 ## => Sharing
 ##############################
 sharing:
-  provider: true # false (default), "addtoany", "addthis", "custom"
+  provider: false # false (default), "addtoany", "addthis", "custom"
 
   ## AddThis
   addthis:
@@ -107,7 +110,7 @@ sharing:
 ## => Comments
 ##############################
 comments:
-  provider: true # false (default), "disqus", "gitalk", "valine", "custom"
+  provider: false # false (default), "disqus", "gitalk", "valine", "custom"
 
   ## Disqus
   disqus:
@@ -116,8 +119,8 @@ comments:
   ## Gitalk
   # please refer to https://github.com/gitalk/gitalk for more info.
   gitalk:
-    clientID    : 001e5f1f84b89d7d7c1e
-    clientSecret:  8e9279e7ea0e12bfc38bbe2a9f50deb1cca5b16d
+    clientID    : # GitHub Application Client ID
+    clientSecret: # GitHub Application Client Secret
     repository  : # GitHub repo
     owner       : # GitHub repo owner
     admin: # GitHub repo owner and collaborators, only these guys can initialize GitHub issues, IT IS A LIST.
@@ -200,7 +203,7 @@ defaults:
       license: true
       aside:
         toc: true
-      show_edit_on_github: false
+      show_edit_on_github: true
       show_subscribe: true
       pageview: true
 
