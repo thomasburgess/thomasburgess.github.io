@@ -19,14 +19,17 @@ If $n$ is the total number of trials, and $n_s$ is the number successes, then an
 
 The discrete nature of the binomial distribution makes calculating the exact CI hard. 
 Under the assumptions $n$ is large and $p$ is not close to 0 or 1, the normal approximation for the binomial is:
-$$
-\text{Binomial}(p, n) \approx \mathcal{N}(\mu=\hat{p}, \sigma^2=\hat{p}(1-\hat{p})/n)\,,
-$$
+
+\begin{equation}
+  \text{Binomial}(p, n) \approx \mathcal{N}(\mu=\hat{p}, \sigma^2=\hat{p}(1-\hat{p})/n)\,,
+\end{equation}
+
 where $\mathcal{N}$ is the normal distribution with mean $\mu$ and standard deviation $\sigma$.
-With this in the standard normal CI on the mean and assuming $p=\hat{p}$ the _Wald_ CI[^brown] is:
-$$
+With this in the standard normal CI on the mean and assuming $p=\hat{p}$ the _Wald_ CI[^brown2001] is:
+
+\begin{equation}
 p \in \hat{p}\pm|z_{\alpha/2}|\sqrt{\frac{\hat{p}(1-\hat{p})}{n}}\,.
-$$
+\end{equation}
 
 
 ## Validity of normal distribution
@@ -45,5 +48,4 @@ ps = [(np.cos(np.pi*((i+1)/(n_ps+1)-1))+1)/2 for i in range(0, n_ps)]
 ...
 
 
-[^brown]: Brown, L. D., Cai, T. T., & DasGupta, A. (2001). Interval estimation for a binomial proportion. Statistical science, 101-117. [url](https://projecteuclid.org/journals/statistical-science/volume-16/issue-2/Interval-Estimation-for-a-Binomial-Proportion/10.1214/ss/1009213286.full), [doi](https://doi.org/10.1214/ss/1009213286)
-
+[^brown2001]: Brown, L. D., Cai, T. T., & DasGupta, A. (2001). Interval estimation for a binomial proportion. Statistical science, 101-117. [url](https://projecteuclid.org/journals/statistical-science/volume-16/issue-2/Interval-Estimation-for-a-Binomial-Proportion/10.1214/ss/1009213286.full), [doi](https://doi.org/10.1214/ss/1009213286)
