@@ -3,34 +3,31 @@ published: false
 ---
 ---
 title: Wald intervals
-comments: true
 tags:
   - blog
   - statistics
   - binomial_ci
   - wald
-draft: true
 published: false
 ---
 
 ## Introduction
 
-Here, I want to dive into [Confidence Intervals](https://en.wikipedia.org/wiki/Confidence_interval) (CI) on [Binomial Proportions](https://en.wikipedia.org/wiki/Binomial_proportion_confidence_interva). In particular, I want to explore issues with the much-used [Normal Approximation](https://en.wikipedia.org/wiki/Binomial_distribution#Normal_approximation). These CIs occur when assessing the quality of [Binary Classifiers](https://en.wikipedia.org/wiki/Binary_classification).
+Here, I want to dive into [Confidence Intervals](https://en.wikipedia.org/wiki/Confidence_interval) (CI) on [Binomial Proportions](https://en.wikipedia.org/wiki/Binomial_proportion_confidence_interva). In particular, I will explore issues with the much-used [Normal Approximation](https://en.wikipedia.org/wiki/Binomial_distribution#Normal_approximation). These CIs occur when assessing the quality of [Binary Classifiers](https://en.wikipedia.org/wiki/Binary_classification).
 
 If $n$ is the total number of trials, and $n_s$ is the number successes, then an agreement proportion is $\hat{p}=n_s/s$. A CI $[p_l, p_h]$ defines a range within which the true agreement $p$ likely lies. The confidence level $1-\alpha$ is the probability that the CI covers $p$. 
 
 The discrete nature of the binomial distribution makes calculating the exact CI hard. 
 Under the assumptions $n$ is large and $p$ is not close to 0 or 1, the normal approximation for the binomial is:
-\\[
+$$
 \text{Binomial}(p, n) \approx \mathcal{N}(\mu=\hat{p}, \sigma^2=\hat{p}(1-\hat{p})/n)\,,
-\\]
+$$
 where $\mathcal{N}$ is the normal distribution with mean $\mu$ and standard deviation $\sigma$.
-With this in the standard normal CI on the mean and assuming $p=\hat{p}$ the _Wald_ CI[#brown2001] is:
-\\[
+With this in the standard normal CI on the mean and assuming $p=\hat{p}$ the _Wald_ CI[^brown] is:
+$$
 p \in \hat{p}\pm|z_{\alpha/2}|\sqrt{\frac{\hat{p}(1-\hat{p})}{n}}\,.
-\\]
+$$
 
-[#brown2001]: Brown, L. D., Cai, T. T., & DasGupta, A. (2001). Interval estimation for a binomial proportion. Statistical science, 101-117. [url](https://projecteuclid.org/journals/statistical-science/volume-16/issue-2/Interval-Estimation-for-a-Binomial-Proportion/10.1214/ss/1009213286.full), [doi](https://doi.org/10.1214/ss/1009213286)
 
 ## Validity of normal distribution
 
@@ -46,3 +43,7 @@ ps = [(np.cos(np.pi*((i+1)/(n_ps+1)-1))+1)/2 for i in range(0, n_ps)]
 ## Continuity correction
 
 ...
+
+
+[^brown]: Brown, L. D., Cai, T. T., & DasGupta, A. (2001). Interval estimation for a binomial proportion. Statistical science, 101-117. [url](https://projecteuclid.org/journals/statistical-science/volume-16/issue-2/Interval-Estimation-for-a-Binomial-Proportion/10.1214/ss/1009213286.full), [doi](https://doi.org/10.1214/ss/1009213286)
+
