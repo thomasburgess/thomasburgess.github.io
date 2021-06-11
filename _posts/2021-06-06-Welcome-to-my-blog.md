@@ -19,5 +19,5 @@ I am using the [Ruby Gem method](https://tianqi.name/jekyll-TeXt-theme/docs/en/q
 ```sh
 bundle exec jekyll serve
 ```
-and open the site at `http://127.0.0.1:4000` to get a live view that regenerates when the source is modified. This saves me the waiting for github to regenerate the site, and allows me to spot mistakes fast.
+and open the site at `http://127.0.0.1:4000` to get a live view that regenerates when the source is modified. This saves me the waiting for github to regenerate the site, and allows me to spot mistakes fast. A noteworthy technicallity, github doesn't like the `theme:` pointing to an unsupported theme in `_config.yml` - I got warnings with every build (that otherwise actually worked). I just changed this to `remote-theme:` and the blog seems to work without throwing warnings now.
 
