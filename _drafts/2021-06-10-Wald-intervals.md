@@ -44,12 +44,15 @@ First, we need some test values for $n$ and $p$. For $n$, the [Hyperinflation se
 gives increasing gaps, and for $p$ a cosine transformation gives finer sampling 
 near the edges.
 
+{% details Python script to make the images... %}
 ```python
 n_ns = 10
 ns = [((n % 3) ** 2 + 1) * 10**int(n/3) for n in range(n_ns)] 
 n_ps = 10
 ps = [(np.cos(np.pi*((i+1)/(n_ps+1)-1))+1)/2 for i in range(0, n_ps)]
 ```
+{% enddetails %}
+
 
 ## Continuity correction
 
