@@ -5,7 +5,6 @@ tags:
   - statistics
   - binomial_ci
   - wald
-published: false
 ---
 
 ## Introduction
@@ -26,12 +25,13 @@ Under the assumptions $n$ is large and $p$ is not close to 0 or 1, the normal
 approximation for the binomial is
 
 \begin{equation}
-  \text{Binomial}(p, n) \approx \mathcal{N}(\mu=\hat{p}, \sigma^2=\hat{p}(1-\hat{p})/n)\,,
+  \text{Binomial}(p, n) \approx \mathcal{N}\left(\mu=n\hat{p}, 
+  \sigma=\sqrt{\hat{p}(1-\hat{p})/n}\right)\,,
 \end{equation}
 
 where $\mathcal{N}$ is the normal distribution with mean $\mu$ and standard 
-deviation $\sigma$. With this in the standard normal CI on the mean and assuming
-$p=\hat{p}$, the _Wald_ CI is written[^brown2001]
+deviation $\sigma$. With this in the standard normal CI on the mean and hoping that
+$p\approx\hat{p}$, the _Wald_ CI is written[^brown2001]
 
 \begin{equation}
 p \in \hat{p}\pm|z_{\alpha/2}|\sqrt{\frac{\hat{p}(1-\hat{p})}{n}}\,.
