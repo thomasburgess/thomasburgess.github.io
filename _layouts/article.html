@@ -26,6 +26,9 @@ type: article
     {%- assign issue-term = page.title | prepend: 'Comments: ' -%}
     {% include utterances.html %}
   </div>
+
+  {% include text-expand.html %}
+
 </div>
 
 <script>
