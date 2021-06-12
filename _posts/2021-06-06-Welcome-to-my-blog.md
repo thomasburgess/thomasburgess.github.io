@@ -25,4 +25,5 @@ and open the site at `http://127.0.0.1:4000`. This gets a live view that also re
 
 A noteworthy technicality, GitHub doesn't like the `theme:` pointing to an unsupported theme in `_config.yml` - I got warnings with every build (that otherwise actually worked). I just changed this to `remote-theme:` and the blog seems to work without throwing warnings now.
 
-By appending the [utterances](https://utteranc.es/) script in `_layouts/article.html` a GitHub issues powered comments section is added to the site with minimal effort. 
+
+By appending the [utterances](https://utteranc.es/) script in `_layouts/article.html` a GitHub issues powered comments section is added to the site with minimal effort. Collapsible content is enabled through a [details tag snippet](http://movb.de/jekyll-details-support.html).
