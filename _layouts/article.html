@@ -22,17 +22,13 @@ type: article
     {%- include article-section-navigator.html -%}
   </div>
 
+  <div>
+    {%- assign issue-term = page.title | prepend: 'Comments: ' -%}
+    {% include utterances.html %}
+  </div>
 </div>
 
 <script>
   {%- include scripts/article.js -%}
 </script>
 
-<script src="https://utteranc.es/client.js"
-        repo="https://github.com/thomasburgess/thomasburgess.github.io/"
-        issue-term="pathname"
-        label="blog"
-        theme="github-light"
-        crossorigin="anonymous"
-        async>
-</script>

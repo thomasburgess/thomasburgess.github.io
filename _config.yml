@@ -135,6 +135,11 @@ comments:
     visitor     : # false (default)
     meta        : # "[nick, mail, link]" (default) nickname, E-mail, Personal-site
 
+utterances:
+  repo: "thomasburgess/thomasburgess.github.io"
+  issue-term: "pathname"
+  label: "Comments"
+  theme: "github-light"
 
 ## => Pageview
 ##############################
