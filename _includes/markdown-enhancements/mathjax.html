@@ -7,10 +7,12 @@
 
 <script type="text/x-mathjax-config">
 	var _config = { tex2jax: {
-		inlineMath: [['$','$'], ['\\(','\\)']]
-	}};
+		inlineMath: [['$','$'], ['\\(','\\)']]},
+		displayAlign: "left",
+		displayIndent: "2em"
+	};
 	{%- if _mathjax_autoNumber == true -%}
-		_config.TeX = { equationNumbers: { autoNumber: "all" } };
+		_config.TeX = { displayAlign: "left", equationNumbers: { autoNumber: "all" } };
 	{%- endif -%}
 	MathJax.Hub.Config(_config);
 </script>
