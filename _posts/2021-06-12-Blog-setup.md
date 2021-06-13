@@ -19,29 +19,31 @@ in [GitLab](https://gitlab.com), but I wanted to try the
 a suitable theme was more challenging than getting a blog up and running. 
 The theme was the first pretty theme I found supporting 
 [Mermaid diagrams](https://mermaid-js.github.io/mermaid/#/),
-math with [MathJax maths](https://www.mathjax.org/), and decent syntax 
+math with [MathJax maths](https://www.mathjax.org/), and syntax 
 highlighting out of the box. 
 
 ## Getting the blog up and running
 
 I'm using the 
 [Ruby Gem method](https://tianqi.name/jekyll-TeXt-theme/docs/en/quick-start#ruby-gem-method) 
-to get my theme working. To develop a blog post, or to test modifications, I 
-run Jekyll locally before pushing it to GitHub. Longer posts are developed in the
-`_drafts` folder, so they can be pushed without being published. To serve the default 
-`http://127.0.0.1:4000` including drafts locally, I run
+to get my theme working. When writing a post, or testing modifications, 
+I run Jekyll locally before pushing it to GitHub.
+Posts added to `_drafts/` will not be published when pushing, 
+which is great when writing longer posts.
+To serve the site including drafts locally to the default 
+`http://127.0.0.1:4000`, I run
 ```sh
 $ bundle exec jekyll serve --drafts
 ```
-This makes a live view that also regenerates when the source is modified 
+The local server rebuilds the site when the source is modified 
 (with the notable exception of `_config.yml`). Not only does this cut on 
-waiting for GitHub to regenerate the site, but it also allows me to spot 
+waiting for GitHub to build the site, but it also allows me to spot 
 mistakes before publishing.
 
-A noteworthy technicality, GitHub doesn't like the `theme:` pointing to 
+GitHub doesn't like the `theme:` pointing to 
 an unsupported theme in `_config.yml` - I got warnings with every build 
 (that otherwise actually worked). I just changed this to `remote-theme:` 
-and the blog seems to work without throwing warnings now.
+and the blog seems to work warning-free now.
 
 ## Customization
 
