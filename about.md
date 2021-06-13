@@ -28,4 +28,17 @@ key: page-about
 
 ![planet7](assets/planet7.png)
 
-Welcome to my blog. I probably mostly will write about python sciency things I make. This blog is built with [jekyll](http://jekyllrb.com/) and the [TeXt](https://github.com/kitian616/jekyll-TeXt-theme) theme and hosted with [github](https://github.com/).
+Welcome to my blog. I probably mostly will write about python sciency things I make. 
+Checkout the [Welcome post]({% post_url 2021-06-06-Welcome-to-my-blog %}) to learn more about me.
+
+This blog is built with [jekyll](http://jekyllrb.com/) and the 
+[TeXt](https://github.com/kitian616/jekyll-TeXt-theme) theme and hosted with 
+[github](https://github.com/). Checkout the 
+[Blog setup post]({% post_url 2021-06-12-Blog-setup %}) 
+for more technical details about the blog.
+
+The blog source with content is open and viewable in its 
+[repository](https://github.com/thomasburgess/thomasburgess.github.io).
+If you find anything useful and want to use, copy, or modify it, tell me 
+about it and consider crediting me - all in the spirit of 
+[CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/).
