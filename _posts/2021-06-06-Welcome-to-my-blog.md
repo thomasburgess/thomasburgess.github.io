@@ -4,6 +4,7 @@ comments: true
 tags:
   - blog
   - github
+categories: blog
 ---
 
 Hi,
