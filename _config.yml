@@ -16,8 +16,8 @@ url     : "https://thomasburgess.github.io" # the base hostname & protocol for y
 baseurl : # does not include hostname
 title   : Thomas T Burgess's Blog
 description: > # this means to ignore newlines until "Language & timezone"
-  This is Thomas blog.
-
+  Personal blog of particle physicist and data scientist Thomas T Burgess. 
+  Here I write about statistics, data science, machine learning and other things I do.
 ## => Language and Timezone
 ##############################
 lang: en # the language of your site, default as "en"
@@ -30,7 +30,7 @@ author:
   name      : Thomas T Burgess
   url       : thomasburgess.github.io
   avatar    : assets/avatar.png # path or url of avatar image (square)
-  bio       : Particle physicist working as senior data scientist in Vienna, Austria.
+  bio       : Particle Physicist turned Senior Data Scientist in Vienna, Austria.
   email     : thomastburgess+blog g-mail #
   facebook  : # "user_name" the last part of your profile url, e.g. https://www.facebook.com/user_name
   twitter   : ThomasTBurgess1

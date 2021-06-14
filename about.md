@@ -28,8 +28,8 @@ key: page-about
 
 ![planet7](assets/planet7.png)
 
-Welcome to my blog. I probably mostly will write about python sciency things I make. 
-Checkout the [Welcome post]({% post_url 2021-06-06-Welcome-to-my-blog %}) to learn more about me.
+This is the personal blog of physicist and data scientist Thomas T Burgess. Here I write about statistics, data science, machine learning and other things I do to keep myself busy. Checkout the [Welcome post]({% post_url 2021-06-06-Welcome-to-my-blog %}) 
+to learn more about me and my blog.
 
 This blog is built with [jekyll](http://jekyllrb.com/) and the 
 [TeXt](https://github.com/kitian616/jekyll-TeXt-theme) theme and hosted with 

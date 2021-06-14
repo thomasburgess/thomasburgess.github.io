@@ -31,7 +31,7 @@ The discrete nature of the binomial distribution makes calculating the exact CI 
   \sigma=\sqrt{p(1-p)/n}\right) \equiv \mathcal{W}(p, n)\,,
 \end{equation}
 
-where $\mathcal{N}$ is the normal distribution with mean $\mu$ and standard 
+where $\mathcal{N}$ is the [Normal Distribution](https://en.wikipedia.org/wiki/Normal_distribution) with mean $\mu$ and standard 
 deviation $\sigma$. Now the _Wald_ CI on the proportion is[^brown2001]
 
 \begin{equation}
