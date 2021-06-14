@@ -19,8 +19,8 @@ In particular, I will explore issues with the much-used
 These CIs often occur when assessing the quality of 
 [Binary Classifiers](https://en.wikipedia.org/wiki/Binary_classification).
 
-If $n$ is the total number of trials, and $n_s$ is the number successes, then an 
-agreement proportion is $\hat{p}=n_s/s$. A CI $[p_l, p_h]$ defines a range
+If $n$ is the total number of trials, and $k$ is the number successes, then an 
+agreement proportion is $\hat{p}=k/s$. A CI $[p_l, p_h]$ defines a range
 within which the true agreement $p$ likely lies. The confidence level $1-\alpha$ 
 is the probability that the CI covers $p$. 
 
@@ -28,8 +28,8 @@ The discrete nature of the binomial distribution makes calculating the exact CI 
 The normal approximation to the binomial is
 
 \begin{equation}
-  \text{Binomial}(p, n) \approx \mathcal{N}\left(\mu=n\hat{p}, 
-  \sigma=\sqrt{\hat{p}(1-\hat{p})/n}\right)\,,
+  \text{Binomial}(p, n) \approx \mathcal{N}\left(\mu=np, 
+  \sigma=\sqrt{p(1-p)/n}\right) \equiv \mathcal{W}(p, n)\,,
 \end{equation}
 
 where $\mathcal{N}$ is the normal distribution with mean $\mu$ and standard 
@@ -56,12 +56,12 @@ For $p$ I wanted more samples near 0 and 1, so I made the cosine transformation
 x(k) = \frac{1}{2} \left(\cos\left(\pi\frac{k+1}{n+1}-1\right)+1\right)\,.
 \end{equation}
 
-With these, I loop over three counts and seven proportions to generate Figure 1. The approximation looks good for proportions close to 0.5 and high $n$. But, closer to the edges at 0 and 1, the assymmetry of the binomial causes problems. In addition, the normal distribution extends beyond 0 and 1. Hence, its CI limits may go outside of the range for $p$. Truncating the CI would lead to too narrow ranges (under [coverage](https://en.wikipedia.org/wiki/Coverage_probability )). Together, these issues causes many problems for confidence intervals.
+With these, I loop over three counts and seven proportions to generate [Figure 1.](#figure-1) The approximation looks good for proportions close to 0.5 and high $n$. But, closer to the edges at 0 and 1, the assymmetry of the binomial causes problems. In addition, the normal distribution extends beyond 0 and 1. Hence, its CI limits may go outside of the range for $p$. Truncating the CI would lead to too narrow ranges (under [coverage](https://en.wikipedia.org/wiki/Coverage_probability )). Together, these issues causes many problems for confidence intervals.
 
 {% figure [caption:"Figure 1. Binomial (triangles) and normal distribution 
 (curves) approximation for varying $n$ and $p$. The vertical lines mark the true proportions. Agreement worsen further from $p=0.5$ and at lower $n$. The lower
-amplitude at higher $n$ comes from the normalization of the integral to 1."] %}
-![](/assets/images/2021-06-13/binomnorm.png)
+amplitude at higher $n$ comes from the normalization of the integral to 1."] [class:"class1 class2"] %}
+![](/assets/images/2021-06-13/binomnorm.png){: #figure-1}
 {% endfigure %}
 
 
@@ -157,6 +157,70 @@ for i, n in enumerate(hyperinflation(3, 3)):
 axs[i].legend(bbox_to_anchor=(1, 1), loc="upper left")
 axs[0].set(ylabel="probability mass | density")
 ```
+{% enddetails %}
+
+In [Figure 2.](#figure-2) another view of this is obtained by fixing $n$, and plotting the ratio $\mathcal{W}(n,p)/\text{Binom(n,p)}$ for each $k$ and $p$. When the normal approximation is valid, the ratio should be around 1. This is the case when $p\approx\hat{p}$, but there also large regions where the ratio is far off.
+
+{% figure [caption:"Figure 2. Ratio of the normal approximation $\mathcal{W}(n,p)$ probability density and the true $\text{Binom(n,p)}$ probability mass for $n=50$. On the diagonal $p=\hat{p}$, the ratio is close to 1."] %}
+![](/assets/images/2021-06-13/binomnorm_ratio.png){: #figure-2 }
+{% endfigure %}
+
+{% details Code to generate sequences and Figure 2... %}
+```python
+import numpy as np
+import scipy.stats as st
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+from mpl_toolkits.axes_grid1 import make_axes_locatable
+
+def plot_binomnorm_ratio(n: int, ax: plt.Axes = None) -> mpl.image.AxesImage:
+    """Plot ratio of normal and binomial by k and p
+
+    Makes n x n grid with x-axis as p^ and y-axis as p
+
+    Parameters
+    ----------
+    n : int
+        Number of trials
+    ax : plt.Axes, optional
+        Axis to plot on
+
+    Returns
+    -------
+    mpl.image.AxesImage
+        Plotted image
+    """
+    ax = ax or plt.gca()
+    k = np.arange(0, n + 1)
+    plot = []
+    for p in np.linspace(0.04, 0.96, n):
+        binom = st.binom(n, p).pmf(k)
+        norm = st.norm(loc=p * n, scale=np.sqrt(p * (1 - p) * n)).pdf(k)
+        plot.append((norm / binom))
+    mat = ax.matshow(
+        np.array(plot),
+        extent=[0, 1, 1, 0],
+        aspect="auto",
+        cmap="Spectral",
+        vmin=0,
+        vmax=2,
+    )
+    ax.set(xlabel=r"$\hat{p}$", title=f"{n=}")
+    ax.set_aspect("equal", "box")
+    return mat
+
+
+fig, axs = plt.subplots(1, 1, figsize=(7, 7), sharey=True)
+mat = plot_binomnorm_ratio(50, axs)
+axs.set(ylabel="$p=k/n$")
+fig.colorbar(
+    mat,
+    label="Normal / Binomial",
+    cax=make_axes_locatable(axs).append_axes("right", size="5%", pad=0.1),
+)
+fig.tight_layout()
+fig.savefig("binomnorm_ratio.png", transparent=True, bbox_inches="tight")
+``` 
 {% enddetails %}
 
 ## Simulating confindence regions
