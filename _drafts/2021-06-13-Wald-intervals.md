@@ -19,13 +19,12 @@ In particular, I will explore issues with the much-used
 These CIs often occur when assessing the quality of 
 [Binary Classifiers](https://en.wikipedia.org/wiki/Binary_classification).
 
-If $n$ is the total number of trials, and $k$ is the number successes, then an 
+If $n$ is the total number of trials, and $k$ is the of number successes, then an 
 agreement proportion is $\hat{p}=k/s$. A CI $[p_l, p_h]$ defines a range
 within which the true agreement $p$ likely lies. The confidence level $1-\alpha$ 
 is the probability that the CI covers $p$. 
 
-The discrete nature of the binomial distribution makes calculating the exact CI hard. This has led to the widespread use of many approximations[^newcombe1998]. 
-The normal approximation to the binomial is
+The discrete nature of the binomial distribution makes calculating the exact CI hard. Because of this, there is widespread usage of many approximations[^newcombe1998], the most common one being the CI based on the normal approximation to the binomial. This approximation is
 
 \begin{equation}
   \text{Binomial}(p, n) \approx \mathcal{N}\left(\mu=np, 
@@ -36,17 +35,17 @@ where $\mathcal{N}$ is the normal distribution with mean $\mu$ and standard
 deviation $\sigma$. Now the _Wald_ CI on the proportion is[^brown2001]
 
 \begin{equation}
-p \in \hat{p}\pm|z_{\alpha/2}|\sqrt{\frac{\hat{p}(1-\hat{p})}{n}}\,.
+p \in \hat{p}\pm|z|\sqrt{\frac{\hat{p}(1-\hat{p})}{n}}\,,
 \end{equation}
+where $z$ is the $1-\alpha/2$ quantile of the standard normal distribution.
+
 
 This approximation makes several assumptions, the implications of which I'll 
 try to understand in the following sections.
 
-## Generating examples
+## Comparison of Binomial and its Normal approximation
 
-The examples need some test values for $n$ and $p$.
-To get increasing gaps in $n$, I chose the 
-[Hyperinflation sequence](https://oeis.org/A051109) 
+The examples need some test values for $n$ and $p$. To get increasing gaps in $n$, I chose the [Hyperinflation sequence](https://oeis.org/A051109) 
 
 \begin{equation}
 a(n) = \left((n\,\text{mod}\,3)^2+1 \right) 10 ^{\lfloor n/3 \rfloor}\,.
@@ -56,20 +55,10 @@ For $p$ I wanted more samples near 0 and 1, so I made the cosine transformation
 x(k) = \frac{1}{2} \left(\cos\left(\pi\frac{k+1}{n+1}-1\right)+1\right)\,.
 \end{equation}
 
-With these, I loop over three counts and seven proportions to generate [Figure 1.](#figure-1) The approximation looks good for proportions close to 0.5 and high $n$. But, closer to the edges at 0 and 1, the assymmetry of the binomial causes problems. In addition, the normal distribution extends beyond 0 and 1. Hence, its CI limits may go outside of the range for $p$. Truncating the CI would lead to too narrow ranges (under [coverage](https://en.wikipedia.org/wiki/Coverage_probability )). Together, these issues causes many problems for confidence intervals.
+{% details Click arrow to expand code to generate sequences ... %}
 
-{% figure [caption:"Figure 1. Binomial (triangles) and normal distribution 
-(curves) approximation for varying $n$ and $p$. The vertical lines mark the true proportions. Agreement worsen further from $p=0.5$ and at lower $n$. The lower
-amplitude at higher $n$ comes from the normalization of the integral to 1."] [class:"class1 class2"] %}
-![](/assets/images/2021-06-13/binomnorm.png){: #figure-1}
-{% endfigure %}
-
-
-{% details Code to generate sequences and Figure 1... %}
 ```python
 import numpy as np
-import scipy.stats as st
-import matplotlib.pyplot as plt
 
 
 def hyperinflation(n: int, n0: int = 1) -> np.ndarray:
@@ -115,6 +104,23 @@ def cosine_samples(n: int) -> np.ndarray:
     """
     s = np.arange(n)
     return (np.cos(np.pi * ((s + 1) / (n + 1) - 1)) + 1) / 2
+```
+{% enddetails %}
+
+
+With these, I loop over three counts and seven proportions to generate [Figure 1.](#figure-1) For ratios near 0.5 and at sufficiently large n, the approximation seems to hold. But, closer to the edges at 0 and 1, the asymmetry of the binomial causes problems. In addition, the normal distribution extends beyond 0 and 1. Hence, its CI limits may go outside of the range for $p$. Truncating the CI would lead to too narrow ranges (under [coverage](https://en.wikipedia.org/wiki/Coverage_probability )). Together, these issues cause many problems for confidence intervals.
+
+{% figure [caption:"Figure 1. Binomial (triangles) and normal distribution 
+(curves) approximation for varying $n$ and $p$. The vertical lines mark the actual proportions. Agreement worsens further away from $p=0.5$ and at lower $n$. The lower amplitude at higher $n$ comes from the normalization of the integral to 1."] %}
+![](/assets/images/2021-06-13/binomnorm.png){: #figure-1 width="100%"}
+{% endfigure %}
+
+
+{% details Click arrow to expand code to generate Figure 1... %}
+```python
+import numpy as np
+import scipy.stats as st
+import matplotlib.pyplot as plt
 
 
 def plot_binomnorm(
@@ -156,16 +162,18 @@ for i, n in enumerate(hyperinflation(3, 3)):
         axs[i].set(xlabel=r"$\hat{p}$", title=f"{n=:.0f}")
 axs[i].legend(bbox_to_anchor=(1, 1), loc="upper left")
 axs[0].set(ylabel="probability mass | density")
+fig.tight_layout()
+fig.savefig("binomnorm.png", transparent=True, bbox_inches="tight")
 ```
 {% enddetails %}
 
-In [Figure 2.](#figure-2) another view of this is obtained by fixing $n$, and plotting the ratio $\mathcal{W}(n,p)/\text{Binom(n,p)}$ for each $k$ and $p$. When the normal approximation is valid, the ratio should be around 1. This is the case when $p\approx\hat{p}$, but there also large regions where the ratio is far off.
+ [Figure 2.](#figure-2) shows another view into the validity of the normal approximation. Here, $n$ is held fixed, and the ratio $\mathcal{W}(n,p)/\text{Binom(n,p)}$ for each $k$ and $p$. The ratio should be $\approx1$ when the normal approximation is valid. When $p\approx\hat{p}$ the ratio is close to 1, but other regions can be far off. In practice, the true value of $p$ is unknown and the common rules of thumbs of trials and successes in the approximation cannot ensure that the bad regions are avoided.
 
-{% figure [caption:"Figure 2. Ratio of the normal approximation $\mathcal{W}(n,p)$ probability density and the true $\text{Binom(n,p)}$ probability mass for $n=50$. On the diagonal $p=\hat{p}$, the ratio is close to 1."] %}
-![](/assets/images/2021-06-13/binomnorm_ratio.png){: #figure-2 }
+{% figure [caption:"Figure 2. The ratio of the normal approximation $\mathcal{W}(n,p)$ probability density and the true $\text{Binom(n,p)}$ probability mass for $n=50$. On the diagonal $p=\hat{p}$, the ratio is close to 1."] %}
+![](/assets/images/2021-06-13/binomnorm_ratio.png){: #figure-2 width="50%"}
 {% endfigure %}
 
-{% details Code to generate sequences and Figure 2... %}
+{% details Click arrow to expand code to generate Figure 2... %}
 ```python
 import numpy as np
 import scipy.stats as st
@@ -224,8 +232,6 @@ fig.savefig("binomnorm_ratio.png", transparent=True, bbox_inches="tight")
 {% enddetails %}
 
 ## Simulating confindence regions
-
-## Continuity correction
 
 ...
 
