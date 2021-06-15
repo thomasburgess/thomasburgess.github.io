@@ -19,25 +19,89 @@ In particular, I will explore issues with the much-used
 These CIs often occur when assessing the quality of 
 [Binary Classifiers](https://en.wikipedia.org/wiki/Binary_classification).
 
-If $n$ is the total number of trials, and $k$ is the of number successes, then an 
-agreement proportion is $\hat{p}=k/s$. A CI $[p_l, p_h]$ defines a range
-within which the true agreement $p$ likely lies. The confidence level $1-\alpha$ 
-is the probability that the CI covers $p$. 
+Part of why I wrote this, is I was making the code python code scattered throughout this code.
+I've collapsed them not to drown the text in code. To run them, you may need to get 
+[python >= 3.8](https://docs.python.org/3.8/), and the libraries and versiosn listend below:
 
-The discrete nature of the binomial distribution makes calculating the exact CI hard. Because of this, there is widespread usage of many approximations[^newcombe1998], the most common one being the CI based on the normal approximation to the binomial. This approximation is
+{% details Click to expand common imports and library versions %}
+
+```python
+from typing import Tuple
+
+import numpy as np  # 1.20.3
+import scipy.stats as st # 1.6.3
+import matplotlib as mpl # 3.4.2
+import matplotlib.pyplot as plt 
+from mpl_toolkits.axes_grid1 import make_axes_locatable
+
+```
+{% enddetails %}
+
+## Defining the Wald Interval
+
+The binomial distribution applies to repeated experiments with binary outcomes. 
+Probably the most common example would be a series of coin flips.
+
+If $n$ is the total number of trials, and $k$ is the of number successes, then
+the success proportion is $\hat{p}=k/s$. A CI $[p_l, p_h]$ defines a range 
+within which the true agreement $p$ likely lies. The confidence level 
+$1-\alpha$ is the probability that the CI covers $p$. 
+
+The discrete nature of the binomial distribution makes calculating the exact 
+CI hard. Because of this, there is widespread usage of many 
+approximations[^newcombe1998], the most common one being the CI based on the 
+normal approximation to the binomial. This approximation is
 
 \begin{equation}
   \text{Binomial}(p, n) \approx \mathcal{N}\left(\mu=np, 
   \sigma=\sqrt{p(1-p)/n}\right) \equiv \mathcal{W}(p, n)\,,
 \end{equation}
 
-where $\mathcal{N}$ is the [Normal Distribution](https://en.wikipedia.org/wiki/Normal_distribution) with mean $\mu$ and standard 
-deviation $\sigma$. Now the _Wald_ CI on the proportion is[^brown2001]
+where $\mathcal{N}$ is the 
+[Normal Distribution](https://en.wikipedia.org/wiki/Normal_distribution) 
+with mean $\mu$ and standard deviation $\sigma$. Now the _Wald_ CI on the 
+proportion is[^brown2001]
 
 \begin{equation}
 p \in \hat{p}\pm|z|\sqrt{\frac{\hat{p}(1-\hat{p})}{n}}\,,
 \end{equation}
 where $z$ is the $1-\alpha/2$ quantile of the standard normal distribution.
+
+{% details Click arrow to expand code to caclulate wald CI ... %}
+
+```python
+def make_norm_appox(n: int, p: float) -> st.rv_continuous:
+    """Get normal approximation to binomial distribution
+
+    Args:
+       n (int) - counts
+       p (float) - probability of success
+
+    return:
+        st.rv_continuous: scipy distribution 
+    """
+    return st.norm(loc=p * n, scale=np.sqrt(p * (1 - p) * n))
+
+
+def calc_ci_wald(n: int, p: float, alpha: float) -> Tuple[float, float]:
+    """Wald binomial confidence interval
+    
+    This uses a normal approximation, and is calculated as follows[#wallis_2013]:
+
+        CI = p +- z(alpha/2) sqrt(p(1-p)/n)
+
+    Args:
+       n (int) - counts
+       p (float) - probability of success
+       alpha (float) - significance level  
+
+    Return:
+        Tuple[float, float]: lower and upper CI
+    """
+    sz = np.sqrt(p*(1-p)/n) * st.norm.isf(alpha / 2.)
+    return p - sz, p + sz
+```
+{% enddetails %}
 
 
 This approximation makes several assumptions, the implications of which I'll 
@@ -58,9 +122,6 @@ x(k) = \frac{1}{2} \left(\cos\left(\pi\frac{k+1}{n+1}-1\right)+1\right)\,.
 {% details Click arrow to expand code to generate sequences ... %}
 
 ```python
-import numpy as np
-
-
 def hyperinflation(n: int, n0: int = 1) -> np.ndarray:
     """Generate hyperinflation sequence
 
@@ -105,6 +166,7 @@ def cosine_samples(n: int) -> np.ndarray:
     s = np.arange(n)
     return (np.cos(np.pi * ((s + 1) / (n + 1) - 1)) + 1) / 2
 ```
+
 {% enddetails %}
 
 
@@ -118,11 +180,6 @@ With these, I loop over three counts and seven proportions to generate [Figure 1
 
 {% details Click arrow to expand code to generate Figure 1... %}
 ```python
-import numpy as np
-import scipy.stats as st
-import matplotlib.pyplot as plt
-
-
 def plot_binomnorm(
     n: int, p: float, nn: int = 100, ax: plt.Axes = None, label: str = None
 ):
@@ -175,12 +232,6 @@ fig.savefig("binomnorm.png", transparent=True, bbox_inches="tight")
 
 {% details Click arrow to expand code to generate Figure 2... %}
 ```python
-import numpy as np
-import scipy.stats as st
-import matplotlib as mpl
-import matplotlib.pyplot as plt
-from mpl_toolkits.axes_grid1 import make_axes_locatable
-
 def plot_binomnorm_ratio(n: int, ax: plt.Axes = None) -> mpl.image.AxesImage:
     """Plot ratio of normal and binomial by k and p
 
