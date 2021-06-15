@@ -19,9 +19,10 @@ In particular, I will explore issues with the much-used
 These CIs often occur when assessing the quality of 
 [Binary Classifiers](https://en.wikipedia.org/wiki/Binary_classification).
 
-Part of why I wrote this, is I was making the code python code scattered throughout this code.
-I've collapsed them not to drown the text in code. To run them, you may need to get 
-[python >= 3.8](https://docs.python.org/3.8/), and the libraries and versiosn listend below:
+Part of why I wrote this, is I was making the code python code scattered 
+throughout this code. I've collapsed them not to drown the text in code. To 
+run them, you may need to get [python >= 3.8](https://docs.python.org/3.8/), 
+and the libraries and versions listed below:
 
 {% details Click to expand common imports and library versions %}
 
@@ -40,34 +41,48 @@ from mpl_toolkits.axes_grid1 import make_axes_locatable
 ## Defining the Wald Interval
 
 The binomial distribution applies to repeated experiments with binary outcomes. 
-Probably the most common example would be a series of coin flips.
+Probably the most common example would be a series of coin flips. The Binomial 
+probability of $k$ successes out $n$ trials with success probability $p$ is 
+given by the 
+[Probability Mass Function](https://en.wikipedia.org/wiki/Probability_mass_function)
 
-If $n$ is the total number of trials, and $k$ is the of number successes, then
-the success proportion is $\hat{p}=k/s$. A CI $[p_l, p_h]$ defines a range 
-within which the true agreement $p$ likely lies. The confidence level 
-$1-\alpha$ is the probability that the CI covers $p$. 
+\begin{equation}
+B_\text{pmf}(k, n, p) = {n\choose p} p^k (1-p)^{n-k}\,.
+\end{equation}
+
+The mean of the distribution is $\mu=np$ and its standard devation is 
+$\sigma=\sqrt{np(1-p)}$. To estimate $p$, make $n$ experiments and the estimate
+is the successes proportion $\hat{p}=k/s$. The tricky part is finding a 
+confidence interval $[E^-, E^+]$ around $\hat{p}$ within which the true $p$ 
+likely lies. The confidence level $1-\alpha$ is the probability that the CI
+covers $p$. 
 
 The discrete nature of the binomial distribution makes calculating the exact 
 CI hard. Because of this, there is widespread usage of many 
-approximations[^newcombe1998], the most common one being the CI based on the 
-normal approximation to the binomial. This approximation is
+approximations[^newcombe1998], the most is based on the normal approximation 
+to the binomial:
 
 \begin{equation}
-  \text{Binomial}(p, n) \approx \mathcal{N}\left(\mu=np, 
-  \sigma=\sqrt{p(1-p)/n}\right) \equiv \mathcal{W}(p, n)\,,
+  B_\text{pmf}(k, n, p) \approx \mathcal{N} _ \text{pdf}\left(x=k, \mu=np, 
+  \sigma=\sqrt{np(1-p)}\right)
 \end{equation}
 
-where $\mathcal{N}$ is the 
-[Normal Distribution](https://en.wikipedia.org/wiki/Normal_distribution) 
-with mean $\mu$ and standard deviation $\sigma$. Now the _Wald_ CI on the 
-proportion is[^brown2001]
-
+where $\mathcal{N} _ \text{pdf}$ is the 
+[Normal Distribution](https://en.wikipedia.org/wiki/Normal_distribution).
+The (approximate) CI for an estimate of the mean of a normal distribution
 \begin{equation}
-p \in \hat{p}\pm|z|\sqrt{\frac{\hat{p}(1-\hat{p})}{n}}\,,
+    \mu \in \hat{\mu} \pm |z| \frac{1}{\sqrt{n}}s\,,
 \end{equation}
-where $z$ is the $1-\alpha/2$ quantile of the standard normal distribution.
+where $s$ is the standard deviation, and $z$ is the $1-\alpha/2$ quantile of 
+$\mathcal{N}(0,1)$. The _Wald_ CI is obtained from this using $\hat{\mu}=k/n$, 
+$s=p(1-p)$, and letting $p\approx\hat{p}$
+\begin{equation}
+p \in \hat{p} \pm |z| \sqrt{\frac{\hat{p}(1-\hat{p})}{n}}\,.
+\end{equation}
 
-{% details Click arrow to expand code to caclulate wald CI ... %}
+For a better, more in depth explaination try this paper and blog post by Wallis[^wallis2013].
+
+{% details Click arrow to expand code to caclulate the normal approximation and Wald CI ... %}
 
 ```python
 def make_norm_appox(n: int, p: float) -> st.rv_continuous:
@@ -103,9 +118,8 @@ def calc_ci_wald(n: int, p: float, alpha: float) -> Tuple[float, float]:
 ```
 {% enddetails %}
 
-
-This approximation makes several assumptions, the implications of which I'll 
-try to understand in the following sections.
+I'll spend next sections trying to show the implications of the assumptions 
+made in the Wald CI.
 
 ## Comparison of Binomial and its Normal approximation
 
@@ -289,3 +303,4 @@ fig.savefig("binomnorm_ratio.png", transparent=True, bbox_inches="tight")
 [^newcombe1998]: Newcombe, R.G. (1998), Two-sided confidence intervals for the single proportion: comparison of seven methods. Statist. Med., 17: 857-872. [doi](https://doi.org/10.1002%2F%28sici%291097-0258%2819980430%2917%3A8%3C857%3A%3Aaid-sim777%3E3.0.co%3B2-e)
 [^brown2001]: Brown, L. D., Cai, T. T., & DasGupta, A. (2001). Interval estimation for a binomial proportion. Statistical science, 101-117. [url](https://projecteuclid.org/journals/statistical-science/volume-16/issue-2/Interval-Estimation-for-a-Binomial-Proportion/10.1214/ss/1009213286.full), [doi](https://doi.org/10.1214/ss/1009213286)
 [^agresti1998]: Agresti, A., & Coull, B. A. (1998). Approximate is better than “exact” for interval estimation of binomial proportions. The American Statistician, 52(2), 119-126. [doi](https://doi.org/10.2307/2685469 )
+[^wallis2013]: Wallis, S.A. 2013. Binomial confidence intervals and contingency tests: mathematical fundamentals and the evaluation of alternative methods. Journal of Quantitative Linguistics 20:3, 178-208. [url](https://corplingstats.wordpress.com/2012/03/31/binomial-distributions/), [doi](https://doi.org/10.1080/09296174.2013.799918)
