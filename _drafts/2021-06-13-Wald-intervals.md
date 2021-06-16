@@ -19,12 +19,11 @@ In particular, I will explore issues with the much-used
 These CIs often occur when assessing the quality of 
 [Binary Classifiers](https://en.wikipedia.org/wiki/Binary_classification).
 
-Part of why I wrote this, is I was making the code python code scattered 
-throughout this code. I've collapsed them not to drown the text in code. To 
-run them, you may need to get [python >= 3.8](https://docs.python.org/3.8/), 
+I wrote this post while making the python snippets that are scattered throught
+this code. To run the code, you may need to install [python>=3.8](https://docs.python.org/3.8/), 
 and the libraries and versions listed below:
 
-{% details Click to expand common imports and library versions %}
+{% details Click to expand the required python imports and library versions... %}
 
 ```python
 from typing import Tuple
@@ -48,8 +47,8 @@ given by the
 B_\text{pmf}(k, n, p) = {n\choose p} p^k (1-p)^{n-k}\,.
 \end{equation}
 
-The mean of the distribution is $\mu=np$ and its standard devation is 
-$\sigma=\sqrt{np(1-p)}$. To estimate $p$, make $n$ experiments and the estimate
+The mean of the distribution is $\mu=np$ and its standard deviation is 
+$\sigma=\sqrt{np(1-p)}$. To estimate $p$, make $n$ experiments, and the estimate
 is the successes proportion $\hat{p}=k/s$. The tricky part is finding a 
 confidence interval $[E^-, E^+]$ around $\hat{p}$ within which the true $p$ 
 likely lies. The confidence level $1-\alpha$ is the probability that the CI
@@ -57,7 +56,7 @@ covers $p$.
 
 The discrete nature of the binomial distribution makes calculating the exact 
 CI hard. Because of this, there is widespread usage of many 
-approximations[^newcombe1998], the most is based on the normal approximation 
+approximations[^newcombe1998]. The most common one uses the normal approximation 
 to the binomial:
 
 \begin{equation}
@@ -72,15 +71,15 @@ The (approximate) CI for an estimate of the mean of a normal distribution
     \mu \in \hat{\mu} \pm |z| \frac{1}{\sqrt{n}}s\,,
 \end{equation}
 where $s$ is the standard deviation, and $z$ is the $1-\alpha/2$ quantile of 
-$\mathcal{N}(0,1)$. The _Wald_ CI is obtained from this using $\hat{\mu}=k/n$, 
-$s=\sqrt{p(1-p)}$, and letting $p\approx\hat{p}$
+$\mathcal{N}(0,1)$. With this, the _Wald_ CI using $\hat{\mu}=k/n$, 
+$s=\sqrt{p(1-p)}$, and $p\approx\hat{p}$ so that
 \begin{equation}
 p \in \hat{p} \pm |z| \sqrt{\frac{\hat{p}(1-\hat{p})}{n}}\,.
 \end{equation}
 
-For a better, more in depth explaination try this paper and blog post by Wallis[^wallis2013].
+For a better, more in-depth view, try this paper and blog post by Wallis[^wallis2013].
 
-{% details Click arrow to expand code to caclulate the normal approximation and Wald CI ... %}
+{% details Click the arrow to expand normal approximation and Wald CI code ... %}
 
 ```python
 def make_norm_appox(n: int, p: float) -> st.rv_continuous:
@@ -116,22 +115,22 @@ def calc_ci_wald(n: int, p: float, alpha: float) -> Tuple[float, float]:
 ```
 {% enddetails %}
 
-I'll spend next sections trying to show the implications of the assumptions 
+I'll spend the upcoming sections trying to show the implications of the assumptions 
 made in the Wald CI.
 
 ## Comparison of Binomial and its Normal approximation
 
-The examples need some test values for $n$ and $p$. To get increasing gaps in $n$, I chose the [Hyperinflation sequence](https://oeis.org/A051109) 
+The examples need some test values for $n$ and $p$. With the [Hyperinflation sequence](https://oeis.org/A051109), gaps between counts increase in a nice way
 
 \begin{equation}
-  a(n) = \left((n\,\text{mod}\,3)^2+1 \right) 10 ^{\lfloor n/3 \rfloor}\,.
+  a(n) = \left((n\,\text{mod}\,3)^2+1 \right) 10 ^{\lfloor n/3 \rfloor}\,,
 \end{equation}
-For $p$ I wanted more samples near 0 and 1, so I made the cosine transformation 
+while for $p$ more samples are taken near 0 and 1 are using a cosine transformation 
 \begin{equation}
   x(k) = \frac{1}{2} \left(\cos\left(\pi\frac{k+1}{n+1}-1\right)+1\right)\,.
 \end{equation}
 
-{% details Click arrow to expand code to generate sequences ... %}
+{% details Click the arrow to expand sequence generator code ... %}
 
 ```python
 def hyperinflation(n: int, n0: int = 1) -> np.ndarray:
@@ -183,7 +182,7 @@ def cosine_samples(n: int) -> np.ndarray:
 
 With these, I loop over three counts and seven proportions to generate [Figure 1.](#figure-1) For ratios near 0.5 and at sufficiently large n, the approximation seems to hold. But, closer to the edges at 0 and 1, the asymmetry of the binomial causes problems. In addition, the normal distribution extends beyond 0 and 1. Hence, its CI limits may go outside of the range for $p$. Truncating the CI would lead to too narrow ranges (under [coverage](https://en.wikipedia.org/wiki/Coverage_probability )). Together, these issues cause many problems for confidence intervals.
 
-{% figure [caption:"Figure 1. Binomial (triangles) and normal distribution 
+{% figure [caption:"Figure 1: Binomial (triangles) and normal distribution 
 (curves) approximation for varying $n$ and $p$. The vertical lines mark the actual proportions. Agreement worsens further away from $p=0.5$ and at lower $n$. The lower amplitude at higher $n$ comes from the normalization of the integral to 1."] %}
 ![](/assets/images/2021-06-13/binomnorm.png){: #figure-1 width="100%"}
 {% endfigure %}
@@ -236,11 +235,9 @@ fig.savefig("binomnorm.png", transparent=True, bbox_inches="tight")
 
 {% enddetails %}
 
- [Figure 2.](#figure-2) shows another view into the validity of the normal approximation. Here, $n$ is held fixed, and the ratio normal/binomial for each $k$ and $p$ is plotted. The ratio should be $\approx1$ when the normal approximation is valid. When $p\approx\hat{p}$ the ratio is close to 1, but other regions can be far off. 
+ [Figure 2.](#figure-2) shows another view into the validity of the normal approximation. Here, $n$ is held fixed, and the ratio normal/binomial for each $k$ and $p$ is plotted. The ratio should be $\approx1$ when the normal approximation is valid. When $p\approx\hat{p}$ the ratio is close to 1, but other regions can be far off. In practice, the true value of $p$ is unknown. Thus, rules of thumbs on the number of trials and successes needed in the approximation cannot ensure that the bad regions are avoided.
 
- In practice, the true value of $p$ is unknown and the common rules of thumbs of trials and successes in the approximation cannot ensure that the bad regions are avoided.
-
-{% figure [caption:"Figure 2. The ratio of the normal approximation $\mathcal{W}(n,p)$ probability density and the true $\text{Binom(n,p)}$ probability mass for $n=50$. Along the diagonal $p=\hat{p}$, the ratio is close to 1. These are the most probable values, and here the approximation is quite good. At low $p$ and $\hat{p}$, the normal is higher than the binomial. When $p$ increases this situation switches around. This effect is symmetric in the diagonal."] %}
+{% figure [caption:"Figure 2: The ratio of the normal approximation $\mathcal{W}(n,p)$ probability density and the true $\text{Binom(n,p)}$ probability mass for $n=50$. Along the diagonal $p=\hat{p}$, the ratio is close to 1. These are the most probable values, and here the approximation is quite good. At low $p$ and $\hat{p}$, the normal is higher than the binomial. When $p$ increases this situation switches around. This effect is symmetric in the diagonal."] %}
 ![](/assets/images/2021-06-13/binomnorm_ratio.png){: #figure-2 width="50%"}
 {% endfigure %}
 
