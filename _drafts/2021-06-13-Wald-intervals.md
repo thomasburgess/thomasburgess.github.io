@@ -124,11 +124,11 @@ made in the Wald CI.
 The examples need some test values for $n$ and $p$. To get increasing gaps in $n$, I chose the [Hyperinflation sequence](https://oeis.org/A051109) 
 
 \begin{equation}
-a(n) = \left((n\,\text{mod}\,3)^2+1 \right) 10 ^{\lfloor n/3 \rfloor}\,.
+  a(n) = \left((n\,\text{mod}\,3)^2+1 \right) 10 ^{\lfloor n/3 \rfloor}\,.
 \end{equation}
 For $p$ I wanted more samples near 0 and 1, so I made the cosine transformation 
 \begin{equation}
-x(k) = \frac{1}{2} \left(\cos\left(\pi\frac{k+1}{n+1}-1\right)+1\right)\,.
+  x(k) = \frac{1}{2} \left(\cos\left(\pi\frac{k+1}{n+1}-1\right)+1\right)\,.
 \end{equation}
 
 {% details Click arrow to expand code to generate sequences ... %}
@@ -190,6 +190,7 @@ With these, I loop over three counts and seven proportions to generate [Figure 1
 
 
 {% details Click arrow to expand code to generate Figure 1... %}
+
 ```python
 def plot_binomnorm(
     n: int, p: float, nn: int = 100, ax: plt.Axes = None, label: str = None
@@ -232,6 +233,7 @@ axs[0].set(ylabel="probability mass | density")
 fig.tight_layout()
 fig.savefig("binomnorm.png", transparent=True, bbox_inches="tight")
 ```
+
 {% enddetails %}
 
  [Figure 2.](#figure-2) shows another view into the validity of the normal approximation. Here, $n$ is held fixed, and the ratio normal/binomial for each $k$ and $p$ is plotted. The ratio should be $\approx1$ when the normal approximation is valid. When $p\approx\hat{p}$ the ratio is close to 1, but other regions can be far off. 
@@ -243,6 +245,7 @@ fig.savefig("binomnorm.png", transparent=True, bbox_inches="tight")
 {% endfigure %}
 
 {% details Click arrow to expand code to generate Figure 2... %}
+
 ```python
 def plot_binomnorm_ratio(n: int, ax: plt.Axes = None) -> mpl.image.AxesImage:
     """Plot ratio of normal and binomial by k and p
@@ -293,6 +296,7 @@ fig.colorbar(
 fig.tight_layout()
 fig.savefig("binomnorm_ratio.png", transparent=True, bbox_inches="tight")
 ``` 
+
 {% enddetails %}
 
 ## Simulating confindence regions
@@ -300,6 +304,9 @@ fig.savefig("binomnorm_ratio.png", transparent=True, bbox_inches="tight")
 ...
 
 [^newcombe1998]: Newcombe, R.G. (1998), Two-sided confidence intervals for the single proportion: comparison of seven methods. Statist. Med., 17: 857-872. [doi](https://doi.org/10.1002%2F%28sici%291097-0258%2819980430%2917%3A8%3C857%3A%3Aaid-sim777%3E3.0.co%3B2-e)
+
 [^brown2001]: Brown, L. D., Cai, T. T., & DasGupta, A. (2001). Interval estimation for a binomial proportion. Statistical science, 101-117. [url](https://projecteuclid.org/journals/statistical-science/volume-16/issue-2/Interval-Estimation-for-a-Binomial-Proportion/10.1214/ss/1009213286.full), [doi](https://doi.org/10.1214/ss/1009213286)
+
 [^agresti1998]: Agresti, A., & Coull, B. A. (1998). Approximate is better than “exact” for interval estimation of binomial proportions. The American Statistician, 52(2), 119-126. [doi](https://doi.org/10.2307/2685469 )
+
 [^wallis2013]: Wallis, S.A. 2013. Binomial confidence intervals and contingency tests: mathematical fundamentals and the evaluation of alternative methods. Journal of Quantitative Linguistics 20:3, 178-208. [url](https://corplingstats.wordpress.com/2012/03/31/binomial-distributions/), [doi](https://doi.org/10.1080/09296174.2013.799918)
