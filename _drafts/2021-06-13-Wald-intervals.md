@@ -28,13 +28,11 @@ and the libraries and versions listed below:
 
 ```python
 from typing import Tuple
-
 import numpy as np  # 1.20.3
 import scipy.stats as st # 1.6.3
 import matplotlib as mpl # 3.4.2
 import matplotlib.pyplot as plt 
 from mpl_toolkits.axes_grid1 import make_axes_locatable
-
 ```
 {% enddetails %}
 
@@ -75,7 +73,7 @@ The (approximate) CI for an estimate of the mean of a normal distribution
 \end{equation}
 where $s$ is the standard deviation, and $z$ is the $1-\alpha/2$ quantile of 
 $\mathcal{N}(0,1)$. The _Wald_ CI is obtained from this using $\hat{\mu}=k/n$, 
-$s=p(1-p)$, and letting $p\approx\hat{p}$
+$s=\sqrt{p(1-p)}$, and letting $p\approx\hat{p}$
 \begin{equation}
 p \in \hat{p} \pm |z| \sqrt{\frac{\hat{p}(1-\hat{p})}{n}}\,.
 \end{equation}
@@ -183,7 +181,6 @@ def cosine_samples(n: int) -> np.ndarray:
 
 {% enddetails %}
 
-
 With these, I loop over three counts and seven proportions to generate [Figure 1.](#figure-1) For ratios near 0.5 and at sufficiently large n, the approximation seems to hold. But, closer to the edges at 0 and 1, the asymmetry of the binomial causes problems. In addition, the normal distribution extends beyond 0 and 1. Hence, its CI limits may go outside of the range for $p$. Truncating the CI would lead to too narrow ranges (under [coverage](https://en.wikipedia.org/wiki/Coverage_probability )). Together, these issues cause many problems for confidence intervals.
 
 {% figure [caption:"Figure 1. Binomial (triangles) and normal distribution 
@@ -215,15 +212,14 @@ def plot_binomnorm(
     ax = ax or plt.gca()
     # Plot normal as line
     nk = np.linspace(0, n, nn)  # normal x-axis
-    norm = st.norm(loc=p * n, scale=np.sqrt(p * (1 - p) * n))
-    c = ax.plot(nk / n, norm.pdf(nk), "-", alpha=0.5, label=label)
+    c = ax.plot(nk / n, make_norm_appox(n, p).pdf(nk), "-", alpha=0.5, label=label)
+    col = c[0].get_color()  # capture color from plot
     # Plot binomial as discrete triangles
     binom = st.binom(n, p)  # binomial distribution
     bk = np.arange(n + 1)  # binomial x-axis
-    ax.scatter(bk / n, binom.pmf(bk), c=c[0].get_color(), marker="v", alpha=0.5)
+    ax.scatter(bk / n, binom.pmf(bk), c=col, marker="v", alpha=0.5)
     # Indicate p
-    ax.axvline(p, color=c[0].get_color(), alpha=0.5, linestyle=":")
-
+    ax.axvline(p, color=col, alpha=0.5, linestyle=":")
 
 fig, axs = plt.subplots(1, 3, figsize=(15, 4), sharey=True)
 axs = axs.flatten()
@@ -238,9 +234,11 @@ fig.savefig("binomnorm.png", transparent=True, bbox_inches="tight")
 ```
 {% enddetails %}
 
- [Figure 2.](#figure-2) shows another view into the validity of the normal approximation. Here, $n$ is held fixed, and the ratio $\mathcal{W}(n,p)/\text{Binom(n,p)}$ for each $k$ and $p$. The ratio should be $\approx1$ when the normal approximation is valid. When $p\approx\hat{p}$ the ratio is close to 1, but other regions can be far off. In practice, the true value of $p$ is unknown and the common rules of thumbs of trials and successes in the approximation cannot ensure that the bad regions are avoided.
+ [Figure 2.](#figure-2) shows another view into the validity of the normal approximation. Here, $n$ is held fixed, and the ratio normal/binomial for each $k$ and $p$ is plotted. The ratio should be $\approx1$ when the normal approximation is valid. When $p\approx\hat{p}$ the ratio is close to 1, but other regions can be far off. 
 
-{% figure [caption:"Figure 2. The ratio of the normal approximation $\mathcal{W}(n,p)$ probability density and the true $\text{Binom(n,p)}$ probability mass for $n=50$. On the diagonal $p=\hat{p}$, the ratio is close to 1."] %}
+ In practice, the true value of $p$ is unknown and the common rules of thumbs of trials and successes in the approximation cannot ensure that the bad regions are avoided.
+
+{% figure [caption:"Figure 2. The ratio of the normal approximation $\mathcal{W}(n,p)$ probability density and the true $\text{Binom(n,p)}$ probability mass for $n=50$. Along the diagonal $p=\hat{p}$, the ratio is close to 1. These are the most probable values, and here the approximation is quite good. At low $p$ and $\hat{p}$, the normal is higher than the binomial. When $p$ increases this situation switches around. This effect is symmetric in the diagonal."] %}
 ![](/assets/images/2021-06-13/binomnorm_ratio.png){: #figure-2 width="50%"}
 {% endfigure %}
 
@@ -268,15 +266,16 @@ def plot_binomnorm_ratio(n: int, ax: plt.Axes = None) -> mpl.image.AxesImage:
     plot = []
     for p in np.linspace(0.04, 0.96, n):
         binom = st.binom(n, p).pmf(k)
-        norm = st.norm(loc=p * n, scale=np.sqrt(p * (1 - p) * n)).pdf(k)
+        norm = make_norm_appox(n, p).pdf(k)
         plot.append((norm / binom))
     mat = ax.matshow(
-        np.array(plot),
+        np.array(plot).T,
         extent=[0, 1, 1, 0],
         aspect="auto",
         cmap="Spectral",
         vmin=0,
         vmax=2,
+        origin="lower",
     )
     ax.set(xlabel=r"$\hat{p}$", title=f"{n=}")
     ax.set_aspect("equal", "box")
