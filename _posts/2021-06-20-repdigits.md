@@ -4,7 +4,7 @@ tags:
   - blog
   - maths
   - oeis
-categories: maths
+categories: blog
 ---
 
 This tweet appeared in my Twitter feed:
@@ -30,17 +30,12 @@ As the sum in the denominator is just the number of digits, the fraction $Q$ the
 
 I made a python script to see when the result is an integer:
 
-{% details Click to expand python script... %}
-
 ```python
+
 [(n, (10**n - 1)//9/n) for n in range(1, 10)]
 ```
 
-{% enddetails %}
-
-which gives integer fractions for $Q=1$ for $n=1$, $Q=37$ for $n=3$, and $Q=12345679$ for $n=9$. 
-
-{% details Click to expand full python output... %}
+which gives integer fractions for $Q=1$ for $n=1$, $Q=37$ for $n=3$, and $Q=12345679$ for $n=9$. The full output of the script is:
 
 ```
 [(1, 1.0),
@@ -54,8 +49,6 @@ which gives integer fractions for $Q=1$ for $n=1$, $Q=37$ for $n=3$, and $Q=1234
  (9, 12345679.0)]
 ```
 
-{% enddetails %}
-
 I made a reply with the case for $n=9$, which led to this response:
 
 
@@ -65,18 +58,12 @@ On a tangent, a typo in my first reply pointed out by [@mikekohnstamm](https://t
 
 A better way to search for exact integer fractions is to check when the modulus is 0 and only print those cases using integer division.
 
-{% details Click to expand python script... %}
-
 ```python
 print("Q", [(10**n-1)//(9*n) for n in range(1, 200) if not (10**n-1)//9 % n])
 print("denominators", [n for n in range(1, 20000) if not (10**n-1)//9 % n])
 ```
 
-{% enddetails %}
-
-This gives the solution sequence $Q=1, 37, 12345679, 4115226337448559670781893, ...$ with denominators $1, 3, 9, 27, 81, 111, 243, ...$.
-
-{% details Click to expand full python output... %}
+This gives the solution sequence $Q=1, 37, 12345679, 4115226337448559670781893, ...$ with denominators $1, 3, 9, 27, 81, 111, 243, ...$. The full results of python script above is:
 
 ```
 Q: [1, 37, 12345679, 4115226337448559670781893, 
@@ -86,8 +73,6 @@ Q: [1, 37, 12345679, 4115226337448559670781893,
 denominators [1, 3, 9, 27, 81, 111, 243, 333, 729, 999, 2187, 2997, 4107, 6561, 
   8991, 12321, 13203, 19683]
 ```
-
-{% enddetails %}
 
 Several series repunit-related sequences mention these numbers: [A190301](https://oeis.org/A190301),  [A215258](https://oeis.org/A190301), [A215258](https://oeis.org/A190301). But, I couldn't find this sequence in the OEIS, so I registered and made it my first submission.
 

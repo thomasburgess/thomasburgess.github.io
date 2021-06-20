@@ -5,7 +5,7 @@ tags:
   - statistics
   - binomial_ci
   - wald
-categories: statistics
+categories: blog
 ---
 
 ## Introduction
@@ -23,8 +23,6 @@ I wrote this post while making the python snippets that are scattered throught
 this code. To run the code, you may need to install [python>=3.8](https://docs.python.org/3.8/), 
 and the libraries and versions listed below:
 
-{% details Click to expand the required python imports and library versions... %}
-
 ```python
 from typing import Tuple
 import numpy as np  # 1.20.3
@@ -33,9 +31,8 @@ import matplotlib as mpl # 3.4.2
 import matplotlib.pyplot as plt 
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 ```
-{% enddetails %}
 
-## Defining the Wald Interval
+## Defining the Wald CI
 
 The binomial distribution applies to repeated experiments with binary outcomes. 
 Probably the most common example would be a series of coin flips. The Binomial 
@@ -72,14 +69,12 @@ The (approximate) CI for an estimate of the mean of a normal distribution
 \end{equation}
 where $s$ is the standard deviation, and $z$ is the $1-\alpha/2$ quantile of 
 $\mathcal{N}(0,1)$. With this, the _Wald_ CI using $\hat{\mu}=k/n$, 
-$s=\sqrt{p(1-p)}$, and $p\approx\hat{p}$ so that
+$s=\sqrt{p(1-p)}$[^brown2001], and $p\approx\hat{p}$ so that
 \begin{equation}
 p \in \hat{p} \pm |z| \sqrt{\frac{\hat{p}(1-\hat{p})}{n}}\,.
 \end{equation}
 
 For a better, more in-depth view, try this paper and blog post by Wallis[^wallis2013].
-
-{% details Click the arrow to expand normal approximation and Wald CI code ... %}
 
 ```python
 def make_norm_appox(n: int, p: float) -> st.rv_continuous:
@@ -113,12 +108,11 @@ def calc_ci_wald(n: int, p: float, alpha: float) -> Tuple[float, float]:
     sz = np.sqrt(p*(1-p)/n) * st.norm.isf(alpha / 2.)
     return p - sz, p + sz
 ```
-{% enddetails %}
 
 I'll spend the upcoming sections trying to show the implications of the assumptions 
 made in the Wald CI.
 
-## Comparison of Binomial and its Normal approximation
+## Binomial vs Normal
 
 The examples need some test values for $n$ and $p$. With the [Hyperinflation sequence](https://oeis.org/A051109), gaps between counts increase in a nice way
 
@@ -129,8 +123,6 @@ while for $p$ more samples are taken near 0 and 1 are using a cosine transformat
 \begin{equation}
   x(k) = \frac{1}{2} \left(\cos\left(\pi\frac{k+1}{n+1}-1\right)+1\right)\,.
 \end{equation}
-
-{% details Click the arrow to expand sequence generator code ... %}
 
 ```python
 def hyperinflation(n: int, n0: int = 1) -> np.ndarray:
@@ -178,8 +170,6 @@ def cosine_samples(n: int) -> np.ndarray:
     return (np.cos(np.pi * ((s + 1) / (n + 1) - 1)) + 1) / 2
 ```
 
-{% enddetails %}
-
 With these, I loop over three counts and seven proportions to generate [Figure 1.](#figure-1) For ratios near 0.5 and at sufficiently large n, the approximation seems to hold. But, closer to the edges at 0 and 1, the asymmetry of the binomial causes problems. In addition, the normal distribution extends beyond 0 and 1. Hence, its CI limits may go outside of the range for $p$. Truncating the CI would lead to too narrow ranges (under [coverage](https://en.wikipedia.org/wiki/Coverage_probability )). Together, these issues cause many problems for confidence intervals.
 
 {% figure [caption:"Figure 1: Binomial (triangles) and normal distribution 
@@ -187,8 +177,6 @@ With these, I loop over three counts and seven proportions to generate [Figure 1
 ![](/assets/images/2021-06-13/binomnorm.png){: #figure-1 width="100%"}
 {% endfigure %}
 
-
-{% details Click arrow to expand code to generate Figure 1... %}
 
 ```python
 def plot_binomnorm(
@@ -233,15 +221,11 @@ fig.tight_layout()
 fig.savefig("binomnorm.png", transparent=True, bbox_inches="tight")
 ```
 
-{% enddetails %}
-
  [Figure 2.](#figure-2) shows another view into the validity of the normal approximation. Here, $n$ is held fixed, and the ratio normal/binomial for each $k$ and $p$ is plotted. The ratio should be $\approx1$ when the normal approximation is valid. When $p\approx\hat{p}$ the ratio is close to 1, but other regions can be far off. In practice, the true value of $p$ is unknown. Thus, rules of thumbs on the number of trials and successes needed in the approximation cannot ensure that the bad regions are avoided.
 
 {% figure [caption:"Figure 2: The ratio of the normal approximation $\mathcal{W}(n,p)$ probability density and the true $\text{Binom(n,p)}$ probability mass for $n=50$. Along the diagonal $p=\hat{p}$, the ratio is close to 1. These are the most probable values, and here the approximation is quite good. At low $p$ and $\hat{p}$, the normal is higher than the binomial. When $p$ increases this situation switches around. This effect is symmetric in the diagonal."] %}
 ![](/assets/images/2021-06-13/binomnorm_ratio.png){: #figure-2 width="50%"}
 {% endfigure %}
-
-{% details Click arrow to expand code to generate Figure 2... %}
 
 ```python
 def plot_binomnorm_ratio(n: int, ax: plt.Axes = None) -> mpl.image.AxesImage:
@@ -294,16 +278,16 @@ fig.tight_layout()
 fig.savefig("binomnorm_ratio.png", transparent=True, bbox_inches="tight")
 ``` 
 
-{% enddetails %}
-
 ## Simulating confindence regions
 
 ...
 
-[^newcombe1998]: Newcombe, R.G. (1998), Two-sided confidence intervals for the single proportion: comparison of seven methods. Statist. Med., 17: 857-872. [doi](https://doi.org/10.1002%2F%28sici%291097-0258%2819980430%2917%3A8%3C857%3A%3Aaid-sim777%3E3.0.co%3B2-e)
+## References
 
-[^brown2001]: Brown, L. D., Cai, T. T., & DasGupta, A. (2001). Interval estimation for a binomial proportion. Statistical science, 101-117. [url](https://projecteuclid.org/journals/statistical-science/volume-16/issue-2/Interval-Estimation-for-a-Binomial-Proportion/10.1214/ss/1009213286.full), [doi](https://doi.org/10.1214/ss/1009213286)
+[^newcombe1998]: Newcombe, R.G. (1998), _Two-sided confidence intervals for the single proportion: comparison of seven methods._ Statist. Med., 17: 857-872. [doi](https://doi.org/10.1002%2F%28sici%291097-0258%2819980430%2917%3A8%3C857%3A%3Aaid-sim777%3E3.0.co%3B2-e)
 
-[^agresti1998]: Agresti, A., & Coull, B. A. (1998). Approximate is better than “exact” for interval estimation of binomial proportions. The American Statistician, 52(2), 119-126. [doi](https://doi.org/10.2307/2685469 )
+[^brown2001]: Brown, L. D., Cai, T. T., & DasGupta, A. (2001). _Interval estimation for a binomial proportion._ Statistical science, 101-117. [url](https://projecteuclid.org/journals/statistical-science/volume-16/issue-2/Interval-Estimation-for-a-Binomial-Proportion/10.1214/ss/1009213286.full), [doi](https://doi.org/10.1214/ss/1009213286)
 
-[^wallis2013]: Wallis, S.A. 2013. Binomial confidence intervals and contingency tests: mathematical fundamentals and the evaluation of alternative methods. Journal of Quantitative Linguistics 20:3, 178-208. [url](https://corplingstats.wordpress.com/2012/03/31/binomial-distributions/), [doi](https://doi.org/10.1080/09296174.2013.799918)
+[^agresti1998]: Agresti, A., & Coull, B. A. (1998). _Approximate is better than “exact” for interval estimation of binomial proportions._ The American Statistician, 52(2), 119-126. [doi](https://doi.org/10.2307/2685469 )
+
+[^wallis2013]: Wallis, S.A. (2013). _Binomial confidence intervals and contingency tests: mathematical fundamentals and the evaluation of alternative methods._ Journal of Quantitative Linguistics 20:3, 178-208. [url](https://corplingstats.wordpress.com/2012/03/31/binomial-distributions/), [doi](https://doi.org/10.1080/09296174.2013.799918)
