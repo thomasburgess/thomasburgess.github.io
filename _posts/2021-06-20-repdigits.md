@@ -96,7 +96,9 @@ The sequence of denominators 1, 3, 9, 27, 81, ..., suggests the conjecture: $Q$ 
   Q(n) = A002275(A014950(n))/A014950(n)
 \\]
 
-Takeaway: when Twitter is done right, it can be a source of inspiration and knowledge. Also, recreational maths is fun.
+### Takeaway
+
+Twitter is done right, can be a source of inspiration and knowledge. Also, recreational maths is fun.
 
 ---
 
