@@ -23,6 +23,7 @@ titles:
   fr-FR   : *FR
   fr-LU   : *FR
   # @end locale config
+mathjax: false
 key: page-about
 ---
 
