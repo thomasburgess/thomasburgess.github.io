@@ -1,10 +1,14 @@
 ---
 title: Welcome to my Blog
-comments: true
 tags:
   - blog
   - github
+mathjax: false
 categories: blog
+article_header:
+  type: cover
+  image:
+    src: /assets/planet7.png
 ---
 
 Hi,
