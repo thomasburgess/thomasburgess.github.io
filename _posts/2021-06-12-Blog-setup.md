@@ -21,7 +21,7 @@ a suitable theme was more challenging than getting a blog up and running.
 The theme was the first pretty theme I found supporting 
 [Mermaid diagrams](https://mermaid-js.github.io/mermaid/#/),
 math with [MathJax maths](https://www.mathjax.org/), and syntax 
-highlighting out of the box. 
+highlighting out of the box.  I'll try to revisit this post as the blog matures.
 
 ## Getting the blog up and running
 
@@ -40,11 +40,6 @@ The local server rebuilds the site when the source is modified
 (with the notable exception of `_config.yml`). Not only does this cut on 
 waiting for GitHub to build the site, but it also allows me to spot 
 mistakes before publishing.
-
-GitHub doesn't like the `theme:` pointing to 
-an unsupported theme in `_config.yml` - I got warnings with every build 
-(that otherwise actually worked). I just changed this to `remote-theme:` 
-and the blog seems to work warning-free now.
 
 ## Customization
 
@@ -66,4 +61,16 @@ and made some additions:
 * Included [jekyll-figure plugin](https://github.com/paulrobertlloyd/jekyll-figure) to get 
   pictures with `figure` and `figurecaption` tags.
 
-I'll try to revisit this post as the blog matures.
+## GitHub pages annoyances
+
+* GitHub pages doesn't like the `theme:` pointing to an unsupported theme in 
+  `_config.yml`. I got warnings with every build  (that otherwise actually 
+  worked). Changing this to `remote-theme:` makes the builds warning-free.
+* GitHub pages runs in safe mode, and doesn't support most plugins (such as 
+  the `figure` and `details` plugins that I use). This can be circumvented by 
+  building handy GitHub action 
+  [jekyll-deploy-action ](https://github.com/jeffreytse/jekyll-deploy-action). 
+  The trickiest part was to change `master` to main in the `yml`, and adding a 
+  repository secret for repo access. This fix likely fixes the first annoyance,
+  but it still works with `remote-theme`, so I'll leave it like it is.
+
