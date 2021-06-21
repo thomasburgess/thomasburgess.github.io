@@ -78,7 +78,7 @@ print("Q", [(10**n-1)//(9*n) for n in range(1, 200) if not (10**n-1)//9 % n])
 print("denominators", [n for n in range(1, 20000) if not (10**n-1)//9 % n])
 ```
 
-This gives the solution sequence $Q=1, 37, 12345679, 4115226337448559670781893, ...$ with denominators $1, 3, 9, 27, 81, 111, 243, ...$. Evidently $Q(n) grows very fast with 111 terms already at $n=6$. 
+This gives the solution sequence $Q=1, 37, 12345679, 4115226337448559670781893, ...$ with denominators $1, 3, 9, 27, 81, 111, 243, ...$. Evidently $Q(n)$ grows very fast with 111 terms already at $n=6$. 
 
 {% details Click to expand the ull results of python script... %}
 
@@ -100,7 +100,7 @@ The sequence of denominators 1, 3, 9, 27, 81, ..., suggests the conjecture: $Q$ 
   Q(n) = \frac{A002275(A014950(n))}{A014950(n)}\,.
 \\]
 
-### Takeaway
+## Takeaway
 
 Twitter is done right, can be a source of inspiration and knowledge. Also, recreational maths is fun.
 
