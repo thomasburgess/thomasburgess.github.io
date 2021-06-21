@@ -23,6 +23,8 @@ I wrote this post while making the python snippets that are scattered throught
 this code. To run the code, you may need to install [python>=3.8](https://docs.python.org/3.8/), 
 and the libraries and versions listed below:
 
+{% details Click to expand the required python imports and library versions... %}
+
 ```python
 from typing import Tuple
 import numpy as np  # 1.20.3
@@ -31,6 +33,8 @@ import matplotlib as mpl # 3.4.2
 import matplotlib.pyplot as plt 
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 ```
+
+{% enddetails %}
 
 ## Defining the Wald CI
 
@@ -76,6 +80,8 @@ p \in \hat{p} \pm |z| \sqrt{\frac{\hat{p}(1-\hat{p})}{n}}\,.
 
 For a better, more in-depth view, try this paper and blog post by Wallis[^wallis2013].
 
+{% details Click the arrow to expand normal approximation and Wald CI code ... %}
+
 ```python
 def make_norm_appox(n: int, p: float) -> st.rv_continuous:
     """Get normal approximation to binomial distribution
@@ -109,6 +115,8 @@ def calc_ci_wald(n: int, p: float, alpha: float) -> Tuple[float, float]:
     return p - sz, p + sz
 ```
 
+{% enddetails %}
+
 I'll spend the upcoming sections trying to show the implications of the assumptions 
 made in the Wald CI.
 
@@ -123,6 +131,8 @@ while for $p$ more samples are taken near 0 and 1 are using a cosine transformat
 \begin{equation}
   x(k) = \frac{1}{2} \left(\cos\left(\pi\frac{k+1}{n+1}-1\right)+1\right)\,.
 \end{equation}
+
+{% details Click the arrow to expand sequence generator code ... %}
 
 ```python
 def hyperinflation(n: int, n0: int = 1) -> np.ndarray:
@@ -170,6 +180,8 @@ def cosine_samples(n: int) -> np.ndarray:
     return (np.cos(np.pi * ((s + 1) / (n + 1) - 1)) + 1) / 2
 ```
 
+{% enddetails %}
+
 With these, I loop over three counts and seven proportions to generate [Figure 1.](#figure-1) For ratios near 0.5 and at sufficiently large n, the approximation seems to hold. But, closer to the edges at 0 and 1, the asymmetry of the binomial causes problems. In addition, the normal distribution extends beyond 0 and 1. Hence, its CI limits may go outside of the range for $p$. Truncating the CI would lead to too narrow ranges (under [coverage](https://en.wikipedia.org/wiki/Coverage_probability )). Together, these issues cause many problems for confidence intervals.
 
 {% figure [caption:"Figure 1: Binomial (triangles) and normal distribution 
@@ -177,6 +189,7 @@ With these, I loop over three counts and seven proportions to generate [Figure 1
 ![](/assets/images/2021-06-13/binomnorm.png){: #figure-1 width="100%"}
 {% endfigure %}
 
+{% details Click arrow to expand code to generate Figure 1... %}
 
 ```python
 def plot_binomnorm(
@@ -221,11 +234,15 @@ fig.tight_layout()
 fig.savefig("binomnorm.png", transparent=True, bbox_inches="tight")
 ```
 
+{% enddetails %}
+
  [Figure 2.](#figure-2) shows another view into the validity of the normal approximation. Here, $n$ is held fixed, and the ratio normal/binomial for each $k$ and $p$ is plotted. The ratio should be $\approx1$ when the normal approximation is valid. When $p\approx\hat{p}$ the ratio is close to 1, but other regions can be far off. In practice, the true value of $p$ is unknown. Thus, rules of thumbs on the number of trials and successes needed in the approximation cannot ensure that the bad regions are avoided.
 
 {% figure [caption:"Figure 2: The ratio of the normal approximation $\mathcal{W}(n,p)$ probability density and the true $\text{Binom(n,p)}$ probability mass for $n=50$. Along the diagonal $p=\hat{p}$, the ratio is close to 1. These are the most probable values, and here the approximation is quite good. At low $p$ and $\hat{p}$, the normal is higher than the binomial. When $p$ increases this situation switches around. This effect is symmetric in the diagonal."] %}
 ![](/assets/images/2021-06-13/binomnorm_ratio.png){: #figure-2 width="50%"}
 {% endfigure %}
+
+{% details Click arrow to expand code to generate Figure 2... %}
 
 ```python
 def plot_binomnorm_ratio(n: int, ax: plt.Axes = None) -> mpl.image.AxesImage:
@@ -277,6 +294,8 @@ fig.colorbar(
 fig.tight_layout()
 fig.savefig("binomnorm_ratio.png", transparent=True, bbox_inches="tight")
 ``` 
+
+{% enddetails %}
 
 ## Simulating confindence regions
 
