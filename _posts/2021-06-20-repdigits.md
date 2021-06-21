@@ -1,5 +1,5 @@
 ---
-title: Repdigit fraction
+title: Exploring repdigit fractions
 tags:
   - blog
   - maths
@@ -74,8 +74,11 @@ denominators [1, 3, 9, 27, 81, 111, 243, 333, 729, 999, 2187, 2997, 4107, 6561,
   8991, 12321, 13203, 19683]
 ```
 
-Several series repunit-related sequences mention these numbers: [A190301](https://oeis.org/A190301),  [A215258](https://oeis.org/A190301), [A215258](https://oeis.org/A190301). But, I couldn't find this sequence in the OEIS, so I registered and made it my first submission.
+Several series repunit-related sequences mention these numbers: [A190301](https://oeis.org/A190301),  [A215258](https://oeis.org/A190301), [A215258](https://oeis.org/A190301). I couldn't find this sequence in the OEIS, so I registered and made it my first submission. Currently it is in peer-review, I'll update this post once I know more.
 
-The sequence of denominators 1, 3, 9, 27, 81, ..., suggests the conjecture: $Q$ is integer when $n$ is on the form $n=3^n$. One OEIS editor proved this elegantly for me: $$R_{3n} / R_n = 10^{2n} + 10^n + 1$$, which is divisible by 3. Therefore $R_{3^m}$ is divisible by $3^m$ by induction on $m$. However, there are exceptions: 111, 333, and 999. There is no known simple rule for the denominator. Its sequence is in OEIS [A014950](https://oeis.org/A014950).
+The sequence of denominators 1, 3, 9, 27, 81, ..., suggests the conjecture: $Q$ is integer when $n$ is on the form $n=3^n$. One OEIS editor proved this elegantly for me: $$R_{3n} / R_n = 10^{2n} + 10^n + 1$$, which is divisible by 3. Therefore $R_{3^m}$ is divisible by $3^m$ by induction on $m$. However, there are exceptions: 111, 333, and 999. There is no known simple rule for the denominator. Its sequence is in OEIS [A014950](https://oeis.org/A014950). Using this sequence, my sequence can be written:
+\\[
+  Q(n) = A002275(A014950(n))/A014950(n)
+\\]
 
 Takeaway: when Twitter is done right, it can be a source of inspiration and knowledge. Also, recreational maths is fun.
