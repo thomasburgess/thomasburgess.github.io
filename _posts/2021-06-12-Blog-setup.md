@@ -1,12 +1,21 @@
 ---
+layout: article
 title: Blog setup
-comments: true
 tags:
   - blog
   - jekyll
   - TeXt
   - github
+mathjax: false
 categories: blog
+mode: immersive
+header:
+  theme: dark
+article_header:
+  type: cover
+  theme: dark
+  image:
+    src: assets/images/2021-06-12/ville-palmu-ZTMqY6DEGRQ-unsplash.jpg
 ---
 
 This blog is built with [Jekyll](http://jekyllrb.com/) and the 
@@ -14,6 +23,7 @@ This blog is built with [Jekyll](http://jekyllrb.com/) and the
 hosted for free on [GitHub](https://github.com/). 
 The site is generated from markdown sources automatically on every 
 push to the [repository](https://github.com/thomasburgess/thomasburgess.github.io). 
+
 It's easy to have a similar setup 
 in [GitLab](https://gitlab.com), but I wanted to try the 
 [GitHub pages](https://pages.github.com/) approach. Finding and configuring 
@@ -73,4 +83,9 @@ and made some additions:
   The trickiest part was to change `master` to main in the `yml`, and adding a 
   repository secret for repo access. This fix likely fixes the first annoyance,
   but it still works with `remote-theme`, so I'll leave it like it is.
+
+--- 
+
+Header photo by <a href="https://unsplash.com/@villepalmu?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Ville Palmu</a> on <a href="https://unsplash.com/s/photos/sarek?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>
+
 
