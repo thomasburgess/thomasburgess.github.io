@@ -5,6 +5,7 @@ tags:
   - statistics
   - binomial_ci
   - wald
+mathjax: true
 categories: blog
 ---
 
