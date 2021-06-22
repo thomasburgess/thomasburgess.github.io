@@ -70,7 +70,7 @@ and made some additions:
     - Not working with code block content :(
 * Included [jekyll-figure plugin](https://github.com/paulrobertlloyd/jekyll-figure) to get 
   pictures with `figure` and `figurecaption` tags.
-* Included osano cookine consent following the approach of [www.chuvisco.me](https://www.chuvisco.me/technology/2019/07/01/cookie-consent/)
+* Included osano cookie consent following the approach of [www.chuvisco.me](https://www.chuvisco.me/technology/2019/07/01/cookie-consent/)
 
 ## GitHub pages annoyances
 
