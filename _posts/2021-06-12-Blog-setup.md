@@ -70,6 +70,7 @@ and made some additions:
     - Not working with code block content :(
 * Included [jekyll-figure plugin](https://github.com/paulrobertlloyd/jekyll-figure) to get 
   pictures with `figure` and `figurecaption` tags.
+* Included [cookie consent](https://jekyllcodex.org/without-plugin/cookie-consent/)
 
 ## GitHub pages annoyances
 
