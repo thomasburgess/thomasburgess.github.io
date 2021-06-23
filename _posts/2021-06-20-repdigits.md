@@ -1,5 +1,5 @@
 ---
-title: Exploring repdigit fractions
+title: Exploring repunit digit sum fractions
 tags:
   - blog
   - maths
@@ -9,7 +9,7 @@ categories: blog
 article_header:
   type: cover
   image:
-    src: /assets/images/2021-06-20/carbon.png
+    src: /assets/images/2021-06-20/APOD_Ganymede_repunit.jpg
 ---
 
 ## The tweets
@@ -106,4 +106,4 @@ Twitter, if done right, can be a source of inspiration and knowledge. Also, recr
 
 ---
 
-Header image generated using [carbon](https://carbon.now.sh/).
+Header image: repunit digit sum ratio remix of [Ganymede from Juno](https://apod.nasa.gov/apod/ap210614.html).
