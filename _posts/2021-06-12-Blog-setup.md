@@ -11,11 +11,15 @@ categories: blog
 mode: immersive
 header:
   theme: dark
+author: thomasburgess
 article_header:
   type: cover
   theme: dark
   image:
     src: assets/images/2021-06-12/ville-palmu-ZTMqY6DEGRQ-unsplash.jpg
+image: /assets/planet7.png
+author: thomasburgess
+description: Explaining my blog setup
 ---
 
 This blog is built with [Jekyll](http://jekyllrb.com/) and the 
@@ -71,6 +75,7 @@ and made some additions:
 * Included [jekyll-figure plugin](https://github.com/paulrobertlloyd/jekyll-figure) to get 
   pictures with `figure` and `figurecaption` tags.
 * Included [osano cookie consent](https://www.osano.com/cookieconsent/download/) following the approach of [www.chuvisco.me](https://www.chuvisco.me/technology/2019/07/01/cookie-consent/)
+* Added `jekyll-seo-tag` for open graph previews
 
 ## GitHub pages annoyances
 

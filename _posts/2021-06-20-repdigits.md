@@ -10,7 +10,13 @@ article_header:
   type: cover
   image:
     src: /assets/images/2021-06-20/APOD_Ganymede_repunit.jpg
+image: /assets/images/2021-06-20/APOD_Ganymede_repunit.jpg
+author: thomasburgess
+description: Down the rabbit hole of integer sequences, trying to understand repeated digits divided by their digit sum
 ---
+
+_In which I go down a rabbit hole of integer sequences when trying to understand
+a pattern in fractions of  repeated digits and their digit sums._
 
 ## The tweets
 

@@ -17,11 +17,23 @@ baseurl : # does not include hostname
 title   : Thomas T Burgess's Blog
 description: > # this means to ignore newlines until "Language & timezone"
   Personal blog of particle physicist and data scientist Thomas T Burgess. 
-  Here I write about statistics, data science, machine learning and other things I do.
+  Here I write about python, statistics, data science, machine learning and other things I do.
 ## => Language and Timezone
 ##############################
 lang: en # the language of your site, default as "en"
 timezone: "Europe/Vienna" # see https://en.wikipedia.org/wiki/List_of_tz_database_time_zones for the available values
+
+## SEO tags
+tagline : Posts about python, statistics, data science, machine learning, and other things that interest me.
+twitter:
+  username: ThomasTBurgess1
+  card: summary
+author: thomasburgess
+social:
+  name: Thomas T Burgess
+  links:
+    - https://twitter.com/ThomasTBurgess1
+    - https://github.com/thomasburgess
 
 ## => Author and Social
 ##############################
@@ -58,7 +70,6 @@ paths:
   home    : # home layout url, "/" (default)
   archive : # "/archive.html" (default)
   rss     : # "/feed.xml" (default)
-
 
 ## => Post
 ##############################
@@ -221,3 +232,5 @@ plugins:
   - jekyll-sitemap
   - jemoji
   - jekyll-figure
+  - jekyll-seo-tag
+

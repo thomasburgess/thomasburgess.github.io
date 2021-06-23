@@ -9,6 +9,9 @@ article_header:
   type: cover
   image:
     src: /assets/planet7.png
+image: /assets/planet7.png
+author: thomasburgess
+description: Welcome to Thomas Burgess's blog
 ---
 
 Hi,
