@@ -28,7 +28,6 @@ tagline : Posts about python, statistics, data science, machine learning, and ot
 twitter:
   username: ThomasTBurgess1
   card: summary
-author: thomasburgess
 social:
   name: Thomas T Burgess
   links:
@@ -41,6 +40,7 @@ author:
   type      : "person" # "person" (default), "organization"
   name      : Thomas T Burgess
   url       : thomasburgess.github.io
+  image    : assets/avatar.png # path or url of avatar image (square)
   avatar    : assets/avatar.png # path or url of avatar image (square)
   bio       : Particle Physicist turned Senior Data Scientist in Vienna, Austria.
   email     : thomastburgess+blog g-mail #
