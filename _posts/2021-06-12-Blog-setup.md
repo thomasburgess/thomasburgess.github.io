@@ -72,10 +72,10 @@ and made some additions:
 * Collapsible content containers through a 
   [details tag snippet](http://movb.de/jekyll-details-support.html)
     - Not working with code block content :(
-* Included [jekyll-figure plugin](https://github.com/paulrobertlloyd/jekyll-figure) to get 
+* Included [`jekyll-figure` plugin](https://github.com/paulrobertlloyd/jekyll-figure) to get 
   pictures with `figure` and `figurecaption` tags.
 * Included [osano cookie consent](https://www.osano.com/cookieconsent/download/) following the approach of [www.chuvisco.me](https://www.chuvisco.me/technology/2019/07/01/cookie-consent/)
-* Added `jekyll-seo-tag` for open graph previews
+* Added [`jekyll-seo-tag`](https://github.com/jekyll/jekyll-seo-tag/blob/master/docs/usage.md) for open graph previews
 
 ## GitHub pages annoyances
 
