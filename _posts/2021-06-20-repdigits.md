@@ -100,6 +100,17 @@ The sequence of denominators 1, 3, 9, 27, 81, ..., suggests the conjecture: $Q$ 
   Q(n) = \frac{A002275(A014950(n))}{A014950(n)}\,.
 \\]
 
+My favourite integer fraction so far is for $R_{111}$:
+
+\\[
+\tiny
+\frac{11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111}{111} = \ldots
+\\]
+\\[
+\tiny
+\ldots 1001001001001001001001001001001001001001001001001001001001001001001001001001001001001001001001001001001001001
+\\]
+
 ## Takeaway
 
 Twitter, if done right, can be a source of inspiration and knowledge. Also, recreational maths is fun.
