@@ -237,7 +237,7 @@ fig.savefig("binomnorm.png", transparent=True, bbox_inches="tight")
 
 {% enddetails %}
 
- [Figure 2.](#figure-2) shows another view into the validity of the normal approximation. Here, $n$ is held fixed, and the ratio normal/binomial for each $k$ and $p$ is plotted. The ratio should be $\approx1$ when the normal approximation is valid. When $p\approx\hat{p}$ the ratio is close to 1, but other regions can be far off. In practice, the true value of $p$ is unknown. Thus, rules of thumbs on the number of trials and successes needed in the approximation cannot ensure that the bad regions are avoided.
+[Figure 2.](#figure-2) shows another view into the validity of the normal approximation. Here, $n$ is held fixed, and the ratio normal/binomial for each $k$ and $p$ is plotted. The ratio should be $\approx1$ when the normal approximation is valid. When $p\approx\hat{p}$ the ratio is close to 1, but other regions can be far off. In practice, the true value of $p$ is unknown. Thus, rules of thumbs on the number of trials and successes needed in the approximation cannot ensure that the bad regions are avoided.
 
 {% figure [caption:"Figure 2: The ratio of the normal approximation $\mathcal{W}(n,p)$ probability density and the true $\text{Binom(n,p)}$ probability mass for $n=50$. Along the diagonal $p=\hat{p}$, the ratio is close to 1. These are the most probable values, and here the approximation is quite good. At low $p$ and $\hat{p}$, the normal is higher than the binomial. When $p$ increases this situation switches around. This effect is symmetric in the diagonal."] %}
 ![](/assets/images/2021-06-13/binomnorm_ratio.png){: #figure-2 width="50%"}
