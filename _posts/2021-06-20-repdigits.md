@@ -16,7 +16,7 @@ description: Down the rabbit hole of integer sequences, trying to understand rep
 ---
 
 _In which I go down a rabbit hole of integer sequences when trying to understand
-a pattern in fractions of  repeated digits and their digit sums._
+a pattern in fractions of repeated digits and their digit sums._
 
 ## The tweets
 
@@ -99,9 +99,11 @@ denominators [1, 3, 9, 27, 81, 111, 243, 333, 729, 999, 2187, 2997, 4107, 6561,
 
 {% enddetails %}
 
-Several series repunit-related sequences mention these numbers: [A190301](https://oeis.org/A190301),  [A215258](https://oeis.org/A190301), [A215258](https://oeis.org/A190301). I couldn't find this sequence in the OEIS, so I registered and made it my first submission. Currently it is in peer-review, I'll update this post once I know more.
+Several series repunit-related sequences mention these numbers: [A190301](https://oeis.org/A190301),  [A215258](https://oeis.org/A190301), [A215258](https://oeis.org/A190301). I couldn't find this sequence in the OEIS, so I registered and made it my first submission. 
 
-The sequence of denominators 1, 3, 9, 27, 81, ..., suggests the conjecture: $Q$ is integer when $n$ is of the form $n=3^n$. One OEIS editor proved this elegantly for me: $$R_{3n} / R_n = 10^{2n} + 10^n + 1$$, which is divisible by 3. Therefore $R_{3^m}$ is divisible by $3^m$ by induction on $m$. However, there are additional solutions: 111, 333, 999, .... There is no known simple rule for the denominator. The full sequence of denominators is [A014950](https://oeis.org/A014950) in OEIS. Using this with the OEIS sequence for $R_n$ ([A002275](https://oeis.org/A014950)), all the integer fractions are:
+Update 2021-08-02: it is now sequence [A215258](https://oeis.org/A345467) - Ratios R(k)/k for which R(k) / k is an integer, where R(k) = A002275(k) is a repunit. 
+
+The sequence of denominators 1, 3, 9, 27, 81, ..., suggests the conjecture: $Q$ is integer when $n$ is of the form $n=3^n$. One OEIS editor proved this elegantly for me: $$R_{3n} / R_n = 10^{2n} + 10^n + 1$$, which is divisible by 3. Therefore $R_{3^m}$ is divisible by $3^m$ by induction on $m$. However, there are additional solutions: 111, 333, 999, .... There is no known general rule for the denominator. The full sequence of denominators is [A014950](https://oeis.org/A014950) in OEIS. Using this with the OEIS sequence for $R_n$ ([A002275](https://oeis.org/A014950)), all the integer fractions are:
 \\[
   Q(n) = \frac{A002275(A014950(n))}{A014950(n)}\,.
 \\]
@@ -118,6 +120,9 @@ My favourite integer fraction so far is:
 \tiny
 1001001001001001001001001001001001001001001001001001001001001001001001001001001001001001001001001001001001001
 \\]
+
+
+
 
 ## Takeaway
 
