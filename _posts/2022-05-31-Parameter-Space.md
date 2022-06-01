@@ -35,7 +35,7 @@ for rained in parameters["rained"]:
 ```
 Note how more paramters makes loop nesting deeper! 
 
-With tqdm a progress indicator is added:
+With `tqdm` a progress indicator is added:
 ```python
 result = []
 for rained in tqdm(parameters["rained"]):
@@ -45,9 +45,9 @@ for rained in tqdm(parameters["rained"]):
 ```
 However, it will only update on 0, 50, and 100% steps as there are only 2 values of `rained`. Moving `tqdm` to the inner loop will give 2 fast progress bars instead one slow one. Neither is good, and the order of loops can make a big difference.
 
-Next, adding some parallelization:
+Next, adding some parallelization with `multiprocess.Pool.map`:
 ```python
-pool = mp.Pool()
+pool = multiprocess.Pool()
 result = []
 for rained in tqdm(parameters["rained"]):
     result.extend(
@@ -58,11 +58,10 @@ for rained in tqdm(parameters["rained"]):
         )
     )
 ```
-The parallelization now has a bottleneck in waiting for the outer loop. And to an even larger extent, the ordering of loops matter.
-
-While this setup can work, it is easy to do better!
+The parallelization now has a bottleneck in waiting for the outer loop. And to an even larger extent, the ordering of loops matter. While this setup can work, it is easy to do better!
 
 ## Cartesian product
+
 With [itertools.product](https://docs.python.org/3/library/itertools.html?highlight=itertools%20product#itertools.product) all combinations can easily be generated:
 ```python
 >>> list(product((True, False), (10, 15, 25)))
@@ -93,8 +92,10 @@ def loop_pars(pars, fun):
     tasks = [{k: v for k, v in zip(pars.keys(), i)} for i in product(*pars.values())]
     return tqdm(pool.imap_unordered(lambda x: {**x, "result": fun(**x)}, tasks), total=len(tasks))
 ```
+To get this working, `tqdm` must know the total iteration count, and use `imap` to get data once it's finished.
 
-and then run a simple test:
+
+And now we can run a simple test:
 
 ```python
 import time
@@ -108,7 +109,7 @@ with mp.Pool(2) as pool:
 df
 ``` 
 Here, I slowed down execution by limiting to 2 processes and sleeping. The result 
-running in a [jupyter notebook](https://jupyter.org) (using tqdm.notebook):
+running in a [jupyter notebook](https://jupyter.org) using [tqdm.notebook](https://tqdm.github.io/docs/notebook/).:
 
 {% figure [caption:"Figure 1: Parallel execution with progress bar."] %}
 ![](/assets/images/2022-06-01/parallel.gif){: #figure-1 width="289px" alt="Parallel execution with progress bar."}
