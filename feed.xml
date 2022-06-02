@@ -1,0 +1,1167 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="https://thomasburgess.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://thomasburgess.github.io/" rel="alternate" type="text/html" hreflang="en" /><updated>2022-06-02T10:34:53+02:00</updated><id>https://thomasburgess.github.io/feed.xml</id><title type="html">Thomas T Burgess’s Blog</title><subtitle>Personal blog of particle physicist and data scientist Thomas T Burgess.  Here I write about python, statistics, data science, machine learning and other things I do.
+</subtitle><author><name>Thomas T Burgess</name><email>thomastburgess+blog g-mail</email></author><entry><title type="html">Iterating over a parameter space</title><link href="https://thomasburgess.github.io/blog/2022/05/31/Parameter-Space.html" rel="alternate" type="text/html" title="Iterating over a parameter space" /><published>2022-05-31T00:00:00+02:00</published><updated>2022-05-31T00:00:00+02:00</updated><id>https://thomasburgess.github.io/blog/2022/05/31/Parameter-Space</id><content type="html" xml:base="https://thomasburgess.github.io/blog/2022/05/31/Parameter-Space.html"><![CDATA[<h2 id="introduction">Introduction</h2>
+
+<p>I often find myself having to run code for some arbitrary set of different parameters.
+This can be done with nested <code class="language-plaintext highlighter-rouge">for</code> loops. This is not pretty, and poses a challenge for paralleization and progress tracking. In this blog post, I solve this in python with <a href="https://tqdm.github.io">tqdm</a> for progress bars and <a href="https://github.com/uqfoundation/multiprocess">multiprocess</a> for parallelizing.</p>
+
+<h2 id="weather-example">Weather example</h2>
+
+<p>Assume we want to evaluate a model <code class="language-plaintext highlighter-rouge">p_rain(rained, temp)</code> that estimates probability of rain tomorrow given the current weather condition over the following parameter space:</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">parameters</span> <span class="o">=</span> <span class="p">{</span><span class="s">"rained"</span><span class="p">:</span> <span class="p">(</span><span class="bp">True</span><span class="p">,</span> <span class="bp">False</span><span class="p">),</span> <span class="s">"temp"</span><span class="p">:</span> <span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">30</span><span class="p">)}</span>
+</code></pre></div></div>
+
+<p>A basic attempt with nested for loops:</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">rained</span> <span class="ow">in</span> <span class="n">parameters</span><span class="p">[</span><span class="s">"rained"</span><span class="p">]:</span>
+    <span class="k">for</span> <span class="n">temp</span> <span class="ow">in</span> <span class="n">parameters</span><span class="p">[</span><span class="s">"temp"</span><span class="p">]:</span>
+        <span class="n">result</span><span class="p">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="p">(</span><span class="n">rained</span><span class="p">,</span> <span class="n">temp</span><span class="p">,</span> <span class="n">p_rain</span><span class="p">(</span><span class="n">rained</span><span class="p">,</span> <span class="n">temp</span><span class="p">)))</span>
+</code></pre></div></div>
+<p>Note how more paramters makes loop nesting deeper!</p>
+
+<p>With <code class="language-plaintext highlighter-rouge">tqdm</code> a progress indicator is added:</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">rained</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">parameters</span><span class="p">[</span><span class="s">"rained"</span><span class="p">]):</span>
+    <span class="k">for</span> <span class="n">temp</span> <span class="ow">in</span> <span class="n">parameters</span><span class="p">[</span><span class="s">"temp"</span><span class="p">]:</span>
+        <span class="n">result</span><span class="p">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="p">(</span><span class="n">rained</span><span class="p">,</span> <span class="n">temp</span><span class="p">,</span> <span class="n">p_rain</span><span class="p">(</span><span class="n">rained</span><span class="p">,</span> <span class="n">temp</span><span class="p">)))</span>
+</code></pre></div></div>
+<p>However, it will only update on 0, 50, and 100% steps as there are only 2 values of <code class="language-plaintext highlighter-rouge">rained</code>. Moving <code class="language-plaintext highlighter-rouge">tqdm</code> to the inner loop will give 2 fast progress bars instead one slow one. Neither is good, and the order of loops can make a big difference.</p>
+
+<p>Next, adding some parallelization with <code class="language-plaintext highlighter-rouge">multiprocess.Pool.map</code>:</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">pool</span> <span class="o">=</span> <span class="n">multiprocess</span><span class="p">.</span><span class="n">Pool</span><span class="p">()</span>
+<span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">rained</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">parameters</span><span class="p">[</span><span class="s">"rained"</span><span class="p">]):</span>
+    <span class="n">result</span><span class="p">.</span><span class="n">extend</span><span class="p">(</span>
+        <span class="n">pool</span><span class="p">.</span><span class="nb">map</span><span class="p">(</span>
+            <span class="k">lambda</span> <span class="n">temp</span><span class="p">:</span>
+            <span class="p">(</span><span class="n">rained</span><span class="p">,</span> <span class="n">temp</span><span class="p">,</span> <span class="n">p_rain</span><span class="p">(</span><span class="n">rained</span><span class="p">,</span> <span class="n">temp</span><span class="p">)),</span>
+            <span class="n">parameters</span><span class="p">[</span><span class="s">"temp"</span><span class="p">],</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+</code></pre></div></div>
+<p>The parallelization now has a bottleneck in waiting for the outer loop. And to an even larger extent, the ordering of loops matter. While this setup can work, it is easy to do better!</p>
+
+<p>What is needed, is a flat list of all parameters, that some function that achieves this:</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span> <span class="n">flat_dicts</span><span class="p">({</span><span class="s">"rained"</span><span class="p">:</span> <span class="p">(</span><span class="bp">True</span><span class="p">,</span> <span class="bp">False</span><span class="p">),</span> <span class="s">"temp"</span><span class="p">:</span> <span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">25</span><span class="p">)})</span>
+<span class="p">[{</span><span class="s">"rained"</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span> <span class="s">"temp"</span><span class="p">:</span> <span class="mi">15</span><span class="p">},</span>
+ <span class="p">{</span><span class="s">"rained"</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span> <span class="s">"temp"</span><span class="p">:</span> <span class="mi">20</span><span class="p">},</span>
+ <span class="p">{</span><span class="s">"rained"</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span> <span class="s">"temp"</span><span class="p">:</span> <span class="mi">25</span><span class="p">},</span>
+ <span class="p">{</span><span class="s">"rained"</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span> <span class="s">"temp"</span><span class="p">:</span> <span class="mi">15</span><span class="p">},</span>
+ <span class="p">{</span><span class="s">"rained"</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span> <span class="s">"temp"</span><span class="p">:</span> <span class="mi">20</span><span class="p">},</span>
+ <span class="p">{</span><span class="s">"rained"</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span> <span class="s">"temp"</span><span class="p">:</span> <span class="mi">25</span><span class="p">}]</span>
+</code></pre></div></div>
+<p>With this the above loops can be reduced to a single loop, and tqdm and pool can work as expected.</p>
+
+<h2 id="cartesian-product">Cartesian product</h2>
+
+<p>With <a href="https://docs.python.org/3/library/itertools.html?highlight=itertools%20product#itertools.product">itertools.product</a> all combinations can easily be generated:</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="nb">list</span><span class="p">(</span><span class="n">product</span><span class="p">((</span><span class="bp">True</span><span class="p">,</span> <span class="bp">False</span><span class="p">),</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">25</span><span class="p">)))</span>
+<span class="p">[(</span><span class="bp">True</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="p">(</span><span class="bp">True</span><span class="p">,</span> <span class="mi">15</span><span class="p">),</span> <span class="p">(</span><span class="bp">True</span><span class="p">,</span> <span class="mi">25</span><span class="p">),</span> <span class="p">(</span><span class="bp">False</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="p">(</span><span class="bp">False</span><span class="p">,</span> <span class="mi">15</span><span class="p">),</span> <span class="p">(</span><span class="bp">False</span><span class="p">,</span> <span class="mi">25</span><span class="p">)]</span>
+</code></pre></div></div>
+
+<p>In the rain example dictionary, make the product on parameter values, then loop over each parameter tuple and add keys:</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">flat_lists</span><span class="p">(</span><span class="n">parameters</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">parameters</span><span class="p">.</span><span class="n">keys</span><span class="p">(),</span> <span class="n">i</span><span class="p">)}</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">product</span><span class="p">(</span><span class="o">*</span><span class="n">parameters</span><span class="p">.</span><span class="n">values</span><span class="p">())</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">list</span><span class="p">(</span><span class="n">flat_dicts</span><span class="p">({</span><span class="s">"rained"</span><span class="p">:</span> <span class="p">(</span><span class="bp">True</span><span class="p">,</span> <span class="bp">False</span><span class="p">),</span> <span class="s">"temp"</span><span class="p">:</span> <span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">25</span><span class="p">)}))</span>
+<span class="p">[{</span><span class="s">'rained'</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span> <span class="s">'temp'</span><span class="p">:</span> <span class="mi">15</span><span class="p">},</span>
+<span class="p">{</span><span class="s">'rained'</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span> <span class="s">'temp'</span><span class="p">:</span> <span class="mi">20</span><span class="p">},</span>
+<span class="p">{</span><span class="s">'rained'</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span> <span class="s">'temp'</span><span class="p">:</span> <span class="mi">25</span><span class="p">},</span>
+<span class="p">{</span><span class="s">'rained'</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span> <span class="s">'temp'</span><span class="p">:</span> <span class="mi">15</span><span class="p">},</span>
+<span class="p">{</span><span class="s">'rained'</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span> <span class="s">'temp'</span><span class="p">:</span> <span class="mi">20</span><span class="p">},</span>
+<span class="p">{</span><span class="s">'rained'</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span> <span class="s">'temp'</span><span class="p">:</span> <span class="mi">25</span><span class="p">}]</span>
+</code></pre></div></div>
+<p>wich is exactly what we hoped to achieve.</p>
+
+<h2 id="putting-it-all-together">Putting it all together</h2>
+
+<p>First define a product function and a looper</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">product</span>
+<span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
+<span class="kn">import</span> <span class="nn">multiprocess</span> <span class="k">as</span> <span class="n">mp</span>
+
+<span class="k">def</span> <span class="nf">loop_pars</span><span class="p">(</span><span class="n">pars</span><span class="p">,</span> <span class="n">fun</span><span class="p">):</span>
+    <span class="n">tasks</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">flat_dicts</span><span class="p">(</span><span class="n">pars</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">pool</span><span class="p">.</span><span class="n">imap_unordered</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">{</span><span class="o">**</span><span class="n">x</span><span class="p">,</span> <span class="s">"result"</span><span class="p">:</span> <span class="n">fun</span><span class="p">(</span><span class="o">**</span><span class="n">x</span><span class="p">)},</span> <span class="n">tasks</span><span class="p">),</span> <span class="n">total</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">tasks</span><span class="p">))</span>
+</code></pre></div></div>
+<p>To get this working, <code class="language-plaintext highlighter-rouge">tqdm</code> must know the total iteration count, and use <code class="language-plaintext highlighter-rouge">imap</code> to get data once it’s finished.</p>
+
+<p>And now we can run a simple test (with a terribly inaccurate logistic weather model):</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">time</span>
+
+<span class="k">def</span> <span class="nf">p_rain</span><span class="p">(</span><span class="n">rained</span><span class="p">,</span> <span class="n">temp</span><span class="p">):</span> 
+    <span class="n">time</span><span class="p">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">np</span><span class="p">.</span><span class="n">exp</span><span class="p">(</span><span class="mf">0.1</span><span class="o">*</span><span class="p">(</span><span class="n">temp</span><span class="o">-</span><span class="mi">5</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="mi">5</span><span class="o">*</span><span class="n">rained</span><span class="p">))))</span>
+
+<span class="n">parameters</span> <span class="o">=</span> <span class="p">{</span><span class="s">"rained"</span><span class="p">:</span> <span class="p">(</span><span class="bp">True</span><span class="p">,</span> <span class="bp">False</span><span class="p">),</span> <span class="s">"temp"</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">1</span><span class="p">)}</span>
+<span class="k">with</span> <span class="n">mp</span><span class="p">.</span><span class="n">Pool</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="k">as</span> <span class="n">pool</span><span class="p">:</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">loop_pars</span><span class="p">(</span><span class="n">parameters</span><span class="p">,</span> <span class="n">p_rain</span><span class="p">,</span> <span class="n">pool</span><span class="p">))</span>
+<span class="n">df</span>
+</code></pre></div></div>
+<p>Here, execution was slowed down by limiting to 2 processes and sleeping. The result 
+running in a <a href="https://jupyter.org">jupyter notebook</a> using <a href="https://tqdm.github.io/docs/notebook/">tqdm.notebook</a>.:</p>
+
+<figure>
+<p><img src="/assets/images/2022-06-01/parallel.gif" alt="Parallel execution with progress bar." id="figure-1" width="289px" /></p>
+  <figcaption>Figure 1: Parallel execution with progress bar.</figcaption>
+</figure>
+
+<h2 id="summary">Summary</h2>
+
+<p>Using a the cartesian product allows flattening an otherwise deeply nested loop. Not only does this make code prettier, but also easier to parallelize.</p>]]></content><author><name>Thomas T Burgess</name><email>thomastburgess+blog g-mail</email></author><category term="blog" /><category term="blog" /><category term="coding" /><category term="python" /><summary type="html"><![CDATA[Introduction I often find myself having to run code for some arbitrary set of different parameters. This can be done with nested for loops. This is not pretty, and poses a challenge for paralleization and progress tracking. In this blog post, I solve this in python with tqdm for progress bars and multiprocess for parallelizing. Weather example Assume we want to evaluate a model p_rain(rained, temp) that estimates probability of rain tomorrow given the current weather condition over the following parameter space: parameters = {"rained": (True, False), "temp": (15, 20, 25, 30)} A basic attempt with nested for loops: result = [] for rained in parameters["rained"]: for temp in parameters["temp"]: result.append( (rained, temp, p_rain(rained, temp))) Note how more paramters makes loop nesting deeper! With tqdm a progress indicator is added: result = [] for rained in tqdm(parameters["rained"]): for temp in parameters["temp"]: result.append( (rained, temp, p_rain(rained, temp))) However, it will only update on 0, 50, and 100% steps as there are only 2 values of rained. Moving tqdm to the inner loop will give 2 fast progress bars instead one slow one. Neither is good, and the order of loops can make a big difference. Next, adding some parallelization with multiprocess.Pool.map: pool = multiprocess.Pool() result = [] for rained in tqdm(parameters["rained"]): result.extend( pool.map( lambda temp: (rained, temp, p_rain(rained, temp)), parameters["temp"], ) ) The parallelization now has a bottleneck in waiting for the outer loop. And to an even larger extent, the ordering of loops matter. While this setup can work, it is easy to do better! What is needed, is a flat list of all parameters, that some function that achieves this: &gt; flat_dicts({"rained": (True, False), "temp": (15, 20, 25)}) [{"rained": True, "temp": 15}, {"rained": True, "temp": 20}, {"rained": True, "temp": 25}, {"rained": False, "temp": 15}, {"rained": False, "temp": 20}, {"rained": False, "temp": 25}] With this the above loops can be reduced to a single loop, and tqdm and pool can work as expected. Cartesian product With itertools.product all combinations can easily be generated: &gt;&gt;&gt; list(product((True, False), (10, 15, 25))) [(True, 10), (True, 15), (True, 25), (False, 10), (False, 15), (False, 25)] In the rain example dictionary, make the product on parameter values, then loop over each parameter tuple and add keys: def flat_lists(parameters): return {k: v for k, v in zip(parameters.keys(), i)} for i in product(*parameters.values()) &gt;&gt;&gt; list(flat_dicts({"rained": (True, False), "temp": (15, 20, 25)})) [{'rained': True, 'temp': 15}, {'rained': True, 'temp': 20}, {'rained': True, 'temp': 25}, {'rained': False, 'temp': 15}, {'rained': False, 'temp': 20}, {'rained': False, 'temp': 25}] wich is exactly what we hoped to achieve. Putting it all together First define a product function and a looper from itertools import product from tqdm import tqdm import multiprocess as mp def loop_pars(pars, fun): tasks = list(flat_dicts(pars)) return tqdm(pool.imap_unordered(lambda x: {**x, "result": fun(**x)}, tasks), total=len(tasks)) To get this working, tqdm must know the total iteration count, and use imap to get data once it’s finished. And now we can run a simple test (with a terribly inaccurate logistic weather model): import time def p_rain(rained, temp): time.sleep(1) return 1/(1+np.exp(0.1*(temp-5*(1+5*rained)))) parameters = {"rained": (True, False), "temp": range(15, 20, 1)} with mp.Pool(2) as pool: df = pd.DataFrame(loop_pars(parameters, p_rain, pool)) df Here, execution was slowed down by limiting to 2 processes and sleeping. The result running in a jupyter notebook using tqdm.notebook.: Figure 1: Parallel execution with progress bar. Summary Using a the cartesian product allows flattening an otherwise deeply nested loop. Not only does this make code prettier, but also easier to parallelize.]]></summary></entry><entry><title type="html">Polygon vertices</title><link href="https://thomasburgess.github.io/blog/2022/04/17/Vertices.html" rel="alternate" type="text/html" title="Polygon vertices" /><published>2022-04-17T00:00:00+02:00</published><updated>2022-04-17T00:00:00+02:00</updated><id>https://thomasburgess.github.io/blog/2022/04/17/Vertices</id><content type="html" xml:base="https://thomasburgess.github.io/blog/2022/04/17/Vertices.html"><![CDATA[<p>There are only 21 ways to place regular polygons in gapless tilings. The point where the polygons meet is called a vertex. Vertices are named by the polygons meeting there. For instance, the vertex where four squares meet is 4.4.4.4. In this post, I will make code to find and draw all possible vertices.</p>
+
+<h2 id="regular-polygons">Regular polygons</h2>
+
+<p>A regular polygon has $n$ sides. The <em>interior</em> angle $\alpha$ between two adjacent sides is 
+\begin{equation}
+\alpha=\frac{n-2}{2n}.
+\end{equation}
+The turning angle $\beta=1/n$ of a polygon is the angle to the centre between two adjacent points.
+For simplicity, I write angles as fractions of a complete turn. Multiply by $2\pi$ or $360^\circ$ to get radians or degrees.</p>
+
+<figure>
+<p><img src="/assets/images/2022-04-17/angles.svg" alt="Angles in a regular polygon." id="figure-1" width="25%" /></p>
+  <figcaption>Figure 1: Angles in a regular polygon.</figcaption>
+</figure>
+
+<p>The pointiest polygon is the regular triangle with $\alpha=1/6$. When increasing $n$, $\alpha$ increases towards $1/2$.</p>
+
+<h2 id="searching-for-vertices">Searching for vertices</h2>
+
+<p>For a tiling to be gapless, the sum of interior angles $\alpha$ at a vertex must be 1. Thus, the complete set of vertices can be found by finding all sets $v_i$ so that:
+\begin{equation}
+\sum_{n_j\in v_i} \frac{n_j-2}{2n_j} = 1\,.
+\end{equation}</p>
+
+<p>Before searching, it helps to have ranges on the possible number of polygons $m$ and sides $n$ in $v_i$.  The count $m$ must be larger than 2, as no two regular polygons can add up to 1. Furthermore, the highest $m$ is six as 3.3.3.3.3.3 as $\sum_{n \in 3.3.3.3.3.3} \alpha=6\cdot1/6=1$. For $m=6$ this is the only possible vertex.</p>
+
+<p>For $m=3$, the two shape combination leaving the smallest angle $\alpha\lt1/2$ is 3 and 7, as that 3 and 6 leaves exactly $\alpha=1/2$, which can’t be a polygon. The remaining angle then is 
+\begin{equation}
+\alpha=1-\left(\alpha_3+\alpha_2\right)=
+1-\left(\frac{3-2}{2\cdot3}+
+\frac{7-2}{2\cdot7}\right)=
+\frac{10}{21}\,,
+\end{equation}
+and with $(n-2)/(2n)=10/21$ we get n=42. Similarly for $m=4$, 3.3.4 leaves $\alpha\le1-(2/6+2/8)=5/12$, corresponding to $n=12$. Finally for $m=5$, 3.3.3.3 leaves $\alpha\le1-(4/6)=1/3$, corresponding to $n_5=6$.</p>
+
+<p>In summary:</p>
+
+<p>\[
+m:3 \quad 3\le n\le 42 <br />
+\]
+\[
+m:4 \quad 3\le n\le 12 <br />
+\]
+\[
+m:5 \quad 3\le n\le 6 <br />
+\]
+\[
+m:6 \quad n=3 
+\]</p>
+
+<p>All possible vertices are found by searching for combinations of $m$ elements with $n$ inside the constrained range. Note that this brute force approach will trivial clones of vertices in the form of rotations and mirror images. Moreover, there are some cases of different vertices with the same polygon content. Thus, I first generate (sorted) combinations with replacements of polygons for each $m$. If a set sums to 1, I yield permutations not already stored as a mirror or rotation.</p>
+
+<h2 id="python-search-implementation">Python search implementation</h2>
+
+<p>For the search I only rely on python 3.8+ and its built in libraries. You don’t need to read the code unless you’re interested in the deeper details of how I find vertices. There are likely more efficient solutions, but I think this works good enough for me :)</p>
+
+<details><summary>Click to expand the python code…</summary>
+<p>Imports:</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">combinations_with_replacement</span><span class="p">,</span> <span class="n">permutations</span>
+<span class="kn">from</span> <span class="nn">fractions</span> <span class="kn">import</span> <span class="n">Fraction</span> <span class="k">as</span> <span class="n">F</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span>
+</code></pre></div></div>
+
+<p>Constraints</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Range of polygon count at vertex
+</span><span class="n">m_min</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="n">m_max</span> <span class="o">=</span> <span class="mi">6</span>
+<span class="c1"># Range of n-gon n at vertex
+</span><span class="n">n_min</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="n">n_max</span> <span class="o">=</span> <span class="p">[</span><span class="mi">42</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+</code></pre></div></div>
+<p>Fucntions</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">n_gon</span><span class="p">(</span><span class="n">n</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">F</span><span class="p">:</span>
+    <span class="s">"""Make n-gon interior angle as fraction of full turn"""</span>
+    <span class="k">return</span> <span class="n">F</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">n</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">rotrev</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+    <span class="s">"""Generate all rotations and mirrors of s"""</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">deque</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">d</span><span class="p">)):</span>
+        <span class="n">d</span><span class="p">.</span><span class="n">rotate</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">yield</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+        <span class="k">yield</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">reversed</span><span class="p">(</span><span class="n">d</span><span class="p">))</span>
+
+        
+<span class="k">def</span> <span class="nf">find_vertices</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">]]:</span>
+    <span class="s">"""Find vertices"""</span>
+    <span class="n">found</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="c1"># Loop over number of n-gons
+</span>    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">m_min</span><span class="p">,</span> <span class="n">m_max</span><span class="o">+</span><span class="mi">1</span><span class="p">)):</span>
+        <span class="c1"># Loop over all possible vertex candidates
+</span>        <span class="k">for</span> <span class="n">comb</span> <span class="ow">in</span> <span class="n">combinations_with_replacement</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">m_min</span><span class="p">,</span> <span class="n">n_max</span><span class="p">[</span><span class="n">m</span><span class="o">-</span><span class="n">n_min</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="n">r</span><span class="o">=</span><span class="n">m</span><span class="p">):</span>            
+            <span class="c1"># Only consider proper vertices
+</span>            <span class="k">if</span> <span class="nb">sum</span><span class="p">(</span><span class="n">n_gon</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">comb</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="c1"># Add permutations 
+</span>            <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">permutations</span><span class="p">(</span><span class="n">comb</span><span class="p">):</span>
+                <span class="c1"># Reject rotated or reversed forms
+</span>                <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">d</span> <span class="ow">in</span> <span class="n">found</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">rotrev</span><span class="p">(</span><span class="n">p</span><span class="p">)):</span>
+                    <span class="k">continue</span>
+                <span class="n">found</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">found</span>
+</code></pre></div></div>
+
+<p>Running the search takes less than a seconds on my laptop</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">vertices</span> <span class="o">=</span> <span class="n">find_vertices</span><span class="p">()</span>
+</code></pre></div></div>
+
+</details>
+
+<h2 id="search-result">Search result</h2>
+
+<p>This table was made processing the resulting vertex list. Here $m$ still is the number of polygons, each integer column the counts for a particular shape, and $u$ the number of unique shapes.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>vertex</th>
+      <th>$m$</th>
+      <th>3</th>
+      <th>4</th>
+      <th>5</th>
+      <th>6</th>
+      <th>7</th>
+      <th>8</th>
+      <th>9</th>
+      <th>10</th>
+      <th>12</th>
+      <th>15</th>
+      <th>18</th>
+      <th>20</th>
+      <th>24</th>
+      <th>42</th>
+      <th>$u$</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>3.7.42</td>
+      <td>3</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>3.8.24</td>
+      <td>3</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>3.9.18</td>
+      <td>3</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>3.10.15</td>
+      <td>3</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>3.12.12</td>
+      <td>3</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>2</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <td>4.5.20</td>
+      <td>3</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>4.6.12</td>
+      <td>3</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>4.8.8</td>
+      <td>3</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>2</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <td>5.5.10</td>
+      <td>3</td>
+      <td>0</td>
+      <td>0</td>
+      <td>2</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <td>6.6.6</td>
+      <td>3</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>3.3.4.12</td>
+      <td>4</td>
+      <td>2</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>3.4.3.12</td>
+      <td>4</td>
+      <td>2</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>3.3.6.6</td>
+      <td>4</td>
+      <td>2</td>
+      <td>0</td>
+      <td>0</td>
+      <td>2</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <td>3.6.3.6</td>
+      <td>4</td>
+      <td>2</td>
+      <td>0</td>
+      <td>0</td>
+      <td>2</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <td>3.4.4.6</td>
+      <td>4</td>
+      <td>1</td>
+      <td>2</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>3.4.6.4</td>
+      <td>4</td>
+      <td>1</td>
+      <td>2</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>4.4.4.4</td>
+      <td>4</td>
+      <td>0</td>
+      <td>4</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>3.3.3.3.6</td>
+      <td>5</td>
+      <td>4</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <td>3.3.3.4.4</td>
+      <td>5</td>
+      <td>3</td>
+      <td>2</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <td>3.3.4.3.4</td>
+      <td>5</td>
+      <td>3</td>
+      <td>2</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <td>3.3.3.3.3.3</td>
+      <td>6</td>
+      <td>6</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>total</td>
+      <td>-</td>
+      <td>15</td>
+      <td>10</td>
+      <td>2</td>
+      <td>7</td>
+      <td>1</td>
+      <td>2</td>
+      <td>1</td>
+      <td>2</td>
+      <td>4</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>-</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Noteworthy observations</p>
+<ul>
+  <li>There are a total of 21 vertices (10 $m=3$, 7 $m=4$, 3 $m=5$, 1 $m=6$)</li>
+  <li>There are 1-3 polygon types in a vertex (10 $u=3$, 8 $u=2$, 3 $u=1$)</li>
+  <li>The three single polygon type vertices are triangles, squares, and hexagons - the only three ways to tile the plane with a single polygon type!</li>
+  <li>Only 3-, 4-, 5-, 6-, 8-, 10- and 12-gons occur in more than one vertex
+    <ul>
+      <li>5 and 10 only ever occurr together</li>
+      <li>15 vertices contains triangles, 10 squares, 7 hexagons, and 4 dodecagons</li>
+    </ul>
+  </li>
+</ul>
+
+<p>Below is the code I used to generate the table and insights</p>
+
+<details><summary>Click to expand the python code…</summary>
+<p>Imports (in addition to above code)</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="n">pd</span>
+</code></pre></div></div>
+
+<p>Functions</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">vertex_str</span><span class="p">(</span><span class="n">vtx</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="s">"""Make vertex notation from ints."""</span>
+    <span class="k">return</span> <span class="s">'.'</span><span class="p">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">vtx</span><span class="p">))</span>    
+
+<span class="k">def</span> <span class="nf">make_df</span><span class="p">(</span><span class="n">vertices</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="p">.</span><span class="n">DataFrame</span><span class="p">:</span>
+    <span class="s">"""Make data frame with vertex summary."""</span>
+    <span class="n">vertices</span> <span class="o">=</span> <span class="n">find_vertices</span><span class="p">()</span>
+    <span class="n">ngons</span> <span class="o">=</span> <span class="p">{</span><span class="n">i</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">vertices</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">j</span><span class="p">}</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s">"m"</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">f</span><span class="p">),</span> <span class="s">"vertex"</span><span class="p">:</span> <span class="n">f</span><span class="p">}</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">vertices</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">ngon</span> <span class="ow">in</span> <span class="p">{</span><span class="n">i</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">vertices</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">j</span><span class="p">}:</span>
+        <span class="n">df</span><span class="p">[</span><span class="n">ngon</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s">"vertex"</span><span class="p">].</span><span class="nb">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">x</span><span class="p">).</span><span class="n">count</span><span class="p">(</span><span class="n">ngon</span><span class="p">))</span>
+    <span class="n">df</span><span class="p">[</span><span class="s">"vertex"</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s">"vertex"</span><span class="p">].</span><span class="nb">apply</span><span class="p">(</span><span class="n">vertex_str</span><span class="p">)</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">.</span><span class="n">set_index</span><span class="p">(</span><span class="s">"vertex"</span><span class="p">)[[</span><span class="s">"m"</span><span class="p">]</span><span class="o">+</span><span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">ngons</span><span class="p">))]</span>
+    <span class="n">df</span><span class="p">[</span><span class="s">"u"</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">ngons</span><span class="p">)]</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">).</span><span class="nb">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">df</span><span class="p">.</span><span class="n">loc</span><span class="p">[</span><span class="s">"n_vertices"</span><span class="p">]</span><span class="o">=</span><span class="p">(</span><span class="n">df</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">).</span><span class="nb">sum</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">df</span>
+</code></pre></div></div>
+
+<p>Running</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df</span><span class="o">=</span><span class="n">make_df</span><span class="p">(</span><span class="n">vertices</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">df</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s">"m"</span><span class="p">].</span><span class="n">value_counts</span><span class="p">())</span>
+<span class="k">print</span><span class="p">(</span><span class="n">df</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s">"u"</span><span class="p">].</span><span class="n">value_counts</span><span class="p">())</span>
+</code></pre></div></div>
+</details>
+
+<h2 id="drawing-vertices">Drawing vertices</h2>
+
+<p>To draw vertices correctly, I define a polygon by $n$ and one side.
+Swapping the side start and end points mirrors the polygon.</p>
+
+<details><summary>Click to expand the python code…</summary>
+<p>Imports</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">import</span> <span class="nn">matplotlib.patches</span> <span class="k">as</span> <span class="n">mpatches</span>
+<span class="kn">from</span> <span class="nn">matplotlib.collections</span> <span class="kn">import</span> <span class="n">PatchCollection</span>
+</code></pre></div></div>
+
+<p>Functions</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">make_patch</span><span class="p">(</span><span class="n">points</span><span class="p">:</span> <span class="n">np</span><span class="p">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">fc</span><span class="o">=</span><span class="s">"white"</span><span class="p">):</span>
+    <span class="s">"""Helper to draw polygon patch to ax"""</span>
+    <span class="n">ax</span><span class="p">.</span><span class="n">add_collection</span><span class="p">(</span>
+         <span class="n">PatchCollection</span><span class="p">([</span><span class="n">mpatches</span><span class="p">.</span><span class="n">Polygon</span><span class="p">(</span><span class="n">points</span><span class="p">)],</span> <span class="n">fc</span><span class="o">=</span><span class="n">fc</span><span class="p">,</span> <span class="n">ec</span><span class="o">=</span><span class="s">'k'</span><span class="p">,</span><span class="n">lw</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="p">)</span>
+    
+<span class="k">def</span> <span class="nf">coords</span><span class="p">(</span><span class="n">n</span><span class="p">:</span><span class="nb">int</span><span class="p">,</span> <span class="n">line</span><span class="p">:</span> <span class="n">np</span><span class="p">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="p">.</span><span class="n">ndarray</span><span class="p">:</span>
+    <span class="s">"""
+    Args:
+        * n (int) - n in n-gon
+        * line (np.array) - ((x0,y0), (x1,y1)) line segment
+    Returns:
+        np.ndarray: shape (n, 2) x,y coordinate pairs
+        
+    """</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">diff</span><span class="p">(</span><span class="n">line</span><span class="p">.</span><span class="n">T</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">linalg</span><span class="p">.</span><span class="n">norm</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="o">*</span><span class="p">(</span>
+        <span class="n">np</span><span class="p">.</span><span class="n">pi</span><span class="o">-</span><span class="n">np</span><span class="p">.</span><span class="n">pi</span><span class="o">*</span><span class="mi">2</span><span class="o">*</span><span class="nb">float</span><span class="p">(</span><span class="n">n_gon</span><span class="p">(</span><span class="n">n</span><span class="p">)))</span><span class="o">+</span>\
+        <span class="n">np</span><span class="p">.</span><span class="n">arctan2</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">d</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">][:,</span> <span class="bp">None</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">np</span><span class="p">.</span><span class="n">hstack</span><span class="p">(((</span><span class="n">p</span><span class="o">+</span><span class="n">np</span><span class="p">.</span><span class="n">cumsum</span><span class="p">(</span>
+        <span class="n">r</span><span class="o">*</span><span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="p">.</span><span class="n">sin</span><span class="p">(</span><span class="n">a</span><span class="p">),</span> <span class="n">np</span><span class="p">.</span><span class="n">cos</span><span class="p">(</span><span class="n">a</span><span class="p">)]),</span>
+        <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)),</span> <span class="n">p</span><span class="p">)).</span><span class="n">T</span>
+</code></pre></div></div>
+
+<p>Colors</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">colors</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="mi">3</span><span class="p">:</span> <span class="s">"royalblue"</span><span class="p">,</span> 
+    <span class="mi">4</span><span class="p">:</span> <span class="s">"orangered"</span><span class="p">,</span> 
+    <span class="mi">5</span><span class="p">:</span> <span class="s">"hotpink"</span><span class="p">,</span> 
+    <span class="mi">6</span><span class="p">:</span> <span class="s">"gold"</span><span class="p">,</span> 
+    <span class="mi">7</span><span class="p">:</span> <span class="s">"magenta"</span><span class="p">,</span> 
+    <span class="mi">8</span><span class="p">:</span> <span class="s">"darkorange"</span><span class="p">,</span> 
+    <span class="mi">9</span><span class="p">:</span> <span class="s">"yellowgreen"</span><span class="p">,</span> 
+    <span class="mi">10</span><span class="p">:</span> <span class="s">"lightsteelblue"</span><span class="p">,</span> 
+    <span class="mi">12</span><span class="p">:</span> <span class="s">"limegreen"</span><span class="p">,</span>
+    <span class="mi">15</span><span class="p">:</span> <span class="s">"lightcoral"</span><span class="p">,</span>
+    <span class="mi">18</span><span class="p">:</span> <span class="s">"khaki"</span><span class="p">,</span>
+    <span class="mi">20</span><span class="p">:</span> <span class="s">"orchid"</span><span class="p">,</span>
+    <span class="mi">24</span><span class="p">:</span> <span class="s">"plum"</span><span class="p">,</span>
+    <span class="mi">42</span><span class="p">:</span> <span class="s">"palegreen"</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Running</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
+<span class="n">axs</span> <span class="o">=</span> <span class="n">axs</span><span class="p">.</span><span class="n">flatten</span><span class="p">()</span>  <span class="c1"># all subplits as list
+</span>
+<span class="n">g0</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]])</span>  <span class="c1"># line to start with
+</span><span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">vertices</span><span class="p">):</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="n">ps</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1"># save coordinates for bounding box
+</span>    <span class="n">ax</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span><span class="s">"ko"</span><span class="p">,</span> <span class="n">ms</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span> <span class="c1"># Draw vertex
+</span>    <span class="c1"># Add polygons
+</span>    <span class="k">for</span> <span class="n">gon</span> <span class="ow">in</span> <span class="n">vertex</span><span class="p">:</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="n">coords</span><span class="p">(</span><span class="n">gon</span><span class="p">,</span> <span class="n">g0</span><span class="p">)</span>
+        <span class="n">ps</span><span class="p">.</span><span class="n">extend</span><span class="p">(</span><span class="n">p</span><span class="p">.</span><span class="n">tolist</span><span class="p">())</span>
+        <span class="n">make_patch</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">colors</span><span class="p">[</span><span class="n">gon</span><span class="p">])</span>
+        <span class="n">g0</span> <span class="o">=</span> <span class="n">p</span><span class="p">[:</span><span class="mi">2</span><span class="p">][::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="c1"># move starting line for next iteration
+</span>    <span class="c1"># Bounding box
+</span>    <span class="n">xmin</span><span class="p">,</span> <span class="n">ymin</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nb">min</span><span class="p">(</span><span class="n">ps</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">*</span><span class="mf">1.05</span>
+    <span class="n">xmax</span><span class="p">,</span> <span class="n">ymax</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nb">max</span><span class="p">(</span><span class="n">ps</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">*</span><span class="mf">1.05</span>
+    <span class="n">ax</span><span class="p">.</span><span class="nb">set</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">vertex_str</span><span class="p">(</span><span class="n">vertex</span><span class="p">),</span> <span class="n">xlim</span><span class="o">=</span><span class="p">(</span><span class="n">xmin</span><span class="p">,</span><span class="n">xmax</span><span class="p">),</span> <span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="n">ymin</span><span class="p">,</span><span class="n">ymax</span><span class="p">));</span>
+
+<span class="c1"># Ensure equal aspect and no axes for all plots
+</span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="mi">5</span><span class="o">*</span><span class="mi">5</span><span class="p">):</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="n">ax</span><span class="p">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s">'equal'</span><span class="p">,</span> <span class="n">adjustable</span><span class="o">=</span><span class="s">'box'</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">.</span><span class="n">axis</span><span class="p">(</span><span class="s">'off'</span><span class="p">)</span>
+
+<span class="c1"># Save result
+</span><span class="n">fig</span><span class="p">.</span><span class="n">savefig</span><span class="p">(</span><span class="s">"vertices.png"</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s">'white'</span><span class="p">,</span> <span class="n">transparent</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s">"tight"</span><span class="p">)</span>
+
+
+</code></pre></div></div>
+
+</details>
+
+<figure>
+<p><img src="/assets/images/2022-04-17/vertices.png" alt="All possible vertices!" id="figure-1" width="80%" /></p>
+  <figcaption>Figure 2: All possible vertices!</figcaption>
+</figure>]]></content><author><name>Thomas T Burgess</name><email>thomastburgess+blog g-mail</email></author><category term="blog" /><category term="blog" /><category term="geometry" /><category term="maths" /><category term="polygon" /><summary type="html"><![CDATA[Finding all possible vertices in regular polygon 2D tilings]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://thomasburgess.github.io/assets/images/2022-04-17/vertices.png" /><media:content medium="image" url="https://thomasburgess.github.io/assets/images/2022-04-17/vertices.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">Tree hack - building and printing a tree</title><link href="https://thomasburgess.github.io/blog/2021/07/18/tree_hack.html" rel="alternate" type="text/html" title="Tree hack - building and printing a tree" /><published>2021-07-18T00:00:00+02:00</published><updated>2021-07-18T00:00:00+02:00</updated><id>https://thomasburgess.github.io/blog/2021/07/18/tree_hack</id><content type="html" xml:base="https://thomasburgess.github.io/blog/2021/07/18/tree_hack.html"><![CDATA[<p><em>In which I made two snippets for my trees.</em></p>
+
+<h2 id="background">Background</h2>
+
+<p>Recently, I had to write a python script that transforms incoming data organizsed in a folder structure.
+For this, I needed both a simple python representation and an easy way to print the data.</p>
+
+<p>Consider a project which collects sightings of Bigfoot, Nessie,
+and Yeti as <code class="language-plaintext highlighter-rouge">.csv</code> files for each day when there was a sighting.
+As seen in <a href="#figure-1">Figure 1</a>, the data is organized into folders 
+by cryptid and month.</p>
+
+<figure>
+<p><img src="/assets/images/2021-07-18/tree_hack_folder.png" alt="Folder strucutre" id="figure-1" width="25%" /></p>
+  <figcaption>Figure 1: Folder structure</figcaption>
+</figure>
+
+<p>In my terminal, I’d show the structure with <a href="http://mama.indstate.edu/users/ice/tree/">tree</a> 
+or <a href="https://github.com/Peltoche/lsd">lsd</a>. In python, I could use 
+<a href="https://treelib.readthedocs.io/en/latest/">treelib</a>.
+However, terminal tools don’t fit my actual needs, 
+and for python, it feels excessive with a whole library for such a simple thing.
+Time to reinvent the wheel…</p>
+
+<h2 id="building-a-tree-from-a-directory">Building a tree from a directory</h2>
+
+<p>I python version 3.4 or later, <a href="https://docs.python.org/3/library/pathlib.html">pathlib</a> is included, 
+which can get directory contents by <a href="https://en.wikipedia.org/wiki/Glob_(programming)">globbing</a>.
+For instance:</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">list</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="s">"data/"</span><span class="p">).</span><span class="n">glob</span><span class="p">(</span><span class="s">"**/*.csv"</span><span class="p">))</span>
+</code></pre></div></div>
+<p>gives</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[</span><span class="n">PosixPath</span><span class="p">(</span><span class="s">'data/nessie/2021-04/2021-04-03-sighting.csv'</span><span class="p">),</span> <span class="n">PosixPath</span><span class="p">(</span><span class="s">'data/nessie/2021-02/2021-02-21-sighting.csv'</span><span class="p">),</span> <span class="p">...</span>
+</code></pre></div></div>
+<p>Note: this approach may fail for large directory trees, and not sure what happens if there are circular links in the tree.
+A simple way to get a tree representation without any classes is to use a dictionary <code class="language-plaintext highlighter-rouge">{"root": children}</code>. 
+Here, <code class="language-plaintext highlighter-rouge">children</code> is another dictionary. For leaf nodes such as the <code class="language-plaintext highlighter-rouge">.csv</code> files, set the value to an 
+empty dictionary.</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="s">'data'</span><span class="p">:</span> <span class="p">{</span><span class="s">'nessie'</span><span class="p">:</span> <span class="p">{</span><span class="s">'2021-04'</span><span class="p">:</span> <span class="p">{</span><span class="s">'2021-04-03-sighting.csv'</span><span class="p">:</span> <span class="p">{},</span> <span class="p">...}</span> <span class="p">,</span> <span class="p">...},</span> <span class="p">...}}</span>
+</code></pre></div></div>
+<p>putting this together gives the following python snippet</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+
+
+<span class="k">def</span> <span class="nf">path_tree</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">pattern</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s">"**/*"</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+    <span class="s">"""Build tree from path
+
+    Example:
+        path_tree(".", "**/*.csv")
+        &gt;&gt;&gt; {'directory': {'file1.csv': {}, 'sub_directory': {'file2.csv': {}}}}
+
+    Args:
+        path (Path): Path to start search from
+        pattern (str, optional): Pattern to glob all reports
+
+    Returns:
+        Dict[str, Any]: Dict of directories and report files
+    """</span>
+    <span class="n">tree</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">).</span><span class="n">glob</span><span class="p">(</span><span class="n">pattern</span><span class="p">):</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="n">tree</span>
+        <span class="k">for</span> <span class="n">q</span> <span class="ow">in</span> <span class="n">p</span><span class="p">.</span><span class="n">relative_to</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)).</span><span class="n">parts</span><span class="p">:</span>
+            <span class="n">t</span><span class="p">[</span><span class="n">q</span><span class="p">]</span> <span class="o">=</span> <span class="n">t</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="p">{})</span>  <span class="c1"># if q != p[-1] else True)
+</span>            <span class="n">t</span> <span class="o">=</span> <span class="n">t</span><span class="p">[</span><span class="n">q</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">tree</span>
+</code></pre></div></div>
+
+<h2 id="pretty-printing-a-tree">Pretty printing a tree</h2>
+
+<p>True its batteries-included philosophy, python comes with a <a href="https://docs.python.org/3/library/pprint.html">pretty-printer</a>:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">pprint</span><span class="p">.</span><span class="n">pprint</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="p">{</span><span class="s">'data'</span><span class="p">:</span> <span class="p">{</span><span class="s">'bigfoot'</span><span class="p">:</span> <span class="p">{</span><span class="s">'2021-01'</span><span class="p">:</span> <span class="p">{</span><span class="s">'2021-01-07-sighting.csv'</span><span class="p">:</span> <span class="p">{}},</span>
+                      <span class="s">'2021-03'</span><span class="p">:</span> <span class="p">{</span><span class="s">'2021-03-04-sighting.csv'</span><span class="p">:</span> <span class="p">{},</span> 
+                      <span class="p">....</span>
+</code></pre></div></div>
+<p>This often is good enough. However, I want something more tree-like so let’s add a basic visualization using 
+<a href="https://en.wikipedia.org/wiki/Box-drawing_character">box-drawing characters</a>. Here, I recursively loops through 
+all dictionaries while remembering where to put <code class="language-plaintext highlighter-rouge">│</code>. As with glob, for large and highly nested trees (or cyclic content) this
+could perform poorly - but for most uses, it’s perfect.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span>
+<span class="k">def</span> <span class="nf">tree_to_str</span><span class="p">(</span><span class="n">tree</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">b</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="p">[])</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="s">"""Make string from tree
+
+    Example:
+        tree_to_str({'directory': {'file1.csv': {}, 'sub_directory': {'file2.csv': {}}}})
+        &gt;&gt;&gt; directory
+            ├─ file1.csv
+            └─ sub_directory
+               └─ file2.csv
+
+    Args:
+        tree (Dict[Any, Any]): Dict with dicts
+        b (List[bool], optional): stack to remember pipes
+
+    Returns:
+        str: String representation
+    """</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="s">""</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">tree</span><span class="p">.</span><span class="n">items</span><span class="p">()):</span>
+        <span class="n">s</span> <span class="o">+=</span> <span class="p">(</span>
+            <span class="s">""</span><span class="p">.</span><span class="n">join</span><span class="p">([</span><span class="s">"  │"</span> <span class="k">if</span> <span class="n">q</span> <span class="k">else</span> <span class="s">"   "</span> <span class="k">for</span> <span class="n">q</span> <span class="ow">in</span> <span class="n">b</span><span class="p">])</span> <span class="o">+</span> <span class="p">(</span>
+                <span class="s">"  └"</span> <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">tree</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span> <span class="k">else</span> <span class="s">"  ├"</span><span class="p">)</span> <span class="o">+</span> <span class="sa">f</span><span class="s">"─ </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="se">\n</span><span class="s">"</span>
+        <span class="p">)</span>
+        <span class="n">b</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">tree</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">s</span> <span class="o">+=</span> <span class="n">tree_to_str</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+        <span class="n">b</span><span class="p">.</span><span class="n">pop</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">s</span>
+</code></pre></div></div>
+
+<h2 id="putting-it-all-together">Putting it all together</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">str_tree</span><span class="p">(</span><span class="n">path_tree</span><span class="p">(</span><span class="s">"."</span><span class="p">,</span> <span class="s">"**/*.csv"</span><span class="p">)))</span>
+<span class="err">└─</span> <span class="n">data</span>
+   <span class="err">├─</span> <span class="n">nessie</span>
+   <span class="err">│</span>  <span class="err">├─</span> <span class="mi">2021</span><span class="o">-</span><span class="mi">04</span>
+   <span class="err">│</span>  <span class="err">│</span>  <span class="err">└─</span> <span class="mi">2021</span><span class="o">-</span><span class="mi">04</span><span class="o">-</span><span class="mi">03</span><span class="o">-</span><span class="n">sighting</span><span class="p">.</span><span class="n">csv</span>
+   <span class="err">│</span>  <span class="err">└─</span> <span class="mi">2021</span><span class="o">-</span><span class="mi">02</span>
+   <span class="err">│</span>     <span class="err">├─</span> <span class="mi">2021</span><span class="o">-</span><span class="mi">02</span><span class="o">-</span><span class="mi">21</span><span class="o">-</span><span class="n">sighting</span><span class="p">.</span><span class="n">csv</span>
+   <span class="err">│</span>     <span class="err">└─</span> <span class="mi">2021</span><span class="o">-</span><span class="mi">02</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="n">sighting</span><span class="p">.</span><span class="n">csv</span>
+   <span class="err">├─</span> <span class="n">bigfoot</span>
+   <span class="err">│</span>  <span class="err">├─</span> <span class="mi">2021</span><span class="o">-</span><span class="mi">01</span>
+   <span class="err">│</span>  <span class="err">│</span>  <span class="err">└─</span> <span class="mi">2021</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">07</span><span class="o">-</span><span class="n">sighting</span><span class="p">.</span><span class="n">csv</span>
+   <span class="err">│</span>  <span class="err">└─</span> <span class="mi">2021</span><span class="o">-</span><span class="mi">03</span>
+   <span class="err">│</span>     <span class="err">├─</span> <span class="mi">2021</span><span class="o">-</span><span class="mi">03</span><span class="o">-</span><span class="mi">27</span><span class="o">-</span><span class="n">sighting</span><span class="p">.</span><span class="n">csv</span>
+   <span class="err">│</span>     <span class="err">├─</span> <span class="mi">2021</span><span class="o">-</span><span class="mi">03</span><span class="o">-</span><span class="mi">04</span><span class="o">-</span><span class="n">sighting</span><span class="p">.</span><span class="n">csv</span>
+   <span class="err">│</span>     <span class="err">└─</span> <span class="mi">2021</span><span class="o">-</span><span class="mi">03</span><span class="o">-</span><span class="mi">07</span><span class="o">-</span><span class="n">sighting</span><span class="p">.</span><span class="n">csv</span>
+   <span class="err">└─</span> <span class="n">yeti</span>
+      <span class="err">└─</span> <span class="mi">2021</span><span class="o">-</span><span class="mi">04</span>
+         <span class="err">├─</span> <span class="mi">2021</span><span class="o">-</span><span class="mi">04</span><span class="o">-</span><span class="mi">29</span><span class="o">-</span><span class="n">sighting</span><span class="p">.</span><span class="n">csv</span>
+         <span class="err">└─</span> <span class="mi">2021</span><span class="o">-</span><span class="mi">04</span><span class="o">-</span><span class="mi">14</span><span class="o">-</span><span class="n">sighting</span><span class="p">.</span><span class="n">csv</span>
+</code></pre></div></div>
+
+<p>Great! - just like the <code class="language-plaintext highlighter-rouge">tree</code> in the command line. And all with just in two simple functions. Like anything on this site, use these snippets as you please at your own risk, and feel free to credit me when you do it.</p>
+
+<hr />
+<p>Header image: My crop of Photo by <a href="https://unsplash.com/@cristina_gottardi?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Cristina Gottardi</a> on <a href="https://unsplash.com/s/photos/mighty-tree?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Unsplash</a></p>]]></content><author><name>{&quot;picture&quot;=&gt;&quot;/img/avatar.png&quot;, &quot;twitter&quot;=&gt;&quot;ThomasTBurgess1&quot;}</name></author><category term="blog" /><category term="blog" /><category term="python" /><category term="trees" /><summary type="html"><![CDATA[Building a tree from a directory in python and how to print it]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://thomasburgess.github.io/assets/images/2021-07-18/cristina-gottardi-wVTGdIGdojc-unsplash-crop.jpg" /><media:content medium="image" url="https://thomasburgess.github.io/assets/images/2021-07-18/cristina-gottardi-wVTGdIGdojc-unsplash-crop.jpg" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">Exploring repunit digit sum fractions</title><link href="https://thomasburgess.github.io/blog/2021/06/20/repdigits.html" rel="alternate" type="text/html" title="Exploring repunit digit sum fractions" /><published>2021-06-20T00:00:00+02:00</published><updated>2021-06-20T00:00:00+02:00</updated><id>https://thomasburgess.github.io/blog/2021/06/20/repdigits</id><content type="html" xml:base="https://thomasburgess.github.io/blog/2021/06/20/repdigits.html"><![CDATA[<p><em>In which I go down a rabbit hole of integer sequences when trying to understand
+a pattern in fractions of repeated digits and their digit sums.</em></p>
+
+<h2 id="the-tweets">The tweets</h2>
+
+<p>This tweet appeared in my Twitter feed:</p>
+
+<blockquote class="twitter-tweet"><p lang="en" dir="ltr">Mathematics and mystery.<br /><br />555, 666, 777, and friends. Source: <a href="https://t.co/63RFs36q8S">https://t.co/63RFs36q8S</a> <a href="https://t.co/h6gjbIfLK5">pic.twitter.com/h6gjbIfLK5</a></p>&mdash; Cliff Pickover (@pickover) <a href="https://twitter.com/pickover/status/1405553860777852931?ref_src=twsrc%5Etfw">June 17, 2021</a></blockquote>
+<script async="" src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<p>These are the fraction with a <a href="https://en.wikipedia.org/wiki/Repdigit">repdigit</a> and the sum of its digits. My first thought was that I could write all these like this:
+\[
+  \frac{N}{N}\frac{111}{1+1+1}=37\,\quad\text{where } 0 \lt N \lt 10\,.
+\]
+Hence, these fractions are all <a href="https://en.wikipedia.org/wiki/Repunit">repunits</a>. 
+A new question comes to mind: for which numbers of repeated digits n is the fraction an integer?</p>
+
+<p>This handy formula from the Online Encylopedia of Integer Sequences (OEIS) <a href="https://oeis.org/A002275">A002275</a> generates repunits:
+\[
+  R_n=\frac{10^n - 1}{9}\,.
+\]
+As the sum in the denominator is just the number of digits, the fraction $Q$ then is
+\[
+  Q_n=\frac{R_n}{n} = \frac{10^n - 1}{9n}\,.
+\]</p>
+
+<p>I made a python script to see when the result is an integer:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[(</span><span class="n">n</span><span class="p">,</span> <span class="p">(</span><span class="mi">10</span><span class="o">**</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">//</span><span class="mi">9</span><span class="o">/</span><span class="n">n</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">)]</span>
+</code></pre></div></div>
+
+<p>which gives integer fractions for $Q=1$ for $n=1$, $Q=37$ for $n=3$, and $Q=12345679$ for $n=9$.</p>
+
+<details><summary>Click to expand the full results of python script…</summary>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[(1, 1.0),
+ (2, 5.5),
+ (3, 37.0),
+ (4, 277.75),
+ (5, 2222.2),
+ (6, 18518.5),
+ (7, 158730.14285714287),
+ (8, 1388888.875),
+ (9, 12345679.0)]
+</code></pre></div></div>
+</details>
+
+<p>I replied to the post with the case for $n=9$, which led to this response:</p>
+
+<blockquote class="twitter-tweet"><p lang="en" dir="ltr">Our Strange Universe. Mathematics. Punching Through the Brick Walls of Reality.<br /><br />666666666 and Friends. (Thanks <a href="https://twitter.com/ThomasTBurgess1?ref_src=twsrc%5Etfw">@ThomasTBurgess1</a>) <a href="https://t.co/nLExc1GFlK">pic.twitter.com/nLExc1GFlK</a></p>&mdash; Cliff Pickover (@pickover) <a href="https://twitter.com/pickover/status/1405990264381050886?ref_src=twsrc%5Etfw">June 18, 2021</a></blockquote>
+<script async="" src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<p>On a tangent, a typo in my first reply pointed out by <a href="https://twitter.com/mikekohnstamm">@mikekohnstamm</a> added the “missing” 8 to $Q=12345679$. Furthermore, <a href="https://twitter.com/Kapil_kant1">@Kapil_kant</a> pointed out that the 8 is there if the fraction is:
+\[
+  \frac{1111111101}{1+1+1+1+1+1+1+1+0+1}=123456789\,.
+\]
+I’ll save investigating that for another time.</p>
+
+<h2 id="going-deeper">Going deeper</h2>
+
+<p>A better way to search for exact integer fractions is to check when the modulus is 0 and only print those cases using integer division. This is done in the following python snippets:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">print</span><span class="p">(</span><span class="s">"Q"</span><span class="p">,</span> <span class="p">[(</span><span class="mi">10</span><span class="o">**</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">//</span><span class="p">(</span><span class="mi">9</span><span class="o">*</span><span class="n">n</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span> <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="mi">10</span><span class="o">**</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">//</span><span class="mi">9</span> <span class="o">%</span> <span class="n">n</span><span class="p">])</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"denominators"</span><span class="p">,</span> <span class="p">[</span><span class="n">n</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">20000</span><span class="p">)</span> <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="mi">10</span><span class="o">**</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">//</span><span class="mi">9</span> <span class="o">%</span> <span class="n">n</span><span class="p">])</span>
+</code></pre></div></div>
+
+<p>This gives the solution sequence $Q=1, 37, 12345679, 4115226337448559670781893, …$ with denominators $1, 3, 9, 27, 81, 111, 243, …$. Evidently $Q(n)$ grows very fast with 111 terms already at $n=6$.</p>
+
+<details><summary>Click to expand the full results of python script…</summary>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Q: [1, 37, 12345679, 4115226337448559670781893, 
+  1371742112482853223593964334705075445816186556927297668038408779149519890260631, 
+  10010010010010010010010010010010010010010010010010010010010010010010010010010010...
+  01001001001001001001001001001]
+denominators [1, 3, 9, 27, 81, 111, 243, 333, 729, 999, 2187, 2997, 4107, 6561, 
+  8991, 12321, 13203, 19683]
+</code></pre></div></div>
+
+</details>
+
+<p>Several series repunit-related sequences mention these numbers: <a href="https://oeis.org/A190301">A190301</a>,  <a href="https://oeis.org/A190301">A215258</a>, <a href="https://oeis.org/A190301">A215258</a>. I couldn’t find this sequence in the OEIS, so I registered and made it my first submission.</p>
+
+<p>Update 2021-08-02: it is now sequence <a href="https://oeis.org/A345467">A215258</a> - Ratios R(k)/k for which R(k) / k is an integer, where R(k) = A002275(k) is a repunit.</p>
+
+<p>The sequence of denominators 1, 3, 9, 27, 81, …, suggests the conjecture: $Q$ is integer when $n$ is of the form $n=3^n$. One OEIS editor proved this elegantly for me: \(R_{3n} / R_n = 10^{2n} + 10^n + 1\), which is divisible by 3. Therefore $R_{3^m}$ is divisible by $3^m$ by induction on $m$. However, there are additional solutions: 111, 333, 999, …. There is no known general rule for the denominator. The full sequence of denominators is <a href="https://oeis.org/A014950">A014950</a> in OEIS. Using this with the OEIS sequence for $R_n$ (<a href="https://oeis.org/A014950">A002275</a>), all the integer fractions are:
+\[
+  Q(n) = \frac{A002275(A014950(n))}{A014950(n)}\,.
+\]</p>
+
+<p>My favourite integer fraction so far is:
+\[
+  Q(6)=\frac{R_{111}}{111} = \ldots
+\]
+\[
+\tiny
+\frac{11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111}{111} = \ldots
+\]
+\[
+\tiny
+1001001001001001001001001001001001001001001001001001001001001001001001001001001001001001001001001001001001001
+\]</p>
+
+<h2 id="takeaway">Takeaway</h2>
+
+<p>Twitter, if done right, can be a source of inspiration and knowledge. Also, recreational maths is fun.</p>
+
+<hr />
+
+<p>Header image: repunit digit sum ratio remix of <a href="https://apod.nasa.gov/apod/ap210614.html">Ganymede from Juno</a>.</p>]]></content><author><name>{&quot;picture&quot;=&gt;&quot;/img/avatar.png&quot;, &quot;twitter&quot;=&gt;&quot;ThomasTBurgess1&quot;}</name></author><category term="blog" /><category term="blog" /><category term="maths" /><category term="oeis" /><summary type="html"><![CDATA[Down the rabbit hole of integer sequences, trying to understand repeated digits divided by their digit sum]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://thomasburgess.github.io/assets/images/2021-06-20/APOD_Ganymede_repunit.jpg" /><media:content medium="image" url="https://thomasburgess.github.io/assets/images/2021-06-20/APOD_Ganymede_repunit.jpg" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">Blog setup</title><link href="https://thomasburgess.github.io/blog/2021/06/12/Blog-setup.html" rel="alternate" type="text/html" title="Blog setup" /><published>2021-06-12T00:00:00+02:00</published><updated>2021-06-12T00:00:00+02:00</updated><id>https://thomasburgess.github.io/blog/2021/06/12/Blog-setup</id><content type="html" xml:base="https://thomasburgess.github.io/blog/2021/06/12/Blog-setup.html"><![CDATA[<p>This blog is built with <a href="http://jekyllrb.com/">Jekyll</a> and the 
+<a href="https://github.com/kitian616/jekyll-TeXt-theme">TeXt</a> theme and 
+hosted for free on <a href="https://github.com/">GitHub</a>. 
+The site is generated from markdown sources automatically on every 
+push to the <a href="https://github.com/thomasburgess/thomasburgess.github.io">repository</a>.</p>
+
+<p>It’s easy to have a similar setup 
+in <a href="https://gitlab.com">GitLab</a>, but I wanted to try the 
+<a href="https://pages.github.com/">GitHub pages</a> approach. Finding and configuring 
+a suitable theme was more challenging than getting a blog up and running. 
+The theme was the first pretty theme I found supporting 
+<a href="https://mermaid-js.github.io/mermaid/#/">Mermaid diagrams</a>,
+math with <a href="https://www.mathjax.org/">MathJax maths</a>, and syntax 
+highlighting out of the box.  I’ll try to revisit this post as the blog matures.</p>
+
+<h2 id="getting-the-blog-up-and-running">Getting the blog up and running</h2>
+
+<p>I’m using the 
+<a href="https://tianqi.name/jekyll-TeXt-theme/docs/en/quick-start#ruby-gem-method">Ruby Gem method</a> 
+to get my theme working. When writing a post, or testing modifications, 
+I run Jekyll locally before pushing it to GitHub.
+Posts added to <code class="language-plaintext highlighter-rouge">_drafts/</code> will not be published when pushing, 
+which is great when writing longer posts.
+To serve the site including drafts locally to the default 
+<code class="language-plaintext highlighter-rouge">http://127.0.0.1:4000</code>, I run</p>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>bundle <span class="nb">exec </span>jekyll serve <span class="nt">--drafts</span>
+</code></pre></div></div>
+<p>The local server rebuilds the site when the source is modified 
+(with the notable exception of <code class="language-plaintext highlighter-rouge">_config.yml</code>). Not only does this cut on 
+waiting for GitHub to build the site, but it also allows me to spot 
+mistakes before publishing.</p>
+
+<h2 id="customization">Customization</h2>
+
+<p>I enabled a few options:</p>
+<ul>
+  <li>Enabled tag for Google <a href="https://analytics.google.com">Analytics</a> and 
+<a href="https://search.google.com/search-console/about">Search Console</a></li>
+  <li>Enabled <a href="https://www.addtoany.com/">AddToAny</a> support for easy sharing of posts</li>
+</ul>
+
+<p>and made some additions:</p>
+<ul>
+  <li>Left aligned, indented equations by adding 
+<code class="language-plaintext highlighter-rouge">displayAlign: "left", displayIndent: "2em"</code> to 
+<code class="language-plaintext highlighter-rouge">_config</code> in <code class="language-plaintext highlighter-rouge">_includes/markdown-enhancements/mathjax</code>.</li>
+  <li>Support comments through <a href="https://utteranc.es/">utterances</a> 
+following the example in this very helpful 
+<a href="https://gist.github.com/mwt/7b747b45d5e28e7a943490d7a3b8a4ff">gist</a></li>
+  <li>Collapsible content containers through a 
+<a href="http://movb.de/jekyll-details-support.html">details tag snippet</a>
+    <ul>
+      <li>Not working with code block content :(</li>
+    </ul>
+  </li>
+  <li>Included <a href="https://github.com/paulrobertlloyd/jekyll-figure"><code class="language-plaintext highlighter-rouge">jekyll-figure</code> plugin</a> to get 
+pictures with <code class="language-plaintext highlighter-rouge">figure</code> and <code class="language-plaintext highlighter-rouge">figurecaption</code> tags.</li>
+  <li>Included <a href="https://www.osano.com/cookieconsent/download/">osano cookie consent</a> following the approach of <a href="https://www.chuvisco.me/technology/2019/07/01/cookie-consent/">www.chuvisco.me</a></li>
+  <li>Added <a href="https://github.com/jekyll/jekyll-seo-tag/blob/master/docs/usage.md"><code class="language-plaintext highlighter-rouge">jekyll-seo-tag</code></a> for open graph previews</li>
+</ul>
+
+<h2 id="github-pages-annoyances">GitHub pages annoyances</h2>
+
+<ul>
+  <li>GitHub pages doesn’t like the <code class="language-plaintext highlighter-rouge">theme:</code> pointing to an unsupported theme in 
+<code class="language-plaintext highlighter-rouge">_config.yml</code>. I got warnings with every build  (that otherwise actually 
+worked). Changing this to <code class="language-plaintext highlighter-rouge">remote-theme:</code> makes the builds warning-free.</li>
+  <li>GitHub pages runs in safe mode, and doesn’t support most plugins (such as 
+the <code class="language-plaintext highlighter-rouge">figure</code> and <code class="language-plaintext highlighter-rouge">details</code> plugins that I use). This can be circumvented by 
+building handy GitHub action 
+<a href="https://github.com/jeffreytse/jekyll-deploy-action">jekyll-deploy-action </a>. 
+The trickiest part was to change <code class="language-plaintext highlighter-rouge">master</code> to main in the <code class="language-plaintext highlighter-rouge">yml</code>, and adding a 
+repository secret for repo access. This fix likely fixes the first annoyance,
+but it still works with <code class="language-plaintext highlighter-rouge">remote-theme</code>, so I’ll leave it like it is.</li>
+</ul>
+
+<hr />
+
+<p>Header photo by <a href="https://unsplash.com/@villepalmu?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Ville Palmu</a> on <a href="https://unsplash.com/s/photos/sarek?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Unsplash</a></p>]]></content><author><name>{&quot;picture&quot;=&gt;&quot;/img/avatar.png&quot;, &quot;twitter&quot;=&gt;&quot;ThomasTBurgess1&quot;}</name></author><category term="blog" /><category term="blog" /><category term="jekyll" /><category term="TeXt" /><category term="github" /><summary type="html"><![CDATA[Explaining my blog setup]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://thomasburgess.github.io/assets/planet7.png" /><media:content medium="image" url="https://thomasburgess.github.io/assets/planet7.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">Welcome to my Blog</title><link href="https://thomasburgess.github.io/blog/2021/06/06/Welcome-to-my-blog.html" rel="alternate" type="text/html" title="Welcome to my Blog" /><published>2021-06-06T00:00:00+02:00</published><updated>2021-06-06T00:00:00+02:00</updated><id>https://thomasburgess.github.io/blog/2021/06/06/Welcome-to-my-blog</id><content type="html" xml:base="https://thomasburgess.github.io/blog/2021/06/06/Welcome-to-my-blog.html"><![CDATA[<p>Hi,</p>
+
+<p>I’m Thomas Burgess, welcome to the first post of my blog. 
+I’m a Swedish Experimental Particle Physicist turned data scientist. 
+I did my research on <a href="https://icecube.wisc.edu/">IceCube</a>
+for <a href="https://www.su.se/">Stockholms Univeristet</a> and 
+<a href="https://atlas.cern/">ATLAS</a> for <a href="https://www.uib.no">Universitet i Bergen</a>. 
+Since then, I headed research at an indoor navigation startup acquired by ESRI,
+was a senior data scientist at tourism startup TourRadar, and currently, I’m 
+working the senior data scientist at health tech startup 
+<a href="https://www.bloomdiagnostics.com/en_AT">Bloom Diagnostics</a> in beautiful 
+Vienna, Austria.</p>
+
+<p>Today, I’ve set this thing blog up with 
+<a href="https://pages.github.com/">GitHub pages</a>, 
+for more details read the 
+<a href="/blog/2021/06/12/Blog-setup.html">Blog setup post</a>. I hope to share some 
+of the things I learn and do (from time to time). In the process, I also 
+figured out how to put something in my 
+<a href="https://github.com/thomasburgess">GitHub profile</a>.</p>
+
+<p>The blog source with content is open and viewable in its 
+<a href="https://github.com/thomasburgess/thomasburgess.github.io">repository</a>.
+If you find anything useful and want to use, copy, or modify it, tell me 
+about it and consider crediting me - all in the spirit of 
+<a href="https://creativecommons.org/licenses/by-nc/4.0/">CC BY-NC 4.0</a>.</p>
+
+<p>Enjoy reading!</p>]]></content><author><name>{&quot;picture&quot;=&gt;&quot;/img/avatar.png&quot;, &quot;twitter&quot;=&gt;&quot;ThomasTBurgess1&quot;}</name></author><category term="blog" /><category term="blog" /><category term="github" /><summary type="html"><![CDATA[Welcome to Thomas Burgess's blog]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://thomasburgess.github.io/assets/planet7.png" /><media:content medium="image" url="https://thomasburgess.github.io/assets/planet7.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry></feed>
