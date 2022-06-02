@@ -15,12 +15,7 @@ This can be done with nested `for` loops. This is not pretty, and poses a challe
 
 ## Weather example
 
-We are given a simple (unrealistic) model to estimate the probability of rain tomorrow
-```python
-def p_rain(rained, temp):  
-    return 1/(1+np.exp(0.1*(temp-5*(1+5*rained))))
-```
-and and to tabulate the probabilities for all combinations of these paramters:
+Assume we want to evaluate a model `p_rain(rained, temp)` that estimates probability of rain tomorrow given the current weather condition over the following parameter space:
 ```python
 parameters = {"rained": (True, False), "temp": (15, 20, 25, 30)}
 ```
@@ -60,6 +55,18 @@ for rained in tqdm(parameters["rained"]):
 ```
 The parallelization now has a bottleneck in waiting for the outer loop. And to an even larger extent, the ordering of loops matter. While this setup can work, it is easy to do better!
 
+What is needed, is a flat list of all parameters, that some function that achieves this:
+```python
+> flat_dicts({"rained": (True, False), "temp": (15, 20, 25)})
+[{"rained": True, "temp": 15},
+ {"rained": True, "temp": 20},
+ {"rained": True, "temp": 25},
+ {"rained": False, "temp": 15},
+ {"rained": False, "temp": 20},
+ {"rained": False, "temp": 25}]
+```
+With this the above loops can be reduced to a single loop, and tqdm and pool can work as expected.
+
 ## Cartesian product
 
 With [itertools.product](https://docs.python.org/3/library/itertools.html?highlight=itertools%20product#itertools.product) all combinations can easily be generated:
@@ -70,7 +77,9 @@ With [itertools.product](https://docs.python.org/3/library/itertools.html?highli
 
 In the rain example dictionary, make the product on parameter values, then loop over each parameter tuple and add keys:
 ```python
->>> list({k: v for k, v in zip(parameters.keys(), i)} for i in product(*parameters.values()))
+def flat_lists(parameters):
+    return {k: v for k, v in zip(parameters.keys(), i)} for i in product(*parameters.values())
+>>> list(flat_dicts({"rained": (True, False), "temp": (15, 20, 25)}))
 [{'rained': True, 'temp': 15},
 {'rained': True, 'temp': 20},
 {'rained': True, 'temp': 25},
@@ -78,6 +87,7 @@ In the rain example dictionary, make the product on parameter values, then loop 
 {'rained': False, 'temp': 20},
 {'rained': False, 'temp': 25}]
 ```
+wich is exactly what we hoped to achieve.
 
 ## Putting it all together
 
@@ -89,16 +99,16 @@ from tqdm import tqdm
 import multiprocess as mp
 
 def loop_pars(pars, fun):
-    tasks = [{k: v for k, v in zip(pars.keys(), i)} for i in product(*pars.values())]
+    tasks = list(flat_dicts(pars))
     return tqdm(pool.imap_unordered(lambda x: {**x, "result": fun(**x)}, tasks), total=len(tasks))
 ```
 To get this working, `tqdm` must know the total iteration count, and use `imap` to get data once it's finished.
 
-
-And now we can run a simple test:
+And now we can run a simple test (with a terribly inaccurate logistic weather model):
 
 ```python
 import time
+
 def p_rain(rained, temp): 
     time.sleep(1)
     return 1/(1+np.exp(0.1*(temp-5*(1+5*rained))))
@@ -108,7 +118,7 @@ with mp.Pool(2) as pool:
     df = pd.DataFrame(loop_pars(parameters, p_rain, pool))
 df
 ``` 
-Here, I slowed down execution by limiting to 2 processes and sleeping. The result 
+Here, execution was slowed down by limiting to 2 processes and sleeping. The result 
 running in a [jupyter notebook](https://jupyter.org) using [tqdm.notebook](https://tqdm.github.io/docs/notebook/).:
 
 {% figure [caption:"Figure 1: Parallel execution with progress bar."] %}
