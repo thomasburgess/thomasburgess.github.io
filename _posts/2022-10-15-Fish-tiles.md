@@ -9,6 +9,8 @@ article_header:
   image:
     src: /assets/images/2022-10-15/header.png
 categories: blog
+author: thomasburgess
+description: Fun with fisht tiles
 ---
 
 ## The fish tile
@@ -18,6 +20,8 @@ A fish tile is shown in [Figure 1.](#figure-1) It is remarkably fun to play with
 {% figure [caption:"Figure 1: The fish tile."] %}
 ![](/assets/images/2022-10-15/fish.png){: #figure-1 width="200px" alt="The fish tile - a regular pentagon joined with the base of a pentagonal crescent."}
 {% endfigure %}
+
+All of the images in this post were made using the excellent [Girih App](https://apps.apple.com/us/app/girih-polygon-pattern-design/id1400485589?mt=12).
 
 ## Fish rings
 
@@ -54,4 +58,5 @@ Finally, in [Figure 6.](#figure-6), is a tiling (with holes) using the pentaring
 {% figure [caption:"Figure 6: Big pentaring tiling."] %}
 ![](/assets/images/2022-10-15/fishdish.png){: #figure-3 width="800px" alt="Big pentaring tiling."}
 {% endfigure %}
+
 
