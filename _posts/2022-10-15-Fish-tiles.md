@@ -8,6 +8,7 @@ article_header:
   type: cover
   image:
     src: /assets/images/2022-10-15/header.png
+image: /assets/images/2022-10-15/header_crop.png
 categories: blog
 author: thomasburgess
 description: Fun with fisht tiles
