@@ -43,7 +43,7 @@ First a decagon formed by tiling heads in 5.5.10 vertices, next a star is formed
 
 ## Tiling the plane
 
-By making concentric pentarings, all of the plane except the central pengagon can be tiled, as shown in [Figure 4.](#figure-4). However, by tiling fishes head to tail on straight lines tilings over the full plane can be achived, shown as pineapples in [Figure 5.](#figure-5)
+By making concentric pentarings, all of the plane except the central pengagon can be tiled, as shown in [Figure 4.](#figure-4). However, by tiling fishes head to tail on straight lines tilings over the full plane can be achived. Lines fit together regardless of swimming direction, as shown in the two examples pineapple fish examples shown in [Figure 5.](#figure-5) The second tiling, is identical to the one used in the cartoon header of this blog post.
 
 {% figure [caption:"Figure 4: Rings on a plane."] %}
 ![](/assets/images/2022-10-15/ring_plane.png){: #figure-4 width="300px" alt="Rings on a plane - concentric pentaring pineapple tiling."}
