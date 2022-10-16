@@ -3,6 +3,7 @@ title: Fun with fish tiles
 tags:
   - blog
   - tiling
+  - n-gons
 mathjax: false
 article_header:
   type: cover
@@ -11,7 +12,7 @@ article_header:
 image: /assets/images/2022-10-15/header_crop.png
 categories: blog
 author: thomasburgess
-description: Fun with fisht tiles
+description: Fun with fish tiles
 ---
 
 ## The fish tile
@@ -22,7 +23,7 @@ A fish tile is shown in [Figure 1.](#figure-1) It is remarkably fun to play with
 ![](/assets/images/2022-10-15/fish.png){: #figure-1 width="200px" alt="The fish tile - a regular pentagon joined with the base of a pentagonal crescent."}
 {% endfigure %}
 
-All of the images in this post were made using the excellent [Girih App](https://apps.apple.com/us/app/girih-polygon-pattern-design/id1400485589?mt=12).
+All of the images in this post were made using the excellent [Girih App](https://apps.apple.com/us/app/girih-polygon-pattern-design/id1400485589?mt=12). For the Escher like cartoon on top, I added fish faces in Affinity designer, and for the big tiling at the end I used Affinity photo to add a background gradient, a signature and some drop shadow.
 
 ## Fish rings
 
@@ -42,7 +43,7 @@ First a decagon formed by tiling heads in 5.5.10 vertices, next a star is formed
 
 ## Tiling the plane
 
-By making concentric pentarings, all of the plane except the central pengagon can be tiled, as shown in [Figure 4.](#figure-4). However, by tiling fishes head to tail on straight lines tilings over the full plane can be achived, shown in [Figure 5.](#figure-5)
+By making concentric pentarings, all of the plane except the central pengagon can be tiled, as shown in [Figure 4.](#figure-4). However, by tiling fishes head to tail on straight lines tilings over the full plane can be achived, shown as pineapples in [Figure 5.](#figure-5)
 
 {% figure [caption:"Figure 4: Rings on a plane."] %}
 ![](/assets/images/2022-10-15/ring_plane.png){: #figure-4 width="300px" alt="Rings on a plane - concentric pentaring pineapple tiling."}
@@ -54,7 +55,7 @@ By making concentric pentarings, all of the plane except the central pengagon ca
 
 ## Big tiling
 
-Finally, in [Figure 6.](#figure-6), is a tiling (with holes) using the pentaring from [Figure 1.](#figure-1).
+Finally, in [Figure 6.](#figure-6), is a tiling (with holes) using the pentaring from [Figure 1.](#figure-1). In addition to the pentagonal holes, this tiling has squiggly rhombic holes, with pointy angles 1/10 of a full turn.
 
 {% figure [caption:"Figure 6: Big pentaring tiling."] %}
 ![](/assets/images/2022-10-15/fishdish.png){: #figure-3 width="800px" alt="Big pentaring tiling."}
