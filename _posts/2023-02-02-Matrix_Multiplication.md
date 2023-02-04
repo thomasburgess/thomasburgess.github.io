@@ -518,7 +518,7 @@ The most efficient calculation is using the Z-method with F-ordering.
 
 ## Summary
 
-For both problems, pre-computing $$X_Z$$ instead of recomputing it every iteration gave the best performance when memory ordering was set correctly. For the long vector, it is possible to exploit the structure of $$X$$ to get similarly good performance. Sparse matrices can help, especially when the data is sparse enough. It's worth noting that most improvements work because $$X$$ doesn't change.
+The baseline implementations were improved by pre-calculating the normalized matrix $$X_Z$$, using SciPy's direct interface to BLAS routines, algebraically rearranging the expression, and by using sparse matrices. Sparse matrices can help, especially when the data is sparse enough. It is also possible to exploit the structure of the matrix to get similarly good performance. Overall, the best performance was achieved by using the pre-normalized matrix with F-ordering of the array memory. Table 1 and 2 summarizes the achieved speed-ups for the different improvements.
 
 {% figure [caption:"**Table 1**: Problem 1 - Durations and speed-ups w.r.t. baseline for all tests"] %}
 
