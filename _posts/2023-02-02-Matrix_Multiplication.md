@@ -31,11 +31,13 @@ The slowest part of each iteration is taking the product of the [Z-scores](https
     b = \left(\frac{X-\mu_X}{\sigma_X}\right) v \,.
 \\]
 
-This post is about different approaches to improving performance. Possibly, some insights here are applicable beyond the details of the specific problem.
+This post is about different approaches to improving performance. Possibly, some 
+insights here are applicable beyond the details of the specific problem.
 
 ## Project setup
 
-I wrote and evaluated this code in a [jupyter lab (v3.5.2)](https://jupyter.org) notebook in [python (v3.10.4)](https://www.python.org) on my M1-pro MacBook Pro. Additionally, the [numpy (v1.22.4)](https://numpy.org) and [scipy (v1.8.1)](https://scipy.org) packages were installed. 
+I wrote and evaluated this code in a [jupyter lab (v3.5.2)](https://jupyter.org) 
+notebook in [python (v3.10.4)](https://www.python.org) on my M1-pro MacBook Pro. Additionally, the [numpy (v1.22.4)](https://numpy.org) and [scipy (v1.8.1)](https://scipy.org) packages were installed. 
 
 {% details Click to expand imports for python code... %}
 ```python
@@ -255,13 +257,18 @@ time_calc(
 ```
 {% enddetails %}
 
-Just using BLAS does make the code run 2-6x faster. Changing to F-ordered memory makes it 8-15x faster. This improvement also happens for the original Numpy-only functions.
+Just using BLAS does make the code run 2-6x faster. Changing to F-ordered memory makes 
+it 8-15x faster. This improvement also happens for the original Numpy-only functions.
 
-Lesson: memory layout can make a big difference. With the correct input, BLAS doesn't improve performance. The Z method with F-ordering now is 35x faster than the baseline method!
+Lesson: memory layout can make a big difference. With the correct input, BLAS doesn't 
+improve performance. The Z method with F-ordering now is 35x faster than the baseline 
+method!
 
 ### Algebraic manipulation
 
-The Z-method misses the structure of $$X$$. The product $$X^T u$$ should run faster than $$(X-X_\mu)^T u$$ as the matrix is all integers and have many zeroes. And by rearranging the expression for $$a$$, it is possible to use this instead.
+The Z-method misses the structure of $$X$$. The product $$X^T u$$ should run faster than 
+$$(X-X_\mu)^T u$$ as the matrix is all integers and have many zeroes. And by rearranging 
+the expression for $$a$$, it is possible to use this instead.
 
 \\[
     a = 
