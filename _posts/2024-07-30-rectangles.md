@@ -1,5 +1,5 @@
 ---
-title: Rectangles
+title: Rectangle areas!
 tags:
   - blog
   - area
@@ -9,10 +9,7 @@ mathjax: true
 description: Dad & kid Exploring Areas of Rectangles and Squares.
 ---
 
-
-# Rectangles! 
-
-## Dad & kid Exploring Areas of Rectangles and Squares.
+*Dad & kid Exploring Areas of Rectangles and Squares.*
 
 Recently, I did a small exploration of the areas of rectangles and squares with my 7-year-old kid who loves learning about math. 
 Here we consider rectangles with two positive integer side lengths, $$a$$ and $$b$$. 
