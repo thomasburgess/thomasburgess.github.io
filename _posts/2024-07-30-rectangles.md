@@ -83,7 +83,7 @@ Finally, let's consider also negative $$n$$, and examine $$A$$ for $$s=4$$ and $
 |  4 | 9 | 1 |  9 | $$\blacksquare\blacksquare\blacksquare\blacksquare\blacksquare\blacksquare\blacksquare\blacksquare\blacksquare$$ |
 
 We chose to call this a skyscraper plot (we drew ours vertically).
-We observed that this skyscraper is actually a bunch of squares stacked. First, a 1x1 square then a 3x3, then 5x5, and so on. We derived a fun formula for the area of any skyscraper:
+We observed that this skyscraper is actually a bunch of squares stacked. First, a 1x1 square then a 3x3, then 5x5, and so on. With this we can derive a fun formula for the area of any skyscraper:
 
 \\[
 A(s) = \sum_{n=1}^{s} (2n-1)^2 = \frac{1}{3}s(4s^2 - 1)\,.
