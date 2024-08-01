@@ -9,6 +9,7 @@ article_header:
   type: cover
   image:
     src: /assets/images/2024-07-30/skyline.png
+image: /assets/images/2024-07-30/skyline.png
 mathjax: true
 description: Dad & kid Exploring Areas of Rectangles and Squares.
 ---
