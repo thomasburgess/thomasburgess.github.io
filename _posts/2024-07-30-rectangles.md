@@ -97,4 +97,5 @@ A(s) = \sum_{n=1}^{s} (2n-1)^2 = \frac{1}{3}s(4s^2 - 1)\,.
 (Simplified formula from [OEIS](https://oeis.org/A000447)).
 
 This simple problem was a lot more fun than I expected, and I found the final 
-formula surprisingly beautiful.
+formula surprisingly beautiful. The cover image on top of this post, is a colourful
+rendition of above chart.
