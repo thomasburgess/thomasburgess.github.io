@@ -25,13 +25,13 @@ timezone: "Europe/Vienna" # see https://en.wikipedia.org/wiki/List_of_tz_databas
 
 ## SEO tags
 tagline : Posts about python, statistics, data science, machine learning, and other things that interest me.
-twitter:
-  username: ThomasTBurgess1
-  card: summary
+#twitter:
+#  username: ThomasTBurgess1
+#  card: summary
 social:
   name: Thomas T Burgess
   links:
-    - https://twitter.com/ThomasTBurgess1
+#    - https://twitter.com/ThomasTBurgess1
     - https://github.com/thomasburgess
 
 ## => Author and Social
@@ -40,12 +40,12 @@ author:
   type      : "person" # "person" (default), "organization"
   name      : Thomas T Burgess
   url       : thomasburgess.github.io
-  image    : assets/avatar.png # path or url of avatar image (square)
+  image     : assets/avatar.png # path or url of avatar image (square)
   avatar    : assets/avatar.png # path or url of avatar image (square)
   bio       : Particle Physicist turned Senior Data Scientist in Vienna, Austria.
   email     : thomastburgess+blog g-mail #
   facebook  : # "user_name" the last part of your profile url, e.g. https://www.facebook.com/user_name
-  twitter   : ThomasTBurgess1
+  twitter   : # ThomasTBurgess1
   weibo     : # "user_id"   the last part of your profile url, e.g. https://www.weibo.com/user_id/profile?...
   googleplus: # "user_id"   the last part of your profile url, e.g. https://plus.google.com/u/0/user_id
   telegram  : # "user_name" the last part of your profile url, e.g. https://t.me/user_name
@@ -177,11 +177,11 @@ search:
 ## => Analytics
 ##############################
 analytics:
-  provider: google # false (default), "google", "custom"
+  provider: false # google # false (default), "google", "custom"
 
   ## Google Analytics
   google:
-    tracking_id : G-V872NC4LNH # Google Analytics id for the site
+    tracking_id : # G-V872NC4LNH # Google Analytics id for the site
     anonymize_ip: false # Anonymize IP tracking for Analytics
 
 
