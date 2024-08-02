@@ -105,6 +105,6 @@ rendition of above chart.
 On Mastodon, [Matthias Giger](https://mathstodon.xyz/deck/@matthiasgiger@bildung.social) made a Snap version of the cover image: [Square Tower](https://snap.berkeley.edu/project?username=mattgig&projectname=square%20towers). 
 
 {% figure [caption:"Figure 1: Square towers in Snap!"] %}
-![](/assets/images/2024-07-30/snap.png){: #figure-1 width="25%" alt="Square towers in Snap!"}
+![](/assets/images/2024-07-30/snap.png){: #figure-1 width="50%" alt="Square towers in Snap!"}
 {% endfigure %}
 
