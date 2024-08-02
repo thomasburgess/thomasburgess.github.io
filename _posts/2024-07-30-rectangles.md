@@ -99,3 +99,12 @@ A(s) = \sum_{n=1}^{s} (2n-1)^2 = \frac{1}{3}s(4s^2 - 1)\,.
 This simple problem was a lot more fun than I expected, and I found the final 
 formula surprisingly beautiful. The cover image on top of this post, is a colourful
 rendition of above chart.
+
+## Appendix
+
+On Mastodon, [Matthias Giger](https://mathstodon.xyz/deck/@matthiasgiger@bildung.social) made a Snap version of the cover image: [Square Tower](https://snap.berkeley.edu/project?username=mattgig&projectname=square%20towers). 
+
+{% figure [caption:"Figure 1: Square towers in Snap!"] %}
+![](/assets/images/2024-07-30/snap.png){: #figure-1 width="25%" alt="Square towers in Snap!"}
+{% endfigure %}
+
