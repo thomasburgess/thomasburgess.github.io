@@ -1,0 +1,1193 @@
+<!DOCTYPE html><html lang="en">
+  <head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"><title>Exploring repunit digit sum fractions - Thomas T Burgess's Blog</title>
+
+<meta name="description" content="In which I go down a rabbit hole of integer sequences when trying to understanda pattern in fractions of repeated digits and their digit sums.The tweetsThis ...">
+<link rel="canonical" href="https://thomasburgess.github.io/blog/2021/06/20/repdigits.html"><link rel="alternate" type="application/rss+xml" title="Thomas T Burgess's Blog" href="/feed.xml"><!-- start favicons snippet, use https://realfavicongenerator.net/ --><link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png"><link rel="manifest" href="/assets/site.webmanifest"><link rel="mask-icon" href="/assets/safari-pinned-tab.svg" color="#fc4d50"><link rel="shortcut icon" href="/assets/favicon.ico">
+
+<meta name="msapplication-TileColor" content="#ffc40d"><meta name="msapplication-config" content="/assets/browserconfig.xml">
+
+<meta name="theme-color" content="#ffffff">
+<!-- end favicons snippet --><link rel="stylesheet" href="/assets/css/main.css"><link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.15.1/css/all.css" ><!-- start custom head snippets -->
+
+<!-- end custom head snippets -->
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<meta name="generator" content="Jekyll v4.3.3" />
+<meta property="og:title" content="Exploring repunit digit sum fractions" />
+<meta name="author" content="thomasburgess" />
+<meta property="og:locale" content="en" />
+<meta name="description" content="Down the rabbit hole of integer sequences, trying to understand repeated digits divided by their digit sum" />
+<meta property="og:description" content="Down the rabbit hole of integer sequences, trying to understand repeated digits divided by their digit sum" />
+<link rel="canonical" href="https://thomasburgess.github.io/blog/2021/06/20/repdigits.html" />
+<meta property="og:url" content="https://thomasburgess.github.io/blog/2021/06/20/repdigits.html" />
+<meta property="og:site_name" content="Thomas T Burgess’s Blog" />
+<meta property="og:image" content="https://thomasburgess.github.io/assets/images/2021-06-20/APOD_Ganymede_repunit.jpg" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-06-20T00:00:00+02:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="https://thomasburgess.github.io/assets/images/2021-06-20/APOD_Ganymede_repunit.jpg" />
+<meta property="twitter:title" content="Exploring repunit digit sum fractions" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"thomasburgess"},"dateModified":"2021-06-20T00:00:00+02:00","datePublished":"2021-06-20T00:00:00+02:00","description":"Down the rabbit hole of integer sequences, trying to understand repeated digits divided by their digit sum","headline":"Exploring repunit digit sum fractions","image":"https://thomasburgess.github.io/assets/images/2021-06-20/APOD_Ganymede_repunit.jpg","mainEntityOfPage":{"@type":"WebPage","@id":"https://thomasburgess.github.io/blog/2021/06/20/repdigits.html"},"url":"https://thomasburgess.github.io/blog/2021/06/20/repdigits.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <script>(function() {
+  window.isArray = function(val) {
+    return Object.prototype.toString.call(val) === '[object Array]';
+  };
+  window.isString = function(val) {
+    return typeof val === 'string';
+  };
+
+  window.hasEvent = function(event) {
+    return 'on'.concat(event) in window.document;
+  };
+
+  window.isOverallScroller = function(node) {
+    return node === document.documentElement || node === document.body || node === window;
+  };
+
+  window.isFormElement = function(node) {
+    var tagName = node.tagName;
+    return tagName === 'INPUT' || tagName === 'SELECT' || tagName === 'TEXTAREA';
+  };
+
+  window.pageLoad = (function () {
+    var loaded = false, cbs = [];
+    window.addEventListener('load', function () {
+      var i;
+      loaded = true;
+      if (cbs.length > 0) {
+        for (i = 0; i < cbs.length; i++) {
+          cbs[i]();
+        }
+      }
+    });
+    return {
+      then: function(cb) {
+        cb && (loaded ? cb() : (cbs.push(cb)));
+      }
+    };
+  })();
+})();
+(function() {
+  window.throttle = function(func, wait) {
+    var args, result, thisArg, timeoutId, lastCalled = 0;
+
+    function trailingCall() {
+      lastCalled = new Date;
+      timeoutId = null;
+      result = func.apply(thisArg, args);
+    }
+    return function() {
+      var now = new Date,
+        remaining = wait - (now - lastCalled);
+
+      args = arguments;
+      thisArg = this;
+
+      if (remaining <= 0) {
+        clearTimeout(timeoutId);
+        timeoutId = null;
+        lastCalled = now;
+        result = func.apply(thisArg, args);
+      } else if (!timeoutId) {
+        timeoutId = setTimeout(trailingCall, remaining);
+      }
+      return result;
+    };
+  };
+})();
+(function() {
+  var Set = (function() {
+    var add = function(item) {
+      var i, data = this._data;
+      for (i = 0; i < data.length; i++) {
+        if (data[i] === item) {
+          return;
+        }
+      }
+      this.size ++;
+      data.push(item);
+      return data;
+    };
+
+    var Set = function(data) {
+      this.size = 0;
+      this._data = [];
+      var i;
+      if (data.length > 0) {
+        for (i = 0; i < data.length; i++) {
+          add.call(this, data[i]);
+        }
+      }
+    };
+    Set.prototype.add = add;
+    Set.prototype.get = function(index) { return this._data[index]; };
+    Set.prototype.has = function(item) {
+      var i, data = this._data;
+      for (i = 0; i < data.length; i++) {
+        if (this.get(i) === item) {
+          return true;
+        }
+      }
+      return false;
+    };
+    Set.prototype.is = function(map) {
+      if (map._data.length !== this._data.length) { return false; }
+      var i, j, flag, tData = this._data, mData = map._data;
+      for (i = 0; i < tData.length; i++) {
+        for (flag = false, j = 0; j < mData.length; j++) {
+          if (tData[i] === mData[j]) {
+            flag = true;
+            break;
+          }
+        }
+        if (!flag) { return false; }
+      }
+      return true;
+    };
+    Set.prototype.values = function() {
+      return this._data;
+    };
+    return Set;
+  })();
+
+  window.Lazyload = (function(doc) {
+    var queue = {js: [], css: []}, sources = {js: {}, css: {}}, context = this;
+    var createNode = function(name, attrs) {
+      var node = doc.createElement(name), attr;
+      for (attr in attrs) {
+        if (attrs.hasOwnProperty(attr)) {
+          node.setAttribute(attr, attrs[attr]);
+        }
+      }
+      return node;
+    };
+    var end = function(type, url) {
+      var s, q, qi, cbs, i, j, cur, val, flag;
+      if (type === 'js' || type ==='css') {
+        s = sources[type], q = queue[type];
+        s[url] = true;
+        for (i = 0; i < q.length; i++) {
+          cur = q[i];
+          if (cur.urls.has(url)) {
+            qi = cur, val = qi.urls.values();
+            qi && (cbs = qi.callbacks);
+            for (flag = true, j = 0; j < val.length; j++) {
+              cur = val[j];
+              if (!s[cur]) {
+                flag = false;
+              }
+            }
+            if (flag && cbs && cbs.length > 0) {
+              for (j = 0; j < cbs.length; j++) {
+                cbs[j].call(context);
+              }
+              qi.load = true;
+            }
+          }
+        }
+      }
+    };
+    var load = function(type, urls, callback) {
+      var s, q, qi, node, i, cur,
+        _urls = typeof urls === 'string' ? new Set([urls]) : new Set(urls), val, url;
+      if (type === 'js' || type ==='css') {
+        s = sources[type], q = queue[type];
+        for (i = 0; i < q.length; i++) {
+          cur = q[i];
+          if (_urls.is(cur.urls)) {
+            qi = cur;
+            break;
+          }
+        }
+        val = _urls.values();
+        if (qi) {
+          callback && (qi.load || qi.callbacks.push(callback));
+          callback && (qi.load && callback());
+        } else {
+          q.push({
+            urls: _urls,
+            callbacks: callback ? [callback] : [],
+            load: false
+          });
+          for (i = 0; i < val.length; i++) {
+            node = null, url = val[i];
+            if (s[url] === undefined) {
+              (type === 'js' ) && (node = createNode('script', { src: url }));
+              (type === 'css') && (node = createNode('link', { rel: 'stylesheet', href: url }));
+              if (node) {
+                node.onload = (function(type, url) {
+                  return function() {
+                    end(type, url);
+                  };
+                })(type, url);
+                (doc.head || doc.body).appendChild(node);
+                s[url] = false;
+              }
+            }
+          }
+        }
+      }
+    };
+    return {
+      js: function(url, callback) {
+        load('js', url, callback);
+      },
+      css: function(url, callback) {
+        load('css', url, callback);
+      }
+    };
+  })(this.document);
+})();
+</script><script>
+  (function() {
+    var TEXT_VARIABLES = {
+      version: '2.2.6',
+      sources: {
+        font_awesome: 'https://cdn.bootcdn.net/ajax/libs/font-awesome/5.15.1/css/all.css',
+        jquery: 'https://cdn.bootcss.com/jquery/3.1.1/jquery.min.js',
+        leancloud_js_sdk: '//cdn.jsdelivr.net/npm/leancloud-storage@3.13.2/dist/av-min.js',
+        chart: 'https://cdn.bootcss.com/Chart.js/2.7.2/Chart.bundle.min.js',
+        gitalk: {
+          js: 'https://cdn.bootcss.com/gitalk/1.2.2/gitalk.min.js',
+          css: 'https://cdn.bootcss.com/gitalk/1.2.2/gitalk.min.css'
+        },
+        valine: 'https://unpkg.com/valine/dist/Valine.min.js',
+        mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js',
+        mermaid: 'https://cdn.bootcss.com/mermaid/8.0.0-rc.8/mermaid.min.js'
+      },
+      site: {
+        toc: {
+          selectors: 'h1,h2,h3'
+        }
+      },
+      paths: {
+        search_js: '/assets/search.js'
+      }
+    };
+    window.TEXT_VARIABLES = TEXT_VARIABLES;
+  })();
+</script>
+</head>
+  <body>
+    <div class="root" data-is-touch="false">
+      <div class="layout--page js-page-root"><div class="page__main js-page-main page__viewport has-aside cell cell--auto">
+
+      <div class="page__main-inner"><div class="page__header d-print-none"><header class="header"><div class="main">
+      <div class="header__title">
+        <div class="header__brand"><?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 20010904//EN"
+ "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
+<svg version="1.0" xmlns="http://www.w3.org/2000/svg"
+ width="400.000000pt" height="400.000000pt" viewBox="0 0 400.000000 400.000000"
+ preserveAspectRatio="xMidYMid meet">
+<metadata>
+Created by potrace 1.14, written by Peter Selinger 2001-2017
+</metadata>
+<g transform="translate(0.000000,400.000000) scale(0.100000,-0.100000)"
+fill="#000000" stroke="none">
+<path d="M1500 3940 c0 -64 -6 -70 -70 -68 -57 1 -57 2 -53 -62 l4 -59 -128
+-3 -128 -3 -1 -45 c-2 -81 2 -77 -64 -75 l-60 2 0 -64 0 -63 -62 0 -63 0 0
+-500 0 -500 63 0 62 0 0 -65 0 -65 60 0 60 0 0 -60 0 -60 65 0 65 0 0 -65 0
+-65 185 0 185 0 0 -60 0 -60 315 0 315 0 0 60 0 60 188 2 187 3 3 63 3 62 59
+0 60 0 0 60 0 60 60 0 60 0 0 -60 0 -60 65 0 65 0 0 -65 0 -65 60 0 59 0 3
+-122 3 -123 63 -3 62 -3 0 126 c0 112 -2 125 -17 126 -10 0 -38 1 -62 2 l-45
+2 0 60 -1 60 -62 3 -63 3 0 59 c0 50 -3 60 -17 61 -10 0 -38 1 -62 2 l-45 2 0
+60 -1 60 -62 3 -63 3 0 -61 0 -60 -65 0 -65 0 0 -65 0 -65 -185 0 -185 0 0
+-60 0 -60 -310 0 -310 0 0 60 0 60 -190 0 -190 0 0 65 0 65 -60 0 -60 0 0 60
+0 60 -65 0 -65 0 0 500 0 500 65 0 65 0 0 60 0 59 123 3 122 3 3 63 3 62 59 0
+60 0 0 60 0 60 375 0 375 0 0 65 0 65 -375 0 -375 0 0 -60z"/>
+<path d="M2260 3872 c-6 -2 -10 -30 -10 -63 l0 -59 125 0 125 0 0 -65 0 -65
+125 0 125 0 0 65 0 65 -125 0 -125 0 0 60 c0 33 -3 60 -7 61 -26 3 -225 3
+-233 1z"/>
+<path d="M2760 3622 c-6 -2 -10 -31 -10 -63 l0 -60 63 3 62 3 0 57 c0 44 -4
+58 -15 59 -45 3 -91 4 -100 1z"/>
+<path d="M1370 3440 l0 -60 -60 0 -60 0 0 -255 0 -255 60 0 60 0 0 -60 0 -60
+125 0 125 0 0 -125 0 -125 65 0 65 0 0 -65 0 -65 60 0 60 0 0 -60 0 -60 65 0
+65 0 0 60 0 59 63 3 62 3 3 63 3 62 59 0 60 0 0 125 0 125 125 0 125 0 0 60 0
+59 63 3 62 3 0 250 0 250 -62 3 -63 3 0 59 0 60 -190 0 -190 0 0 -60 0 -60
+-60 0 -60 0 0 -250 0 -250 -60 0 -60 0 -2 248 -3 247 -62 3 -63 3 0 59 0 60
+-190 0 -190 0 0 -60z m380 -315 l0 -245 -185 0 -185 0 0 60 0 60 125 0 125 0
+0 125 0 125 -65 0 -65 0 0 -60 0 -60 -60 0 -60 0 0 120 0 120 185 0 185 0 0
+-245z m750 0 l0 -245 -185 0 -185 0 0 60 0 60 125 0 125 0 0 125 0 125 -65 0
+-65 0 0 -60 0 -60 -60 0 -60 0 0 120 0 120 185 0 185 0 0 -245z m-630 -315 l0
+-60 65 0 65 0 0 60 0 60 60 0 60 0 0 -185 0 -185 -60 0 -60 0 0 -60 0 -60 -60
+0 -60 0 0 60 0 60 -65 0 -65 0 0 185 0 185 60 0 60 0 0 -60z"/>
+<path d="M2870 3000 l0 -500 65 0 65 0 0 500 0 500 -65 0 -65 0 0 -500z"/>
+<path d="M879 2366 c-1 -6 -2 -33 -3 -61 l-1 -50 -62 -3 -63 -3 0 -65 0 -65
+63 3 62 3 3 63 3 62 60 0 60 0 -3 63 -3 62 -57 1 c-34 0 -59 -4 -59 -10z"/>
+<path d="M627 2116 c-1 -6 -2 -62 -1 -123 1 -62 -1 -113 -5 -114 -3 0 -31 -1
+-61 -2 l-55 -2 -3 -187 -2 -188 -60 0 c-33 0 -60 -3 -61 -7 -1 -10 -1 -322 0
+-348 1 -18 8 -20 59 -20 l57 0 3 188 2 187 65 0 65 0 0 185 0 185 60 0 61 0
+-3 128 -3 127 -57 1 c-32 0 -59 -4 -61 -10z"/>
+<path d="M1000 1940 l0 -59 -62 -3 -63 -3 -3 -122 -3 -123 -59 0 -60 0 0 -380
+0 -380 60 0 60 0 0 -185 0 -185 -60 0 -60 0 0 125 0 125 -60 0 c-33 0 -60 -4
+-61 -10 0 -5 -1 -48 -1 -95 0 -161 -7 -145 62 -145 l59 0 3 -62 3 -63 55 -2
+c30 -1 58 -2 63 -2 4 -1 6 -13 6 -28 -1 -16 -1 -43 0 -60 l1 -33 125 0 125 0
+-5 -54 c-5 -66 3 -74 70 -72 l50 1 3 122 3 122 62 3 62 3 3 62 3 63 184 0 185
+0 0 -65 0 -65 60 0 60 0 0 -120 0 -120 -120 0 -120 0 0 60 0 60 -65 0 -66 0 3
+-62 3 -63 60 -1 60 0 2 -45 c1 -24 2 -52 2 -61 1 -16 14 -18 121 -18 107 0
+120 2 121 18 0 9 1 37 2 61 l2 45 60 0 60 1 3 122 3 122 62 3 62 3 3 63 3 62
+184 0 185 0 0 -65 0 -65 60 0 60 0 0 -120 0 -120 -120 0 -120 0 0 60 0 60 -65
+0 -65 0 0 -60 c0 -41 4 -60 13 -61 6 0 35 -2 62 -3 l50 -2 2 -44 c1 -25 2 -53
+2 -62 1 -16 14 -18 121 -18 107 0 120 2 121 18 0 9 1 37 2 62 l2 45 45 2 c25
+1 53 2 63 2 14 1 17 11 17 61 l0 60 125 0 125 0 0 65 0 65 -60 0 -60 0 0 60 0
+60 60 0 60 0 0 -60 c0 -41 4 -60 13 -61 6 0 31 -2 54 -3 60 -5 62 -1 54 112
+-1 8 -20 12 -61 12 l-60 0 0 185 0 184 63 3 62 3 0 375 0 375 -62 3 -63 3 0
+124 0 125 -60 0 -60 0 0 60 0 60 -65 0 -65 0 0 -65 0 -65 60 0 59 0 3 -122 3
+-123 63 -3 62 -3 0 -369 0 -369 -62 -3 -63 -3 -3 -187 -2 -188 -60 0 -60 0 0
+-60 0 -60 -60 0 -60 0 0 60 0 60 -65 0 -65 0 0 65 0 65 -187 -2 -188 -3 -3
+-62 -3 -63 -59 0 -60 0 0 -60 0 -60 -60 0 -60 0 0 60 0 60 -65 0 -65 0 0 65 0
+65 -187 -2 -188 -3 -3 -62 -3 -63 -59 0 -60 0 0 -60 0 -60 -60 0 -60 0 0 60 0
+60 -65 0 -65 0 0 190 0 190 -60 0 -60 0 0 370 0 370 60 0 60 0 0 125 0 124 63
+3 62 3 3 63 3 62 -66 0 -65 0 0 -60z m0 -1500 l0 -60 -60 0 -60 0 0 60 0 60
+60 0 60 0 0 -60z"/>
+<path d="M3267 1872 c-15 -3 -17 -23 -17 -188 l0 -184 60 0 c50 0 60 3 61 18
+4 77 -1 345 -6 350 -7 7 -69 9 -98 4z"/>
+<path d="M3370 1315 l0 -185 -60 0 -60 0 0 -190 0 -190 -65 0 -65 0 0 -125 0
+-125 65 0 65 0 0 125 0 125 60 0 c50 0 60 3 61 18 0 9 1 94 2 187 l2 170 45 2
+c25 1 53 2 63 2 16 1 17 17 17 186 l0 185 -65 0 -65 0 0 -185z"/>
+<path d="M500 940 l0 -190 65 0 65 0 -2 188 -3 187 -62 3 -63 3 0 -191z"/>
+<path d="M1250 65 l0 -65 125 0 125 0 0 65 0 65 -125 0 -125 0 0 -65z"/>
+<path d="M2000 65 l0 -65 125 0 125 0 0 65 0 65 -125 0 -125 0 0 -65z"/>
+</g>
+</svg>
+<a title="Personal blog of particle physicist and data scientist Thomas T Burgess.  Here I write about python, statistics, data science, machine learning and other things I do.
+" href="/">Thomas T Burgess's Blog</a></div><button class="button button--secondary button--circle search-button js-search-toggle"><i class="fas fa-search"></i></button></div><nav class="navigation">
+        <ul><li class="navigation__item"><a href="/archive.html">Archive</a></li><li class="navigation__item"><a href="/about.html">About</a></li><li><button class="button button--secondary button--circle search-button js-search-toggle"><i class="fas fa-search"></i></button></li></ul>
+      </nav></div>
+  </header>
+</div><div class="page__content"><img class="article__header--cover" src="/assets/images/2021-06-20/APOD_Ganymede_repunit.jpg" /><div class ="main"><div class="grid grid--reverse">
+
+              <div class="col-aside d-print-none js-col-aside"><aside class="page__aside js-page-aside"><div class="toc-aside js-toc-root"></div>
+</aside></div>
+
+              <div class="col-main cell cell--auto"><!-- start custom main top snippet -->
+
+<!-- end custom main top snippet -->
+<article itemscope itemtype="http://schema.org/Article"><div class="article__header"><header><h1>Exploring repunit digit sum fractions</h1></header><span class="split-space">&nbsp;</span>
+          <a class="edit-on-github"
+            title="Edit on Github"
+            href="https://github.com/thomasburgess/thomasburgess.github.io/tree/master/_posts/2021-06-20-repdigits.md">
+            <i class="far fa-edit"></i></a></div><meta itemprop="headline" content="Exploring repunit digit sum fractions"><div class="article__info clearfix"><ul class="left-col menu"><li>
+              <a class="button button--secondary button--pill button--sm"
+                href="/archive.html?tag=blog">blog</a>
+            </li><li>
+              <a class="button button--secondary button--pill button--sm"
+                href="/archive.html?tag=maths">maths</a>
+            </li><li>
+              <a class="button button--secondary button--pill button--sm"
+                href="/archive.html?tag=oeis">oeis</a>
+            </li></ul><ul class="right-col menu"><li><i class="fas fa-user"></i> <span></span></li><li><i class="far fa-calendar-alt"></i> <span>Jun 20, 2021</span>
+            </li></ul></div><meta itemprop="author" content=""/><meta itemprop="datePublished" content="2021-06-20T00:00:00+02:00">
+    <meta itemprop="keywords" content="blog,maths,oeis"><div class="js-article-content"><div class="layout--article"><!-- start custom article top snippet -->
+
+<!-- end custom article top snippet -->
+<div class="article__content" itemprop="articleBody"><p><em>In which I go down a rabbit hole of integer sequences when trying to understand
+a pattern in fractions of repeated digits and their digit sums.</em></p>
+
+<h2 id="the-tweets">The tweets</h2>
+
+<p>This tweet appeared in my Twitter feed:</p>
+
+<blockquote class="twitter-tweet"><p lang="en" dir="ltr">Mathematics and mystery.<br /><br />555, 666, 777, and friends. Source: <a href="https://t.co/63RFs36q8S">https://t.co/63RFs36q8S</a> <a href="https://t.co/h6gjbIfLK5">pic.twitter.com/h6gjbIfLK5</a></p>&mdash; Cliff Pickover (@pickover) <a href="https://twitter.com/pickover/status/1405553860777852931?ref_src=twsrc%5Etfw">June 17, 2021</a></blockquote>
+<script async="" src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<p>These are the fraction with a <a href="https://en.wikipedia.org/wiki/Repdigit">repdigit</a> and the sum of its digits. My first thought was that I could write all these like this:
+\[
+  \frac{N}{N}\frac{111}{1+1+1}=37\,\quad\text{where } 0 \lt N \lt 10\,.
+\]
+Hence, these fractions are all <a href="https://en.wikipedia.org/wiki/Repunit">repunits</a>. 
+A new question comes to mind: for which numbers of repeated digits n is the fraction an integer?</p>
+
+<p>This handy formula from the Online Encylopedia of Integer Sequences (OEIS) <a href="https://oeis.org/A002275">A002275</a> generates repunits:
+\[
+  R_n=\frac{10^n - 1}{9}\,.
+\]
+As the sum in the denominator is just the number of digits, the fraction $Q$ then is
+\[
+  Q_n=\frac{R_n}{n} = \frac{10^n - 1}{9n}\,.
+\]</p>
+
+<p>I made a python script to see when the result is an integer:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[(</span><span class="n">n</span><span class="p">,</span> <span class="p">(</span><span class="mi">10</span><span class="o">**</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">//</span><span class="mi">9</span><span class="o">/</span><span class="n">n</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">)]</span>
+</code></pre></div></div>
+
+<p>which gives integer fractions for $Q=1$ for $n=1$, $Q=37$ for $n=3$, and $Q=12345679$ for $n=9$.</p>
+
+<details><summary>Click to expand the full results of python script…</summary>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[(1, 1.0),
+ (2, 5.5),
+ (3, 37.0),
+ (4, 277.75),
+ (5, 2222.2),
+ (6, 18518.5),
+ (7, 158730.14285714287),
+ (8, 1388888.875),
+ (9, 12345679.0)]
+</code></pre></div></div>
+</details>
+
+<p>I replied to the post with the case for $n=9$, which led to this response:</p>
+
+<blockquote class="twitter-tweet"><p lang="en" dir="ltr">Our Strange Universe. Mathematics. Punching Through the Brick Walls of Reality.<br /><br />666666666 and Friends. (Thanks <a href="https://twitter.com/ThomasTBurgess1?ref_src=twsrc%5Etfw">@ThomasTBurgess1</a>) <a href="https://t.co/nLExc1GFlK">pic.twitter.com/nLExc1GFlK</a></p>&mdash; Cliff Pickover (@pickover) <a href="https://twitter.com/pickover/status/1405990264381050886?ref_src=twsrc%5Etfw">June 18, 2021</a></blockquote>
+<script async="" src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<p>On a tangent, a typo in my first reply pointed out by <a href="https://twitter.com/mikekohnstamm">@mikekohnstamm</a> added the “missing” 8 to $Q=12345679$. Furthermore, <a href="https://twitter.com/Kapil_kant1">@Kapil_kant</a> pointed out that the 8 is there if the fraction is:
+\[
+  \frac{1111111101}{1+1+1+1+1+1+1+1+0+1}=123456789\,.
+\]
+I’ll save investigating that for another time.</p>
+
+<h2 id="going-deeper">Going deeper</h2>
+
+<p>A better way to search for exact integer fractions is to check when the modulus is 0 and only print those cases using integer division. This is done in the following python snippets:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">Q</span><span class="sh">"</span><span class="p">,</span> <span class="p">[(</span><span class="mi">10</span><span class="o">**</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">//</span><span class="p">(</span><span class="mi">9</span><span class="o">*</span><span class="n">n</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span> <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="mi">10</span><span class="o">**</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">//</span><span class="mi">9</span> <span class="o">%</span> <span class="n">n</span><span class="p">])</span>
+<span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">denominators</span><span class="sh">"</span><span class="p">,</span> <span class="p">[</span><span class="n">n</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">20000</span><span class="p">)</span> <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="mi">10</span><span class="o">**</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">//</span><span class="mi">9</span> <span class="o">%</span> <span class="n">n</span><span class="p">])</span>
+</code></pre></div></div>
+
+<p>This gives the solution sequence $Q=1, 37, 12345679, 4115226337448559670781893, …$ with denominators $1, 3, 9, 27, 81, 111, 243, …$. Evidently $Q(n)$ grows very fast with 111 terms already at $n=6$.</p>
+
+<details><summary>Click to expand the full results of python script…</summary>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Q: [1, 37, 12345679, 4115226337448559670781893, 
+  1371742112482853223593964334705075445816186556927297668038408779149519890260631, 
+  10010010010010010010010010010010010010010010010010010010010010010010010010010010...
+  01001001001001001001001001001]
+denominators [1, 3, 9, 27, 81, 111, 243, 333, 729, 999, 2187, 2997, 4107, 6561, 
+  8991, 12321, 13203, 19683]
+</code></pre></div></div>
+
+</details>
+
+<p>Several series repunit-related sequences mention these numbers: <a href="https://oeis.org/A190301">A190301</a>,  <a href="https://oeis.org/A190301">A215258</a>, <a href="https://oeis.org/A190301">A215258</a>. I couldn’t find this sequence in the OEIS, so I registered and made it my first submission.</p>
+
+<p>Update 2021-08-02: it is now sequence <a href="https://oeis.org/A345467">A215258</a> - Ratios R(k)/k for which R(k) / k is an integer, where R(k) = A002275(k) is a repunit.</p>
+
+<p>The sequence of denominators 1, 3, 9, 27, 81, …, suggests the conjecture: $Q$ is integer when $n$ is of the form $n=3^n$. One OEIS editor proved this elegantly for me: \(R_{3n} / R_n = 10^{2n} + 10^n + 1\), which is divisible by 3. Therefore $R_{3^m}$ is divisible by $3^m$ by induction on $m$. However, there are additional solutions: 111, 333, 999, …. There is no known general rule for the denominator. The full sequence of denominators is <a href="https://oeis.org/A014950">A014950</a> in OEIS. Using this with the OEIS sequence for $R_n$ (<a href="https://oeis.org/A014950">A002275</a>), all the integer fractions are:
+\[
+  Q(n) = \frac{A002275(A014950(n))}{A014950(n)}\,.
+\]</p>
+
+<p>My favourite integer fraction so far is:
+\[
+  Q(6)=\frac{R_{111}}{111} = \ldots
+\]
+\[
+\tiny
+\frac{11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111}{111} = \ldots
+\]
+\[
+\tiny
+1001001001001001001001001001001001001001001001001001001001001001001001001001001001001001001001001001001001001
+\]</p>
+
+<h2 id="takeaway">Takeaway</h2>
+
+<p>Twitter, if done right, can be a source of inspiration and knowledge. Also, recreational maths is fun.</p>
+
+<hr />
+
+<p>Header image: repunit digit sum ratio remix of <a href="https://apod.nasa.gov/apod/ap210614.html">Ganymede from Juno</a>.</p>
+</div><section class="article__sharing d-print-none"><!-- AddToAny BEGIN -->
+<div class="a2a_kit a2a_kit_size_32 a2a_default_style">
+<a class="a2a_dd" href="https://www.addtoany.com/share"></a>
+<a class="a2a_button_facebook"></a>
+<a class="a2a_button_twitter"></a>
+<a class="a2a_button_google_plus"></a>
+<a class="a2a_button_linkedin"></a>
+</div>
+<script async src="https://static.addtoany.com/menu/page.js"></script>
+<!-- AddToAny END -->
+</section><div class="d-print-none"><footer class="article__footer"><meta itemprop="dateModified" content="2021-06-20T00:00:00+02:00"><!-- start custom article footer snippet -->
+
+<!-- end custom article footer snippet -->
+<div class="article__subscribe"><div class="subscribe"><i class="fas fa-rss"></i> <a type="application/rss+xml" href="/feed.xml">Subscribe</a></div>
+</div><div class="article__license"><div class="license">
+    <p>This work is licensed under a <a itemprop="license" rel="license" href="https://creativecommons.org/licenses/by-nc/4.0/">Attribution-NonCommercial 4.0 International</a> license.
+      <a rel="license" href="https://creativecommons.org/licenses/by-nc/4.0/">
+        <img alt="Attribution-NonCommercial 4.0 International" src="https://i.creativecommons.org/l/by-nc/4.0/88x31.png" />
+      </a>
+    </p>
+  </div></div></footer>
+<div class="article__section-navigator clearfix"><div class="previous"><span>PREVIOUS</span><a href="/blog/2021/06/12/Blog-setup.html">Blog setup</a></div><div class="next"><span>NEXT</span><a href="/blog/2021/07/18/tree_hack.html">Tree hack - building and printing a tree</a></div></div></div>
+
+  <div><script src="https://utteranc.es/client.js"
+        repo="thomasburgess/thomasburgess.github.io"
+        issue-term="pathname"label="Comments"theme="github-light"
+        crossorigin="anonymous"
+        async>
+ </script>
+
+  </div>
+
+</div>
+
+<script>(function() {
+  var SOURCES = window.TEXT_VARIABLES.sources;
+  window.Lazyload.js(SOURCES.jquery, function() {
+    $(function() {
+      var $this ,$scroll;
+      var $articleContent = $('.js-article-content');
+      var hasSidebar = $('.js-page-root').hasClass('layout--page--sidebar');
+      var scroll = hasSidebar ? '.js-page-main' : 'html, body';
+      $scroll = $(scroll);
+
+      $articleContent.find('.highlight').each(function() {
+        $this = $(this);
+        $this.attr('data-lang', $this.find('code').attr('data-lang'));
+      });
+      $articleContent.find('h1[id], h2[id], h3[id], h4[id], h5[id], h6[id]').each(function() {
+        $this = $(this);
+        $this.append($('<a class="anchor d-print-none" aria-hidden="true"></a>').html('<i class="fas fa-anchor"></i>'));
+      });
+      $articleContent.on('click', '.anchor', function() {
+        $scroll.scrollToAnchor('#' + $(this).parent().attr('id'), 400);
+      });
+    });
+  });
+})();
+</script>
+
+</div><section class="page__comments d-print-none"></section></article><!-- start custom main bottom snippet -->
+
+<!-- end custom main bottom snippet -->
+</div>
+            </div></div></div><div class="page__footer d-print-none">
+<footer class="footer py-4 js-page-footer">
+  <div class="main"><div itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Thomas T Burgess"><meta itemprop="url" content="/thomasburgess.github.io"><meta itemprop="description" content="Particle Physicist turned Senior Data Scientist in Vienna, Austria."><div class="footer__author-links"><div class="author-links">
+  <ul class="menu menu--nowrap menu--inline"><link itemprop="url" href="thomasburgess.github.io"><li title="Send me an Email.">
+      <a class="button button--circle mail-button" itemprop="email" href="mailto:thomastburgess+blog g-mail" target="_blank">
+        <i class="fas fa-envelope"></i>
+      </a><li title="Follow me on Github.">
+        <a class="button button--circle github-button" itemprop="sameAs" href="https://github.com/thomasburgess" target="_blank">
+          <div class="icon"><svg fill="#000000" width="24px" height="24px" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
+  <path class="svgpath" data-index="path_0" fill="#272636" d="M0 525.2c0 223.6 143.3 413.7 343 483.5 26.9 6.8 22.8-12.4 22.8-25.4l0-88.7c-155.3 18.2-161.5-84.6-172-101.7-21.1-36-70.8-45.2-56-62.3 35.4-18.2 71.4 4.6 113.1 66.3 30.2 44.7 89.1 37.2 119 29.7 6.5-26.9 20.5-50.9 39.7-69.6C248.8 728.2 181.7 630 181.7 513.2c0-56.6 18.7-108.7 55.3-150.7-23.3-69.3 2.2-128.5 5.6-137.3 66.5-6 135.5 47.6 140.9 51.8 37.8-10.2 80.9-15.6 129.1-15.6 48.5 0 91.8 5.6 129.8 15.9 12.9-9.8 77-55.8 138.8-50.2 3.3 8.8 28.2 66.7 6.3 135 37.1 42.1 56 94.6 56 151.4 0 117-67.5 215.3-228.8 243.7 26.9 26.6 43.6 63.4 43.6 104.2l0 128.8c0.9 10.3 0 20.5 17.2 20.5C878.1 942.4 1024 750.9 1024 525.3c0-282.9-229.3-512-512-512C229.1 13.2 0 242.3 0 525.2L0 525.2z" />
+</svg>
+</div>
+        </a>
+      </li><li title="Follow me on Mastodon.">
+        <a class="button button--circle twitter-button" itemprop="sameAs" href="https://mathstodon.xyz/@ngons" rel="me" target="_blank">
+          <div class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-mastodon" viewBox="0 0 16 16">
+  <path d="M11.19 12.195c2.016-.24 3.77-1.475 3.99-2.603.348-1.778.32-4.339.32-4.339 0-3.47-2.286-4.488-2.286-4.488C12.062.238 10.083.017 8.027 0h-.05C5.92.017 3.942.238 2.79.765c0 0-2.285 1.017-2.285 4.488l-.002.662c-.004.64-.007 1.35.011 2.091.083 3.394.626 6.74 3.78 7.57 1.454.383 2.703.463 3.709.408 1.823-.1 2.847-.647 2.847-.647l-.06-1.317s-1.303.41-2.767.36c-1.45-.05-2.98-.156-3.215-1.928a3.614 3.614 0 0 1-.033-.496s1.424.346 3.228.428c1.103.05 2.137-.064 3.188-.189zm1.613-2.47H11.13v-4.08c0-.859-.364-1.295-1.091-1.295-.804 0-1.207.517-1.207 1.541v2.233H7.168V5.89c0-1.024-.403-1.541-1.207-1.541-.727 0-1.091.436-1.091 1.296v4.079H3.197V5.522c0-.859.22-1.541.66-2.046.456-.505 1.052-.764 1.793-.764.856 0 1.504.328 1.933.983L8 4.39l.417-.695c.429-.655 1.077-.983 1.934-.983.74 0 1.336.259 1.791.764.442.505.661 1.187.661 2.046v4.203z"/>
+</svg></div>
+        </a>
+      </li>
+
+  </ul>
+</div>
+</div>
+    </div><div class="site-info mt-2">
+      <div>© Thomas T Burgess's Blog 2021,
+        Powered by <a title="Jekyll is a simple, blog-aware, static site generator." href="http://jekyllrb.com/">Jekyll</a> & <a
+        title="TeXt is a super customizable Jekyll theme." href="https://github.com/kitian616/jekyll-TeXt-theme">TeXt Theme</a>.
+      </div>
+    </div>
+  </div>
+</footer>
+</div></div>
+    </div><script>(function() {
+  var SOURCES = window.TEXT_VARIABLES.sources;
+  window.Lazyload.js(SOURCES.jquery, function() {
+    var $body = $('body'), $window = $(window);
+    var $pageRoot = $('.js-page-root'), $pageMain = $('.js-page-main');
+    var activeCount = 0;
+    function modal(options) {
+      var $root = this, visible, onChange, hideWhenWindowScroll = false;
+      var scrollTop;
+      function setOptions(options) {
+        var _options = options || {};
+        visible = _options.initialVisible === undefined ? false : show;
+        onChange = _options.onChange;
+        hideWhenWindowScroll = _options.hideWhenWindowScroll;
+      }
+      function init() {
+        setState(visible);
+      }
+      function setState(isShow) {
+        if (isShow === visible) {
+          return;
+        }
+        visible = isShow;
+        if (visible) {
+          activeCount++;
+          scrollTop = $(window).scrollTop() || $pageMain.scrollTop();
+          $root.addClass('modal--show');
+          $pageMain.scrollTop(scrollTop);
+          activeCount === 1 && ($pageRoot.addClass('show-modal'), $body.addClass('of-hidden'));
+          hideWhenWindowScroll && window.hasEvent('touchstart') && $window.on('scroll', hide);
+          $window.on('keyup', handleKeyup);
+        } else {
+          activeCount > 0 && activeCount--;
+          $root.removeClass('modal--show');
+          $window.scrollTop(scrollTop);
+          activeCount === 0 && ($pageRoot.removeClass('show-modal'), $body.removeClass('of-hidden'));
+          hideWhenWindowScroll && window.hasEvent('touchstart') && $window.off('scroll', hide);
+          $window.off('keyup', handleKeyup);
+        }
+        onChange && onChange(visible);
+      }
+      function show() {
+        setState(true);
+      }
+      function hide() {
+        setState(false);
+      }
+      function handleKeyup(e) {
+        // Char Code: 27  ESC
+        if (e.which ===  27) {
+          hide();
+        }
+      }
+      setOptions(options);
+      init();
+      return {
+        show: show,
+        hide: hide,
+        $el: $root
+      };
+    }
+    $.fn.modal = modal;
+  });
+})();
+</script><div class="modal modal--overflow page__search-modal d-print-none js-page-search-modal"><script>
+(function () {
+  var SOURCES = window.TEXT_VARIABLES.sources;
+  window.Lazyload.js(SOURCES.jquery, function() {
+    // search panel
+    var search = (window.search || (window.search = {}));
+    var useDefaultSearchBox = window.useDefaultSearchBox === undefined ?
+      true : window.useDefaultSearchBox ;
+
+    var $searchModal = $('.js-page-search-modal');
+    var $searchToggle = $('.js-search-toggle');
+    var searchModal = $searchModal.modal({ onChange: handleModalChange, hideWhenWindowScroll: true });
+    var modalVisible = false;
+    search.searchModal = searchModal;
+
+    var $searchBox = null;
+    var $searchInput = null;
+    var $searchClear = null;
+
+    function getModalVisible() {
+      return modalVisible;
+    }
+    search.getModalVisible = getModalVisible;
+
+    function handleModalChange(visible) {
+      modalVisible = visible;
+      if (visible) {
+        search.onShow && search.onShow();
+        useDefaultSearchBox && $searchInput[0] && $searchInput[0].focus();
+      } else {
+        search.onShow && search.onHide();
+        useDefaultSearchBox && $searchInput[0] && $searchInput[0].blur();
+        setTimeout(function() {
+          useDefaultSearchBox && ($searchInput.val(''), $searchBox.removeClass('not-empty'));
+          search.clear && search.clear();
+          window.pageAsideAffix && window.pageAsideAffix.refresh();
+        }, 400);
+      }
+    }
+
+    $searchToggle.on('click', function() {
+      modalVisible ? searchModal.hide() : searchModal.show();
+    });
+    // Char Code: 83  S, 191 /
+    $(window).on('keyup', function(e) {
+      if (!modalVisible && !window.isFormElement(e.target || e.srcElement) && (e.which === 83 || e.which === 191)) {
+        modalVisible || searchModal.show();
+      }
+    });
+
+    if (useDefaultSearchBox) {
+      $searchBox = $('.js-search-box');
+      $searchInput = $searchBox.children('input');
+      $searchClear = $searchBox.children('.js-icon-clear');
+      search.getSearchInput = function() {
+        return $searchInput.get(0);
+      };
+      search.getVal = function() {
+        return $searchInput.val();
+      };
+      search.setVal = function(val) {
+        $searchInput.val(val);
+      };
+
+      $searchInput.on('focus', function() {
+        $(this).addClass('focus');
+      });
+      $searchInput.on('blur', function() {
+        $(this).removeClass('focus');
+      });
+      $searchInput.on('input', window.throttle(function() {
+        var val = $(this).val();
+        if (val === '' || typeof val !== 'string') {
+          search.clear && search.clear();
+        } else {
+          $searchBox.addClass('not-empty');
+          search.onInputNotEmpty && search.onInputNotEmpty(val);
+        }
+      }, 400));
+      $searchClear.on('click', function() {
+        $searchInput.val(''); $searchBox.removeClass('not-empty');
+        search.clear && search.clear();
+      });
+    }
+  });
+})();
+</script><div class="search search--dark">
+  <div class="main">
+    <div class="search__header">Search</div>
+    <div class="search-bar">
+      <div class="search-box js-search-box">
+        <div class="search-box__icon-search"><i class="fas fa-search"></i></div>
+        <input type="text" />
+        <div class="search-box__icon-clear js-icon-clear">
+          <a><i class="fas fa-times"></i></a>
+        </div>
+      </div>
+      <button class="button button--theme-dark button--pill search__cancel js-search-toggle">
+        Cancel</button>
+    </div>
+    <div class="search-result js-search-result"></div>
+  </div>
+</div>
+<script>var SOURCES = window.TEXT_VARIABLES.sources;
+var PAHTS = window.TEXT_VARIABLES.paths;
+window.Lazyload.js([SOURCES.jquery, PAHTS.search_js], function() {
+  var search = (window.search || (window.search = {}));
+  var searchData = window.TEXT_SEARCH_DATA || {};
+
+  function memorize(f) {
+    var cache = {};
+    return function () {
+      var key = Array.prototype.join.call(arguments, ',');
+      if (key in cache) return cache[key];
+      else return cache[key] = f.apply(this, arguments);
+    };
+  }
+
+  /// search
+  function searchByQuery(query) {
+    var i, j, key, keys, cur, _title, result = {};
+    keys = Object.keys(searchData);
+    for (i = 0; i < keys.length; i++) {
+      key = keys[i];
+      for (j = 0; j < searchData[key].length; j++) {
+        cur = searchData[key][j], _title = cur.title;
+        if ((result[key] === undefined || result[key] && result[key].length < 4 )
+          && _title.toLowerCase().indexOf(query.toLowerCase()) >= 0) {
+          if (result[key] === undefined) {
+            result[key] = [];
+          }
+          result[key].push(cur);
+        }
+      }
+    }
+    return result;
+  }
+
+  var renderHeader = memorize(function(header) {
+    return $('<p class="search-result__header">' + header + '</p>');
+  });
+
+  var renderItem = function(index, title, url) {
+    return $('<li class="search-result__item" data-index="' + index + '"><a class="button" href="' + url + '">' + title + '</a></li>');
+  };
+
+  function render(data) {
+    if (!data) { return null; }
+    var $root = $('<ul></ul>'), i, j, key, keys, cur, itemIndex = 0;
+    keys = Object.keys(data);
+    for (i = 0; i < keys.length; i++) {
+      key = keys[i];
+      $root.append(renderHeader(key));
+      for (j = 0; j < data[key].length; j++) {
+        cur = data[key][j];
+        $root.append(renderItem(itemIndex++, cur.title, cur.url));
+      }
+    }
+    return $root;
+  }
+
+  // search box
+  var $result = $('.js-search-result'), $resultItems;
+  var lastActiveIndex, activeIndex;
+
+  function clear() {
+    $result.html(null);
+    $resultItems = $('.search-result__item'); activeIndex = 0;
+  }
+  function onInputNotEmpty(val) {
+    $result.html(render(searchByQuery(val)));
+    $resultItems = $('.search-result__item'); activeIndex = 0;
+    $resultItems.eq(0).addClass('active');
+  }
+
+  search.clear = clear;
+  search.onInputNotEmpty = onInputNotEmpty;
+
+  function updateResultItems() {
+    lastActiveIndex >= 0 && $resultItems.eq(lastActiveIndex).removeClass('active');
+    activeIndex >= 0 && $resultItems.eq(activeIndex).addClass('active');
+  }
+
+  function moveActiveIndex(direction) {
+    var itemsCount = $resultItems ? $resultItems.length : 0;
+    if (itemsCount > 1) {
+      lastActiveIndex = activeIndex;
+      if (direction === 'up') {
+        activeIndex = (activeIndex - 1 + itemsCount) % itemsCount;
+      } else if (direction === 'down') {
+        activeIndex = (activeIndex + 1 + itemsCount) % itemsCount;
+      }
+      updateResultItems();
+    }
+  }
+
+  // Char Code: 13  Enter, 37  ⬅, 38  ⬆, 39  ➡, 40  ⬇
+  $(window).on('keyup', function(e) {
+    var modalVisible = search.getModalVisible && search.getModalVisible();
+    if (modalVisible) {
+      if (e.which === 38) {
+        modalVisible && moveActiveIndex('up');
+      } else if (e.which === 40) {
+        modalVisible && moveActiveIndex('down');
+      } else if (e.which === 13) {
+        modalVisible && $resultItems && activeIndex >= 0 && $resultItems.eq(activeIndex).children('a')[0].click();
+      }
+    }
+  });
+
+  $result.on('mouseover', '.search-result__item > a', function() {
+    var itemIndex = $(this).parent().data('index');
+    itemIndex >= 0 && (lastActiveIndex = activeIndex, activeIndex = itemIndex, updateResultItems());
+  });
+});
+</script>
+</div></div>
+
+
+<script>(function() {
+  var SOURCES = window.TEXT_VARIABLES.sources;
+  window.Lazyload.js(SOURCES.jquery, function() {
+    function scrollToAnchor(anchor, duration, callback) {
+      var $root = this;
+      $root.animate({ scrollTop: $(anchor).position().top }, duration, function() {
+        window.history.replaceState(null, '', window.location.href.split('#')[0] + anchor);
+        callback && callback();
+      });
+    }
+    $.fn.scrollToAnchor = scrollToAnchor;
+  });
+})();
+(function() {
+  var SOURCES = window.TEXT_VARIABLES.sources;
+  window.Lazyload.js(SOURCES.jquery, function() {
+    function affix(options) {
+      var $root = this, $window = $(window), $scrollTarget, $scroll,
+        offsetBottom = 0, scrollTarget = window, scroll = window.document, disabled = false, isOverallScroller = true,
+        rootTop, rootLeft, rootHeight, scrollBottom, rootBottomTop,
+        hasInit = false, curState;
+
+      function setOptions(options) {
+        var _options = options || {};
+        _options.offsetBottom && (offsetBottom = _options.offsetBottom);
+        _options.scrollTarget && (scrollTarget = _options.scrollTarget);
+        _options.scroll && (scroll = _options.scroll);
+        _options.disabled !== undefined && (disabled = _options.disabled);
+        $scrollTarget = $(scrollTarget);
+        isOverallScroller = window.isOverallScroller($scrollTarget[0]);
+        $scroll = $(scroll);
+      }
+      function preCalc() {
+        top();
+        rootHeight = $root.outerHeight();
+        rootTop = $root.offset().top + (isOverallScroller ? 0 :  $scrollTarget.scrollTop());
+        rootLeft = $root.offset().left;
+      }
+      function calc(needPreCalc) {
+        needPreCalc && preCalc();
+        scrollBottom = $scroll.outerHeight() - offsetBottom - rootHeight;
+        rootBottomTop = scrollBottom - rootTop;
+      }
+      function top() {
+        if (curState !== 'top') {
+          $root.removeClass('fixed').css({
+            left: 0,
+            top: 0
+          });
+          curState = 'top';
+        }
+      }
+      function fixed() {
+        if (curState !== 'fixed') {
+          $root.addClass('fixed').css({
+            left: rootLeft + 'px',
+            top: 0
+          });
+          curState = 'fixed';
+        }
+      }
+      function bottom() {
+        if (curState !== 'bottom') {
+          $root.removeClass('fixed').css({
+            left: 0,
+            top: rootBottomTop + 'px'
+          });
+          curState = 'bottom';
+        }
+      }
+      function setState() {
+        var scrollTop = $scrollTarget.scrollTop();
+        if (scrollTop >= rootTop && scrollTop <= scrollBottom) {
+          fixed();
+        } else if (scrollTop < rootTop) {
+          top();
+        } else {
+          bottom();
+        }
+      }
+      function init() {
+        if(!hasInit) {
+          var interval, timeout;
+          calc(true); setState();
+          // run calc every 100 millisecond
+          interval = setInterval(function() {
+            calc();
+          }, 100);
+          timeout = setTimeout(function() {
+            clearInterval(interval);
+          }, 45000);
+          window.pageLoad.then(function() {
+            setTimeout(function() {
+              clearInterval(interval);
+              clearTimeout(timeout);
+            }, 3000);
+          });
+          $scrollTarget.on('scroll', function() {
+            disabled || setState();
+          });
+          $window.on('resize', function() {
+            disabled || (calc(true), setState());
+          });
+          hasInit = true;
+        }
+      }
+
+      setOptions(options);
+      if (!disabled) {
+        init();
+      }
+      $window.on('resize', window.throttle(function() {
+        init();
+      }, 200));
+      return {
+        setOptions: setOptions,
+        refresh: function() {
+          calc(true, { animation: false }); setState();
+        }
+      };
+    }
+    $.fn.affix = affix;
+  });
+})();
+(function() {
+  var SOURCES = window.TEXT_VARIABLES.sources;
+  window.Lazyload.js(SOURCES.jquery, function() {
+    function toc(options) {
+      var $root = this, $window = $(window), $scrollTarget, $scroller, $tocUl = $('<ul class="toc toc--ellipsis"></ul>'), $tocLi, $headings, $activeLast, $activeCur,
+        selectors = 'h1,h2,h3', container = 'body', scrollTarget = window, scroller = 'html, body', disabled = false,
+        headingsPos, scrolling = false, hasRendered = false, hasInit = false;
+
+      function setOptions(options) {
+        var _options = options || {};
+        _options.selectors && (selectors = _options.selectors);
+        _options.container && (container = _options.container);
+        _options.scrollTarget && (scrollTarget = _options.scrollTarget);
+        _options.scroller && (scroller = _options.scroller);
+        _options.disabled !== undefined && (disabled = _options.disabled);
+        $headings = $(container).find(selectors).filter('[id]');
+        $scrollTarget = $(scrollTarget);
+        $scroller = $(scroller);
+      }
+      function calc() {
+        headingsPos = [];
+        $headings.each(function() {
+          headingsPos.push(Math.floor($(this).position().top));
+        });
+      }
+      function setState(element, disabled) {
+        var scrollTop = $scrollTarget.scrollTop(), i;
+        if (disabled || !headingsPos || headingsPos.length < 1) { return; }
+        if (element) {
+          $activeCur = element;
+        } else {
+          for (i = 0; i < headingsPos.length; i++) {
+            if (scrollTop >= headingsPos[i]) {
+              $activeCur = $tocLi.eq(i);
+            } else {
+              $activeCur || ($activeCur = $tocLi.eq(i));
+              break;
+            }
+          }
+        }
+        $activeLast && $activeLast.removeClass('active');
+        ($activeLast = $activeCur).addClass('active');
+      }
+      function render() {
+        if(!hasRendered) {
+          $root.append($tocUl);
+          $headings.each(function() {
+            var $this = $(this);
+            $tocUl.append($('<li></li>').addClass('toc-' + $this.prop('tagName').toLowerCase())
+              .append($('<a></a>').text($this.text()).attr('href', '#' + $this.prop('id'))));
+          });
+          $tocLi = $tocUl.children('li');
+          $tocUl.on('click', 'a', function(e) {
+            e.preventDefault();
+            var $this = $(this);
+            scrolling = true;
+            setState($this.parent());
+            $scroller.scrollToAnchor($this.attr('href'), 400, function() {
+              scrolling = false;
+            });
+          });
+        }
+        hasRendered = true;
+      }
+      function init() {
+        var interval, timeout;
+        if(!hasInit) {
+          render(); calc(); setState(null, scrolling);
+          // run calc every 100 millisecond
+          interval = setInterval(function() {
+            calc();
+          }, 100);
+          timeout = setTimeout(function() {
+            clearInterval(interval);
+          }, 45000);
+          window.pageLoad.then(function() {
+            setTimeout(function() {
+              clearInterval(interval);
+              clearTimeout(timeout);
+            }, 3000);
+          });
+          $scrollTarget.on('scroll', function() {
+            disabled || setState(null, scrolling);
+          });
+          $window.on('resize', window.throttle(function() {
+            if (!disabled) {
+              render(); calc(); setState(null, scrolling);
+            }
+          }, 100));
+        }
+        hasInit = true;
+      }
+
+      setOptions(options);
+      if (!disabled) {
+        init();
+      }
+      $window.on('resize', window.throttle(function() {
+        init();
+      }, 200));
+      return {
+        setOptions: setOptions
+      };
+    }
+    $.fn.toc = toc;
+  });
+})();
+/*(function () {
+
+})();*/
+</script><script>
+  /* toc must before affix, since affix need to konw toc' height. */(function() {
+  var SOURCES = window.TEXT_VARIABLES.sources;
+  var TOC_SELECTOR = window.TEXT_VARIABLES.site.toc.selectors;
+  window.Lazyload.js(SOURCES.jquery, function() {
+    var $window = $(window);
+    var $articleContent = $('.js-article-content');
+    var $tocRoot = $('.js-toc-root'), $col2 = $('.js-col-aside');
+    var toc;
+    var tocDisabled = false;
+    var hasSidebar = $('.js-page-root').hasClass('layout--page--sidebar');
+    var hasToc = $articleContent.find(TOC_SELECTOR).length > 0;
+
+    function disabled() {
+      return $col2.css('display') === 'none' || !hasToc;
+    }
+
+    tocDisabled = disabled();
+
+    toc = $tocRoot.toc({
+      selectors: TOC_SELECTOR,
+      container: $articleContent,
+      scrollTarget: hasSidebar ? '.js-page-main' : null,
+      scroller: hasSidebar ? '.js-page-main' : null,
+      disabled: tocDisabled
+    });
+
+    $window.on('resize', window.throttle(function() {
+      tocDisabled = disabled();
+      toc && toc.setOptions({
+        disabled: tocDisabled
+      });
+    }, 100));
+
+  });
+})();
+(function() {
+  var SOURCES = window.TEXT_VARIABLES.sources;
+  window.Lazyload.js(SOURCES.jquery, function() {
+    var $window = $(window), $pageFooter = $('.js-page-footer');
+    var $pageAside = $('.js-page-aside');
+    var affix;
+    var tocDisabled = false;
+    var hasSidebar = $('.js-page-root').hasClass('layout--page--sidebar');
+
+    affix = $pageAside.affix({
+      offsetBottom: $pageFooter.outerHeight(),
+      scrollTarget: hasSidebar ? '.js-page-main' : null,
+      scroller: hasSidebar ? '.js-page-main' : null,
+      scroll: hasSidebar ? $('.js-page-main').children() : null,
+      disabled: tocDisabled
+    });
+
+    $window.on('resize', window.throttle(function() {
+      affix && affix.setOptions({
+        disabled: tocDisabled
+      });
+    }, 100));
+
+    window.pageAsideAffix = affix;
+  });
+})();
+</script><script type="text/x-mathjax-config">
+	var _config = { tex2jax: {
+		inlineMath: [['$','$'], ['\\(','\\)']]},
+		displayAlign: "left",
+		displayIndent: "2em"
+	};MathJax.Hub.Config(_config);
+</script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+
+    </div>
+    <script>(function () {
+  var $root = document.getElementsByClassName('root')[0];
+  if (window.hasEvent('touchstart')) {
+    $root.dataset.isTouch = true;
+    document.addEventListener('touchstart', function(){}, false);
+  }
+})();
+</script>
+  </body>
+</html>
+
