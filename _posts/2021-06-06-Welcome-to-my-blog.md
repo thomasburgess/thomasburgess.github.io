@@ -23,7 +23,7 @@ for [Stockholms Univeristet](https://www.su.se/) and
 [ATLAS](https://atlas.cern/) for [Universitet i Bergen](https://www.uib.no). 
 Since then, I headed research at an indoor navigation startup acquired by ESRI,
 was a senior data scientist at tourism startup TourRadar, and at health tech startup
-Bloom Diagnostics, and currently head of data science at Refurbed in beautiful Vienna, 
+Bloom Diagnostics, and currently a principal data scientist at Refurbed in beautiful Vienna, 
 Austria.
 
 Today, I’ve set this thing blog up with 

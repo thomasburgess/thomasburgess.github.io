@@ -15,6 +15,10 @@ author: thomasburgess
 description: Fun with fish tiles
 ---
 
+This article was featured in Mitteiling der Meutschen Mathematiker-Vereingung:
+
+> Burgess, T. (2024). Fun with fish tiles. Mitteilungen der Deutschen Mathematiker-Vereinigung, 32(3), 170-171. [https://doi.org/10.1515/dmvm-2024-0053](https://doi.org/10.1515/dmvm-2024-0053)
+
 ## The fish tile
 
 A fish tile is shown in [Figure 1.](#figure-1) It is remarkably fun to play with! It is formed by two equilateral pentagons - the regular pentagon head, and the pentagonal crescent tail. The tail opening angle is 108 degrees so it fits a regular pentagon, while the angle between the head and tail is 144 degrees and fits a regular decagon.
