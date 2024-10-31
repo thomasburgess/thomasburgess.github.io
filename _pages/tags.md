@@ -2,6 +2,7 @@
 layout: cloudtag
 title: Tags
 permalink: /tags
+subtitle: Thomas T Burgess's Blog
 header_img: /assets/images/pages/brianna-lengacher-6XwRVV8Uq4M-unsplash.jpg
 header_type: hero
 excerpt: Tags on this site

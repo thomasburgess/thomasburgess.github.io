@@ -2,7 +2,8 @@
 layout: default
 title: Thomas T Burgess
 header_type: hero
-header_img: /assets/planet7.png
+header_img: /assets/images/pages/planet7.png
+og_image: /assets/images/pages/planet7.png
 subtitle: Art, science, coding, n-gons
 show_author: true
 redirect_from:

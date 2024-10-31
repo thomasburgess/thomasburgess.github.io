@@ -1,6 +1,7 @@
 ---
 layout: cloudcategory
 title: Categories
+subtitle: Thomas T Burgess's Blog
 permalink: /categories
 header_type: hero
 show_breadcrumb   : true
