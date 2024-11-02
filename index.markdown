@@ -38,3 +38,5 @@ consider crediting me - all in the spirit of
 [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/).
 For some technical details on the blog, 
 read the [Blog setup post]({% link _posts/2024-10-30-Blog-setup.md %})
+This sites doesn’t collect or log any data about you or your visits, see the
+[privacy page](/privacy) for more detials.
