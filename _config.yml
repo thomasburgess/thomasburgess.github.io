@@ -123,7 +123,7 @@ search:
 paginate: 5
 paginate_path: "/blog/page:num/"
 paginator_maxnum: 3  
-permalink           : /:year:month:day_:title/
+permalink: /:year/:month/:day/:title:output_ext
 
 
 defaults:
