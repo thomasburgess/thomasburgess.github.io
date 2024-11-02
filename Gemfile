@@ -19,7 +19,7 @@ gem "webrick"
 group :jekyll_plugins do
   gem "jekyll-feed", "~> 0.12"
   gem "jekyll-remote-theme"
-  gem 'jekyll-github-metadata'
+  # gem 'jekyll-github-metadata'
   gem 'jekyll-paginate'
   gem 'jekyll-sitemap'
   gem 'jekyll-include-cache'
