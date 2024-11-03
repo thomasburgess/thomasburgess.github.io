@@ -49,9 +49,7 @@ I recorded my voice right into Logic, not remembering to record a
 video. Recording and editing was quite annoying, so I decided to take
 the audio and put a vidoe to it. I used 
 [Hedron](https://apps.apple.com/us/app/hedron/id1552617460) for
-a quick animation of a dodecahedron made out of (hidden) dodecahedra and 
-[https://en.wikipedia.org/wiki/Metabidiminished_icosahedron](metabidiminished icosahedra)
-, which is quite unrelated to primes, but looks nice enough!
+a quick animation of a dodecahedron made out of (hidden) dodecahedra and [metabidiminished icosahedra](https://en.wikipedia.org/wiki/Metabidiminished_icosahedron), which while quite unrelated to primes looks pretty nice...
 
 ## My video
 
