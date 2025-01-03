@@ -1,0 +1,1062 @@
+<!doctype html>
+<html lang="en-US"><head>
+   <meta charset="utf-8">
+    <!-- Chulapa Jekyll Theme -  -->
+    <!--  MIT License-->
+    <!-- Docs: https://dieghernan.github.io/chulapa -->
+    <!-- Repo: https://github.com/dieghernan/chulapa -->
+    <!-- Page build 2025-01-03 19:53:22 +0100 -->
+    <!--Google Structured Data-->
+    <script type="application/ld+json">
+        {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://thomasburgess.github.io/2022/04/17/Vertices.html"
+      },
+      "headline": "Polygon vertices",
+      "image": "https://thomasburgess.github.io/assets/images/2022/04/17/vertices.png",
+      "datePublished": "2022-04-17T00:00:00+02:00",
+      "dateModified": "2024-10-31T00:00:00+01:00",
+      "author": {
+        "@type": "Person",
+        "name": "Thomas T Burgess"
+        , "url": "https://mathstodon.xyz/@ngons"
+        ,  "sameAs" : [
+             "https://github.com/thomasburgess"
+            ,
+             "https://orcid.org/0000-0002-6993-5918"
+            ]
+      },
+       "publisher": {
+        "@type": "Organization",
+        "name": "Thomas T Burgess",
+        "url": "https://thomasburgess.github.io/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://github.com/thomasburgess.png"
+        }
+      }
+    }
+    </script>
+        <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://thomasburgess.github.io/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Blog",
+        "item": "https://thomasburgess.github.io/blog"
+      },
+    {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Polygon vertices"
+      }]
+    }
+    </script>
+    <script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "WebPage",
+    "name": "Polygon vertices",
+    "description": "All the ways regular polygons tile the plane - There are only 21 ways to place regular polygons in gapless tilings. The point where  the polygons meet is called a vertex. Vertices are named by the polygons meeting  there. For instance, the vertex where four squares meet is 4.4.4.4. In this post,  I will make code to find and draw all possible vertices.
+"
+    }
+}
+</script><script type="application/ld+json">
+{
+  "@context" : "https://schema.org",
+  "@type" : "Person",
+  "image": "https://github.com/thomasburgess.png",
+  "homeLocation": {
+    "@type": "Place",
+    "name": "Vienna, Austria"
+    },
+  "description": "Publisher",
+  "name" : "Thomas T Burgess",
+  "url" : "https://thomasburgess.github.io/"
+  ,  "sameAs" : [
+  "https://mathstodon.xyz/@ngons",
+  "https://github.com/thomasburgess",
+  "https://orcid.org/0000-0002-6993-5918"
+  ]
+}
+</script>
+   <title>Polygon vertices | Thomas T Burgess's Blog</title>
+  <link rel="canonical" href="https://thomasburgess.github.io/2022/04/17/Vertices.html">
+    <!-- Atom feed -->
+  <link href="https://thomasburgess.github.io/atom.xml" type="application/atom+xml" rel="alternate" title="Atom feed Thomas T Burgess's Blog" >
+    <!-- RSS 2.0 feed -->
+  <link href="https://thomasburgess.github.io/rss.xml" type="application/rss+xml" rel="alternate" title="RSS 2.0 feed Thomas T Burgess's Blog" >
+    <!-- Meta tags -->
+   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+   <meta name="author" content="Thomas T Burgess" >
+   <meta name="copyright" content="Thomas T Burgess" >
+   <meta name="description" content="All the ways regular polygons tile the plane - There are only 21 ways to place regular polygons in gapless tilings. The point where  the polygons meet is cal...">
+   <meta name="thumbnail" content="https://thomasburgess.github.io/assets/images/2022/04/17/vertices.png" >
+   <meta name="robots" content="index, follow"><meta name="keywords" content="">
+    <!-- OpenGraph -->
+   <meta property="og:title" content="Polygon vertices | Thomas T Burgess's Blog" >
+   <meta property="og:site_name" content="Thomas T Burgess's Blog | Numbers, numbers - everywhere!" >
+   <meta property="og:url" content="https://thomasburgess.github.io/2022/04/17/Vertices.html" >
+   <meta property="og:type" content="website" >
+   <meta property="og:description" content="All the ways regular polygons tile the plane - There are only 21 ways to place regular polygons in gapless..." >
+   <meta property="og:locale" content="en-US" >
+   <meta property="og:image" content="https://thomasburgess.github.io/assets/images/2022/04/17/vertices.png" >
+    <!-- Twitter/X Cards -->
+   <meta name="twitter:card" content="summary_large_image"><!-- start custom head snippets -->
+<!-- this script is inserted before the css stylesheet -->
+<!-- end custom head snippets -->
+<!-- CSS -->
+    <!-- Preconnect with Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Fontawesome-->
+    <!-- v6 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6/css/all.min.css">
+  <link rel="preload" href="https://cdn.jsdelivr.net/gh/dieghernan/chulapa@master/assets/js/chulapa_script.js" as="script" >
+  <link rel="preload" href="https://cdn.jsdelivr.net/gh/dieghernan/chulapa@master/assets/fonts/Chulapa/Chulapa-Bold_vmod.otf" as="font" type="font/otf" crossorigin>
+    <!-- Theme css (Bootstrap included) -->
+  <link rel="stylesheet" id="maincss" href="https://thomasburgess.github.io/assets/css/main.css" >
+    <!-- Highlighter -->
+  <link id="csshigh" rel="stylesheet" href="https://thomasburgess.github.io/assets/css/highlighter.css" >
+    <!-- Custom css -->
+  <link rel="stylesheet" href="https://thomasburgess.github.io/assets/css/custom.css" >
+      <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.min.js"></script><!-- start custom head snippets -->
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/images/favicons/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="96x96" href="/assets/images/favicons/favicon-96x96.png">
+<link rel="manifest" href="/assets/images/favicons/site.webmanifest">
+<link rel="mask-icon" href="/assets/images/favicons/safari-pinned-tab.svg" color="#5bbad5">
+<link rel="shortcut icon" href="/assets/images/favicons/favicon.ico">
+<meta name="msapplication-TileColor" content="#2b5797">
+<meta name="msapplication-TileImage" content="/assets/images/favicons/mstile-144x144.png">
+<meta name="msapplication-config" content="/assets/images/favicons/browserconfig.xml">
+<meta name="theme-color" content="#78c2ad">
+<!-- end custom head snippets --></head>
+<body class="d-flex flex-column h-entry" id="body">
+	<a class="u-url d-none" href="https://thomasburgess.github.io/2022/04/17/Vertices.html">Invisible link to canonical for Microformats</a>
+	<div class="navbar-chulapa-fab d-md-none">
+		<input type="checkbox" class="navbar-chulapa-fab-button d-none" id="navi-toggle">
+		<label for="navi-toggle" class="navbar-toggler p-1 m-0 text-center d-flex">
+			<span class="navbar-toggler-icon m-auto">&nbsp;</span>
+		</label>
+		<div class="navbar-chulapa-fab-background">&nbsp;</div>
+		<nav class="navbar-chulapa-fab-nav" aria-label="alternative-navigation">
+			<ul class="navbar-nav text-center text-uppercase font-weight-light mt-0 mb-1 py-1">
+				<li class="nav-item">
+					<a class="nav-link px-3 navbar-brand mx-1 " href="https://thomasburgess.github.io/"><img src="https://thomasburgess.github.io/assets/images/favicons/favicon-96x96.png" width="30" height="30" class="d-inline-block align-top rounded-lg text-center mr-1" alt="NavbarLogo">Home</a>
+				</li><li class="nav-item my-0 py-1">
+					<a class="nav-link px-3 py-1" href="https://thomasburgess.github.io/blog/">Blog</a>
+				</li><li class="nav-item my-0 py-1">
+					<a class="nav-link px-3 py-1" href="https://thomasburgess.github.io/tags">Tags</a>
+				</li><li class="nav-item my-0 py-1">
+					<a class="nav-link px-3 py-1" href="https://thomasburgess.github.io/categories">Categories</a>
+				</li><li class="nav-item my-0 py-1">
+					<a class="nav-link px-3 py-1" href="https://thomasburgess.github.io/archive">Archive</a>
+				</li><li class="nav-item my-0 py-1">
+					<a class="nav-link px-3 py-1 " href="https://thomasburgess.github.io/search">search</a>
+				</li></ul>
+		</nav>
+	</div>
+	<nav class="navbar navbar-expand sticky-top navbar-chulapa d-none d-md-block " aria-label="primary-navigation">
+	<div class="container-fluid mx-md-2">
+			<a class="navbar-brand text-uppercase font-weight-light" href="https://thomasburgess.github.io/"><img src="https://thomasburgess.github.io/assets/images/favicons/favicon-96x96.png" width="30" height="30" class="d-inline-block align-top rounded-lg mr-1" alt="NavbarLogo">Home</a><ul class="navbar-nav ml-auto"><li class="nav-item mx-2">
+						<a class="nav-link text-uppercase font-weight-light " href="https://thomasburgess.github.io/blog/">Blog</a>
+					</li><li class="nav-item mx-2">
+						<a class="nav-link text-uppercase font-weight-light " href="https://thomasburgess.github.io/tags">Tags</a>
+					</li><li class="nav-item mx-2">
+						<a class="nav-link text-uppercase font-weight-light " href="https://thomasburgess.github.io/categories">Categories</a>
+					</li><li class="nav-item mx-2">
+						<a class="nav-link text-uppercase font-weight-light " href="https://thomasburgess.github.io/archive">Archive</a>
+					</li><li class="nav-item mx-2">
+						<a class="nav-link text-uppercase font-weight-light " href="https://thomasburgess.github.io/search">
+							<i class="fa fa-search" aria-hidden="true"></i><span class="sr-only">search</span>
+						</a>
+					</li></ul></div>
+</nav>	<header class="d-flex align-items-center hero-chulapa-image" style="background-image: linear-gradient(rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.7)), url('https://thomasburgess.github.io/assets/images/2022/04/17/vertices.png')"><div class="container-lg py-4">
+   <h1 class="p-name">Polygon vertices</h1><hr class="my-3">
+   <p class="chulapa-subtitle p-summary">All the ways regular polygons tile the plane</p>
+ </div>
+</header>
+	<main class="container-lg pb-3 flex-fill">
+<div class="row my-1">
+<div class="col-lg-5 offset-lg-2 col small">
+ <nav aria-label="breadcrumb">
+  <ol class="breadcrumb my-0 py-0 chulapa-bg-transparent pl-0" itemscope itemtype="https://schema.org/BreadcrumbList">
+            <li class="breadcrumb-item" itemprop="itemListElement" itemscope
+          itemtype="https://schema.org/ListItem"><a href="https://thomasburgess.github.io/" itemprop="item"><span itemprop="name">Home</span></a>
+         <meta itemprop="position" content="1" ></li>
+            <li class="breadcrumb-item" itemprop="itemListElement" itemscope
+          itemtype="https://schema.org/ListItem"><a href="https://thomasburgess.github.io/blog" itemprop="item"><span itemprop="name">Blog</span></a>
+         <meta itemprop="position" content="2" ></li>
+      <li class="breadcrumb-item active" aria-current="page" itemprop="itemListElement" itemscope
+          itemtype="https://schema.org/ListItem">
+        <span itemprop="name">Polygon vertices</span>
+       <meta itemprop="position" content="3" >
+     </li>
+ </ol>
+ </nav>
+ <div class="chulapaDateSocial">
+            <time class="dt-updated" datetime="2024-10-31T00:00:00+01:00">31 oct 2024</time> 
+            <i class="fa fa-redo fa-xs" aria-hidden="true"></i>
+            <br>
+            <span class="font-weight-light chulapa-text-line-through">17 apr 2022</span>
+        </div></div>
+         <div class="col-lg-3 col-sm-4 col-3 text-right lead chulapaDateSocial">
+            <a  href="https://twitter.com/intent/tweet?url=https://thomasburgess.github.io/2022/04/17/Vertices.html&text=Polygon+vertices&hashtags=geometry,maths,polygon,python" title="Share on X" aria-label="Share on X" ><i class="fab fa-square-x-twitter fa-lg" aria-hidden="true"></i></a>
+            <a href="https://toot.kytta.dev/?text=Polygon%20vertices%20https://thomasburgess.github.io/2022/04/17/Vertices.html%20%23geometry%20%23maths%20%23polygon%20%23python" title="Share on Mastodon" aria-label="Share on Mastodon"><i class="fa-brands fa-mastodon fa-lg" aria-hidden="true"></i></a>
+            <a  class="d-none d-sm-inline" href="https://www.facebook.com/sharer.php?u=https://thomasburgess.github.io/2022/04/17/Vertices.html" title="Share on Facebook" aria-label="Share on Facebook" ><i class="fab fa-facebook-square fa-lg" aria-hidden="true"></i></a>
+             <a  class="d-none d-sm-inline" href="https://api.whatsapp.com/send?&text=Polygon+vertices%20https://thomasburgess.github.io/2022/04/17/Vertices.html" title="Share on Whatsapp" aria-label="Share on Whatsapp" ><i class="fab fa-whatsapp-square fa-lg" aria-hidden="true"></i></a>
+         <a  class="d-none d-sm-inline" href="https://www.linkedin.com/shareArticle?url=https://thomasburgess.github.io/2022/04/17/Vertices.html&title=Polygon+vertices" title="Share on LinkedIn" aria-label="Share on LinkedIn"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a>
+         </div></div>
+		<div class="row pt-2">
+			<aside class="col-lg-2 mt-lg-3 small"><div rel="author" class="h-card p-author">
+				<div class="row d-flex align-items-center mb-2"><img src="https://github.com/thomasburgess.png" alt="Thomas T Burgess" class="ml-3 mr-0 mx-lg-auto mb-lg-1 chulapa-avatar-size u-photo"><div class="col-9 col-lg-12 text-lg-center p-name">
+						Thomas T Burgess
+					</div>
+				</div>
+				<div class="row mb-2 mb-lg-0">
+					<div class="col text-lg-center"><address class="d-inline d-lg-block mr-2 mx-lg-auto mb-lg-2 small chulapa-links-hover-only">
+						  <a class="pr-lg-0 p-region" href="https://www.google.com/maps/search/?api=1&query=Vienna%2C+Austria">
+						    <i class="fas fa-map-marker-alt fa-lg mr-1" aria-hidden="true"></i>Vienna, Austria</a>
+						</address><div class="d-inline my-1 mx-lg-0 chulapa-links-hover-only"><a class="mr-2 mx-lg-1 u-url" rel="me" href="https://mathstodon.xyz/@ngons" title="@ngons@mathstodon.xyz - my mastodon social" aria-label="@ngons@mathstodon.xyz - my mastodon social" ><i class="fab fa-mastodon fa-lg" aria-hidden="true"></i></a><a class="mr-2 mx-lg-1 u-url" rel="me" href="https://github.com/thomasburgess" title="my code at github." aria-label="my code at github." ><i class="fab fa-github fa-lg" aria-hidden="true"></i></a><a class="mr-2 mx-lg-1 u-email" href="mailto:nxpnsv+thomastburgess@gmail.com?subject=Thomas%20T%20Burgess's%20Blog%20web%20-%20Polygon%20vertices" title="My personal email" aria-label="My personal email" ><i class="far fa-envelope fa-lg" aria-hidden="true"></i></a>
+							<a class="mr-2 mx-lg-1 u-url" rel="me" href="https://orcid.org/0000-0002-6993-5918" title="My Orcid" aria-label="My Orcid" ><i class="fa-brands fa-orcid fa-lg" aria-hidden="true"></i></a></div></div>
+				</div>
+				</div>
+</aside>
+			<article id="maincontent" class="col-lg-8 mt-3 e-content">
+	<button class="btn btn-primary btn-sm rounded-right position-fixed chulapa-btn-sidebar bs-canvas-anim chulapa-btn-nofocus chulapa-fa-static" id='demo' onclick="openSideBar()" aria-label="Open Sidebar" aria-expanded="false" aria-controls="sideBar">
+		<i class="fa-solid fa-plus"></i><span class="sr-only">Open Sidebar</span>
+	</button>
+	<div class="bs-canvas bs-canvas-anim bs-canvas-left position-fixed navbar-chulapa h-100" id='sideBar'>
+		<p class="pt-2 pb-1 px-3">
+			<button type="button" class="navbar-text close chulapa-btn-nofocus chulapa-fa-static" aria-label="Close" onclick="closeSideBar()">
+				<i class="fa-solid fa-times"></i><span class="sr-only">Close Sidebar</span>
+			</button>
+		</p>
+		<nav class="navbar-nav px-3 my-auto">		  <p class="mb-2" ><a class="nav-link font-weight-bold lead" href="#">Polygon vertices</a></p>		
+			<ul class="nav flex-column" id="sidetoc"><li class="nav-item nav d-block"><a href="#introduction" class="nav-link">Introduction</a></li><li class="nav-item nav d-block"><a href="#regular-polygons" class="nav-link">Regular polygons</a></li><li class="nav-item nav d-block"><a href="#searching-for-vertices" class="nav-link">Searching for vertices</a></li><li class="nav-item nav d-block"><a href="#python-search-implementation" class="nav-link">Python search implementation</a></li><li class="nav-item nav d-block"><a href="#search-result" class="nav-link">Search result</a></li><li class="nav-item nav d-block"><a href="#drawing-vertices" class="nav-link">Drawing vertices</a></li></ul>
+		</nav>   
+	</div>
+            <nav aria-label="table-of-contents">
+			<ul class="chulapa-toc-wrapper list-group mb-5 mx-3 mx-lg-5" id="toc"><li class="list-group-item font-weight-bold py-1 pr-0 mr-0 chulapa-toc-reset"><a href="#introduction">Introduction</a></li><li class="list-group-item font-weight-bold py-1 pr-0 mr-0 chulapa-toc-reset"><a href="#regular-polygons">Regular polygons</a></li><li class="list-group-item font-weight-bold py-1 pr-0 mr-0 chulapa-toc-reset"><a href="#searching-for-vertices">Searching for vertices</a></li><li class="list-group-item font-weight-bold py-1 pr-0 mr-0 chulapa-toc-reset"><a href="#python-search-implementation">Python search implementation</a></li><li class="list-group-item font-weight-bold py-1 pr-0 mr-0 chulapa-toc-reset"><a href="#search-result">Search result</a></li><li class="list-group-item font-weight-bold py-1 pr-0 mr-0 chulapa-toc-reset"><a href="#drawing-vertices">Drawing vertices</a></li></ul>
+			</nav>
+			 <h2 id="introduction">Introduction</h2>
+<p>There are only 21 ways to place regular polygons in gapless tilings. The point where the polygons meet is called a vertex. Vertices are named by the polygons meeting there. For instance, the vertex where four squares meet is 4.4.4.4. In this post, I will make code to find and draw all possible vertices.</p>
+<h2 id="regular-polygons">Regular polygons</h2>
+<p>A regular polygon has \(n\) sides. The <em>interior</em> angle \(\alpha\) between two adjacent sides is 
+\begin{equation}
+\alpha=\frac{n-2}{2n}.
+\end{equation}
+The turning angle \(\beta=1/n\) of a polygon is the angle to the centre between two adjacent points.
+For simplicity, I write angles as fractions of a complete turn. Multiply by \(2\pi\) or \(360^\circ\) to get radians or degrees.</p>
+<figure>
+<p><img src="/assets/images/2022/04/17/angles.svg" alt="Angles in a regular polygon." id="figure-1" width="25%" /></p>
+ <figcaption>Figure 1: Angles in a regular polygon.</figcaption>
+</figure>
+<p>The pointiest polygon is the regular triangle with \(\alpha=1/6\). When increasing \(n\), 
+\(\alpha\) increases towards \(1/2\).</p>
+<h2 id="searching-for-vertices">Searching for vertices</h2>
+<p>For a tiling to be gapless, the sum of interior angles \(\alpha\) at a vertex must be 1. 
+Thus, the complete set of vertices can be found by finding all sets \(v_i\) so that:
+\begin{equation}
+\sum_{n_j\in v_i} \frac{n_j-2}{2n_j} = 1\,.
+\end{equation}</p>
+<p>Before searching, it helps to have ranges on the possible number of polygons \(m\) and 
+sides \(n\) in \(v_i\).  The count \(m\) must be larger than 2, as no two regular polygons can
+add up to 1. Furthermore, the highest \(m\) is six as 3.3.3.3.3.3 as 
+\(\sum_{n \in 3.3.3.3.3.3} \alpha=6\cdot1/6=1\). For \(m=6\) this is the only possible 
+vertex.</p>
+<p>For \(m=3\), the two shape combination leaving the smallest angle \(\alpha\lt1/2\) is 3 
+and 7, as that 3 and 6 leaves exactly \(\alpha=1/2\), which can’t be a polygon. The 
+remaining angle then is</p>
+<p>\begin{equation}
+\alpha=1-\left(\alpha_3+\alpha_2\right)=
+1-\left(\frac{3-2}{2\cdot3}+
+\frac{7-2}{2\cdot7}\right)=
+\frac{10}{21}\,,
+\end{equation}
+and with \((n-2)/(2n)=10/21\) we get \(n=42\). Similarly for \(m=4\), 3.3.4 leaves 
+\(\alpha\le1-(2/6+2/8)=5/12\), corresponding to \(n=12\). Finally for \(m=5\), 3.3.3.3 
+leaves \(\alpha\le1-(4/6)=1/3\), corresponding to \(n_5=6\).</p>
+<p>In summary:</p>
+<p>\[
+m:3 \quad 3\le n\le 42 <br />
+\]
+\[
+m:4 \quad 3\le n\le 12 <br />
+\]
+\[
+m:5 \quad 3\le n\le 6 <br />
+\]
+\[
+m:6 \quad n=3 
+\]</p>
+<p>All possible vertices are found by searching for combinations of \(m\) elements with 
+\(n\) inside the constrained range. Note that this brute force approach will trivial 
+clones of vertices in the form of rotations and mirror images. Moreover, there are some 
+cases of different vertices with the same polygon content. Thus, I first generate 
+(sorted) combinations with replacements of polygons for each \(m\). If a set sums to 1, 
+I yield permutations not already stored as a mirror or rotation.</p>
+<h2 id="python-search-implementation">Python search implementation</h2>
+<p>For the search I only rely on python 3.8+ and its built in libraries. You don’t need 
+to read the code unless you’re interested in the deeper details of how I find vertices. 
+There are likely more efficient solutions, but I think this works good enough for me :)</p>
+<details>
+  <summary><i>Click to expand the python code...</i><br />&nbsp;<br /></summary>
+ <p>Imports:</p>
+ <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">combinations_with_replacement</span><span class="p">,</span> <span class="n">permutations</span>
+<span class="kn">from</span> <span class="nn">fractions</span> <span class="kn">import</span> <span class="n">Fraction</span> <span class="k">as</span> <span class="n">F</span>
+</code></pre></div></div>
+ <p>Constraints</p>
+ <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Range of polygon count at vertex
+</span><span class="n">m_min</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="n">m_max</span> <span class="o">=</span> <span class="mi">6</span>
+<span class="c1"># Range of n-gon n at vertex
+</span><span class="n">n_min</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="n">n_max</span> <span class="o">=</span> <span class="p">[</span><span class="mi">42</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+</code></pre></div></div>
+ <p>Fucntions</p>
+ <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">n_gon</span><span class="p">(</span><span class="n">n</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">F</span><span class="p">:</span>
+    <span class="s">"""Make n-gon interior angle as fraction of full turn"""</span>
+    <span class="k">return</span> <span class="n">F</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">n</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">rotrev</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+    <span class="s">"""Generate all rotations and mirrors of s"""</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">deque</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">d</span><span class="p">)):</span>
+        <span class="n">d</span><span class="p">.</span><span class="n">rotate</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">yield</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+        <span class="k">yield</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">reversed</span><span class="p">(</span><span class="n">d</span><span class="p">))</span>
+
+        
+<span class="k">def</span> <span class="nf">find_vertices</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">]]:</span>
+    <span class="s">"""Find vertices"""</span>
+    <span class="n">found</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="c1"># Loop over number of n-gons
+</span>    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">m_min</span><span class="p">,</span> <span class="n">m_max</span><span class="o">+</span><span class="mi">1</span><span class="p">)):</span>
+        <span class="c1"># Loop over all possible vertex candidates
+</span>        <span class="k">for</span> <span class="n">comb</span> <span class="ow">in</span> <span class="n">combinations_with_replacement</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">m_min</span><span class="p">,</span> <span class="n">n_max</span><span class="p">[</span><span class="n">m</span><span class="o">-</span><span class="n">n_min</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="n">r</span><span class="o">=</span><span class="n">m</span><span class="p">):</span>            
+            <span class="c1"># Only consider proper vertices
+</span>            <span class="k">if</span> <span class="nb">sum</span><span class="p">(</span><span class="n">n_gon</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">comb</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="c1"># Add permutations 
+</span>            <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">permutations</span><span class="p">(</span><span class="n">comb</span><span class="p">):</span>
+                <span class="c1"># Reject rotated or reversed forms
+</span>                <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">d</span> <span class="ow">in</span> <span class="n">found</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">rotrev</span><span class="p">(</span><span class="n">p</span><span class="p">)):</span>
+                    <span class="k">continue</span>
+                <span class="n">found</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">found</span>
+</code></pre></div></div>
+ <p>Running the search takes less than a seconds on my laptop</p>
+ <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">vertices</span> <span class="o">=</span> <span class="n">find_vertices</span><span class="p">()</span>
+</code></pre></div></div>
+</details>
+<h2 id="search-result">Search result</h2>
+<p>This table was made processing the resulting vertex list. Here \(m\) still is the
+number of polygons, each integer column the counts for a particular shape, and \(u\) 
+the number of unique shapes.</p>
+<table>
+<thead>
+   <tr>
+     <th>vertex</th>
+     <th>\(m\)</th>
+     <th>3</th>
+     <th>4</th>
+     <th>5</th>
+     <th>6</th>
+     <th>7</th>
+     <th>8</th>
+     <th>9</th>
+     <th>10</th>
+     <th>12</th>
+     <th>15</th>
+     <th>18</th>
+     <th>20</th>
+     <th>24</th>
+     <th>42</th>
+     <th>\(u\)</th>
+   </tr>
+ </thead>
+ <tbody>
+   <tr>
+     <td>3.7.42</td>
+     <td>3</td>
+     <td>1</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>1</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>1</td>
+     <td>3</td>
+   </tr>
+   <tr>
+     <td>3.8.24</td>
+     <td>3</td>
+     <td>1</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>1</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>1</td>
+     <td>0</td>
+     <td>3</td>
+   </tr>
+   <tr>
+     <td>3.9.18</td>
+     <td>3</td>
+     <td>1</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>1</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>1</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>3</td>
+   </tr>
+   <tr>
+     <td>3.10.15</td>
+     <td>3</td>
+     <td>1</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>1</td>
+     <td>0</td>
+     <td>1</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>3</td>
+   </tr>
+   <tr>
+     <td>3.12.12</td>
+     <td>3</td>
+     <td>1</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>2</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>2</td>
+   </tr>
+   <tr>
+     <td>4.5.20</td>
+     <td>3</td>
+     <td>0</td>
+     <td>1</td>
+     <td>1</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>1</td>
+     <td>0</td>
+     <td>0</td>
+     <td>3</td>
+   </tr>
+   <tr>
+     <td>4.6.12</td>
+     <td>3</td>
+     <td>0</td>
+     <td>1</td>
+     <td>0</td>
+     <td>1</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>1</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>3</td>
+   </tr>
+   <tr>
+     <td>4.8.8</td>
+     <td>3</td>
+     <td>0</td>
+     <td>1</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>2</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>2</td>
+   </tr>
+   <tr>
+     <td>5.5.10</td>
+     <td>3</td>
+     <td>0</td>
+     <td>0</td>
+     <td>2</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>1</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>2</td>
+   </tr>
+   <tr>
+     <td>6.6.6</td>
+     <td>3</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>3</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>1</td>
+   </tr>
+   <tr>
+     <td>3.3.4.12</td>
+     <td>4</td>
+     <td>2</td>
+     <td>1</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>1</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>3</td>
+   </tr>
+   <tr>
+     <td>3.4.3.12</td>
+     <td>4</td>
+     <td>2</td>
+     <td>1</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>1</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>3</td>
+   </tr>
+   <tr>
+     <td>3.3.6.6</td>
+     <td>4</td>
+     <td>2</td>
+     <td>0</td>
+     <td>0</td>
+     <td>2</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>2</td>
+   </tr>
+   <tr>
+     <td>3.6.3.6</td>
+     <td>4</td>
+     <td>2</td>
+     <td>0</td>
+     <td>0</td>
+     <td>2</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>2</td>
+   </tr>
+   <tr>
+     <td>3.4.4.6</td>
+     <td>4</td>
+     <td>1</td>
+     <td>2</td>
+     <td>0</td>
+     <td>1</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>3</td>
+   </tr>
+   <tr>
+     <td>3.4.6.4</td>
+     <td>4</td>
+     <td>1</td>
+     <td>2</td>
+     <td>0</td>
+     <td>1</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>3</td>
+   </tr>
+   <tr>
+     <td>4.4.4.4</td>
+     <td>4</td>
+     <td>0</td>
+     <td>4</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>1</td>
+   </tr>
+   <tr>
+     <td>3.3.3.3.6</td>
+     <td>5</td>
+     <td>4</td>
+     <td>0</td>
+     <td>0</td>
+     <td>1</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>2</td>
+   </tr>
+   <tr>
+     <td>3.3.3.4.4</td>
+     <td>5</td>
+     <td>3</td>
+     <td>2</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>2</td>
+   </tr>
+   <tr>
+     <td>3.3.4.3.4</td>
+     <td>5</td>
+     <td>3</td>
+     <td>2</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>2</td>
+   </tr>
+   <tr>
+     <td>3.3.3.3.3.3</td>
+     <td>6</td>
+     <td>6</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>0</td>
+     <td>1</td>
+   </tr>
+   <tr>
+     <td>total</td>
+     <td>-</td>
+     <td>15</td>
+     <td>10</td>
+     <td>2</td>
+     <td>7</td>
+     <td>1</td>
+     <td>2</td>
+     <td>1</td>
+     <td>2</td>
+     <td>4</td>
+     <td>1</td>
+     <td>1</td>
+     <td>1</td>
+     <td>1</td>
+     <td>1</td>
+     <td>-</td>
+   </tr>
+ </tbody>
+</table>
+<p>Noteworthy observations</p>
+<ul>
+ <li>There are a total of 21 vertices (10 \(m=3\), 7 \(m=4\), 3 \(m=5\), 1 \(m=6\))</li>
+ <li>There are 1-3 polygon types in a vertex (10 \(u=3\), 8 \(u=2\), 3 \(u=1\))</li>
+ <li>The three single polygon type vertices are triangles, squares, and hexagons - the only three ways to tile the plane with a single polygon type!</li>
+ <li>Only 3-, 4-, 5-, 6-, 8-, 10- and 12-gons occur in more than one vertex
+   <ul>
+     <li>5 and 10 only ever occurr together</li>
+     <li>15 vertices contains triangles, 10 squares, 7 hexagons, and 4 dodecagons</li>
+   </ul>
+ </li>
+</ul>
+<p>Below is the code I used to generate the table and insights</p>
+<details>
+  <summary><i>Click to expand the python code...</i><br />&nbsp;<br /></summary>
+ <p>Imports (in addition to above code)</p>
+ <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="n">pd</span>
+</code></pre></div></div>
+ <p>Functions</p>
+ <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">vertex_str</span><span class="p">(</span><span class="n">vtx</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="s">"""Make vertex notation from ints."""</span>
+    <span class="k">return</span> <span class="s">'.'</span><span class="p">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">vtx</span><span class="p">))</span>    
+
+<span class="k">def</span> <span class="nf">make_df</span><span class="p">(</span><span class="n">vertices</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="p">.</span><span class="n">DataFrame</span><span class="p">:</span>
+    <span class="s">"""Make data frame with vertex summary."""</span>
+    <span class="n">vertices</span> <span class="o">=</span> <span class="n">find_vertices</span><span class="p">()</span>
+    <span class="n">ngons</span> <span class="o">=</span> <span class="p">{</span><span class="n">i</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">vertices</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">j</span><span class="p">}</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s">"m"</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">f</span><span class="p">),</span> <span class="s">"vertex"</span><span class="p">:</span> <span class="n">f</span><span class="p">}</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">vertices</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">ngon</span> <span class="ow">in</span> <span class="p">{</span><span class="n">i</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">vertices</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">j</span><span class="p">}:</span>
+        <span class="n">df</span><span class="p">[</span><span class="n">ngon</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s">"vertex"</span><span class="p">].</span><span class="nb">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">x</span><span class="p">).</span><span class="n">count</span><span class="p">(</span><span class="n">ngon</span><span class="p">))</span>
+    <span class="n">df</span><span class="p">[</span><span class="s">"vertex"</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s">"vertex"</span><span class="p">].</span><span class="nb">apply</span><span class="p">(</span><span class="n">vertex_str</span><span class="p">)</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">.</span><span class="n">set_index</span><span class="p">(</span><span class="s">"vertex"</span><span class="p">)[[</span><span class="s">"m"</span><span class="p">]</span><span class="o">+</span><span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">ngons</span><span class="p">))]</span>
+    <span class="n">df</span><span class="p">[</span><span class="s">"u"</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">ngons</span><span class="p">)]</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">).</span><span class="nb">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">df</span><span class="p">.</span><span class="n">loc</span><span class="p">[</span><span class="s">"n_vertices"</span><span class="p">]</span><span class="o">=</span><span class="p">(</span><span class="n">df</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">).</span><span class="nb">sum</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">df</span>
+</code></pre></div></div>
+ <p>Running</p>
+ <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df</span><span class="o">=</span><span class="n">make_df</span><span class="p">(</span><span class="n">vertices</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">df</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s">"m"</span><span class="p">].</span><span class="n">value_counts</span><span class="p">())</span>
+<span class="k">print</span><span class="p">(</span><span class="n">df</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s">"u"</span><span class="p">].</span><span class="n">value_counts</span><span class="p">())</span>
+</code></pre></div></div>
+</details>
+<h2 id="drawing-vertices">Drawing vertices</h2>
+<p>To draw vertices correctly, I define a polygon by \(n\) and one side.
+Swapping the side start and end points mirrors the polygon.</p>
+<details>
+  <summary><i>Click to expand the python code...</i><br />&nbsp;<br /></summary>
+ <p>Imports</p>
+ <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">import</span> <span class="nn">matplotlib.patches</span> <span class="k">as</span> <span class="n">mpatches</span>
+<span class="kn">from</span> <span class="nn">matplotlib.collections</span> <span class="kn">import</span> <span class="n">PatchCollection</span>
+</code></pre></div></div>
+ <p>Functions</p>
+ <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">make_patch</span><span class="p">(</span><span class="n">points</span><span class="p">:</span> <span class="n">np</span><span class="p">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">fc</span><span class="o">=</span><span class="s">"white"</span><span class="p">):</span>
+    <span class="s">"""Helper to draw polygon patch to ax"""</span>
+    <span class="n">ax</span><span class="p">.</span><span class="n">add_collection</span><span class="p">(</span>
+         <span class="n">PatchCollection</span><span class="p">([</span><span class="n">mpatches</span><span class="p">.</span><span class="n">Polygon</span><span class="p">(</span><span class="n">points</span><span class="p">)],</span> <span class="n">fc</span><span class="o">=</span><span class="n">fc</span><span class="p">,</span> <span class="n">ec</span><span class="o">=</span><span class="s">'k'</span><span class="p">,</span><span class="n">lw</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="p">)</span>
+    
+<span class="k">def</span> <span class="nf">coords</span><span class="p">(</span><span class="n">n</span><span class="p">:</span><span class="nb">int</span><span class="p">,</span> <span class="n">line</span><span class="p">:</span> <span class="n">np</span><span class="p">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="p">.</span><span class="n">ndarray</span><span class="p">:</span>
+    <span class="s">"""
+    Args:
+        * n (int) - n in n-gon
+        * line (np.array) - ((x0,y0), (x1,y1)) line segment
+    Returns:
+        np.ndarray: shape (n, 2) x,y coordinate pairs
+        
+    """</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">diff</span><span class="p">(</span><span class="n">line</span><span class="p">.</span><span class="n">T</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">linalg</span><span class="p">.</span><span class="n">norm</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="o">*</span><span class="p">(</span>
+        <span class="n">np</span><span class="p">.</span><span class="n">pi</span><span class="o">-</span><span class="n">np</span><span class="p">.</span><span class="n">pi</span><span class="o">*</span><span class="mi">2</span><span class="o">*</span><span class="nb">float</span><span class="p">(</span><span class="n">n_gon</span><span class="p">(</span><span class="n">n</span><span class="p">)))</span><span class="o">+</span>\
+        <span class="n">np</span><span class="p">.</span><span class="n">arctan2</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">d</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">][:,</span> <span class="bp">None</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">np</span><span class="p">.</span><span class="n">hstack</span><span class="p">(((</span><span class="n">p</span><span class="o">+</span><span class="n">np</span><span class="p">.</span><span class="n">cumsum</span><span class="p">(</span>
+        <span class="n">r</span><span class="o">*</span><span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="p">.</span><span class="n">sin</span><span class="p">(</span><span class="n">a</span><span class="p">),</span> <span class="n">np</span><span class="p">.</span><span class="n">cos</span><span class="p">(</span><span class="n">a</span><span class="p">)]),</span>
+        <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)),</span> <span class="n">p</span><span class="p">)).</span><span class="n">T</span>
+</code></pre></div></div>
+ <p>Colors</p>
+ <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">colors</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="mi">3</span><span class="p">:</span> <span class="s">"royalblue"</span><span class="p">,</span> 
+    <span class="mi">4</span><span class="p">:</span> <span class="s">"orangered"</span><span class="p">,</span> 
+    <span class="mi">5</span><span class="p">:</span> <span class="s">"hotpink"</span><span class="p">,</span> 
+    <span class="mi">6</span><span class="p">:</span> <span class="s">"gold"</span><span class="p">,</span> 
+    <span class="mi">7</span><span class="p">:</span> <span class="s">"magenta"</span><span class="p">,</span> 
+    <span class="mi">8</span><span class="p">:</span> <span class="s">"darkorange"</span><span class="p">,</span> 
+    <span class="mi">9</span><span class="p">:</span> <span class="s">"yellowgreen"</span><span class="p">,</span> 
+    <span class="mi">10</span><span class="p">:</span> <span class="s">"lightsteelblue"</span><span class="p">,</span> 
+    <span class="mi">12</span><span class="p">:</span> <span class="s">"limegreen"</span><span class="p">,</span>
+    <span class="mi">15</span><span class="p">:</span> <span class="s">"lightcoral"</span><span class="p">,</span>
+    <span class="mi">18</span><span class="p">:</span> <span class="s">"khaki"</span><span class="p">,</span>
+    <span class="mi">20</span><span class="p">:</span> <span class="s">"orchid"</span><span class="p">,</span>
+    <span class="mi">24</span><span class="p">:</span> <span class="s">"plum"</span><span class="p">,</span>
+    <span class="mi">42</span><span class="p">:</span> <span class="s">"palegreen"</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div></div>
+ <p>Running</p>
+ <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
+<span class="n">axs</span> <span class="o">=</span> <span class="n">axs</span><span class="p">.</span><span class="n">flatten</span><span class="p">()</span>  <span class="c1"># all subplits as list
+</span>
+<span class="n">g0</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]])</span>  <span class="c1"># line to start with
+</span><span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">vertices</span><span class="p">):</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="n">ps</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1"># save coordinates for bounding box
+</span>    <span class="n">ax</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span><span class="s">"ko"</span><span class="p">,</span> <span class="n">ms</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span> <span class="c1"># Draw vertex
+</span>    <span class="c1"># Add polygons
+</span>    <span class="k">for</span> <span class="n">gon</span> <span class="ow">in</span> <span class="n">vertex</span><span class="p">:</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="n">coords</span><span class="p">(</span><span class="n">gon</span><span class="p">,</span> <span class="n">g0</span><span class="p">)</span>
+        <span class="n">ps</span><span class="p">.</span><span class="n">extend</span><span class="p">(</span><span class="n">p</span><span class="p">.</span><span class="n">tolist</span><span class="p">())</span>
+        <span class="n">make_patch</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">colors</span><span class="p">[</span><span class="n">gon</span><span class="p">])</span>
+        <span class="n">g0</span> <span class="o">=</span> <span class="n">p</span><span class="p">[:</span><span class="mi">2</span><span class="p">][::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="c1"># move starting line for next iteration
+</span>    <span class="c1"># Bounding box
+</span>    <span class="n">xmin</span><span class="p">,</span> <span class="n">ymin</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nb">min</span><span class="p">(</span><span class="n">ps</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">*</span><span class="mf">1.05</span>
+    <span class="n">xmax</span><span class="p">,</span> <span class="n">ymax</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nb">max</span><span class="p">(</span><span class="n">ps</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">*</span><span class="mf">1.05</span>
+    <span class="n">ax</span><span class="p">.</span><span class="nb">set</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">vertex_str</span><span class="p">(</span><span class="n">vertex</span><span class="p">),</span> <span class="n">xlim</span><span class="o">=</span><span class="p">(</span><span class="n">xmin</span><span class="p">,</span><span class="n">xmax</span><span class="p">),</span> <span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="n">ymin</span><span class="p">,</span><span class="n">ymax</span><span class="p">));</span>
+
+<span class="c1"># Ensure equal aspect and no axes for all plots
+</span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="mi">5</span><span class="o">*</span><span class="mi">5</span><span class="p">):</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="n">ax</span><span class="p">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s">'equal'</span><span class="p">,</span> <span class="n">adjustable</span><span class="o">=</span><span class="s">'box'</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">.</span><span class="n">axis</span><span class="p">(</span><span class="s">'off'</span><span class="p">)</span>
+
+<span class="c1"># Save result
+</span><span class="n">fig</span><span class="p">.</span><span class="n">savefig</span><span class="p">(</span><span class="s">"vertices.png"</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s">'white'</span><span class="p">,</span> <span class="n">transparent</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s">"tight"</span><span class="p">)</span>
+
+
+</code></pre></div></div>
+</details>
+<figure>
+<p><img src="/assets/images/2022/04/17/vertices.png" alt="All possible vertices!" id="figure-1" width="80%" /></p>
+ <figcaption>Figure 2: All possible vertices!</figcaption>
+</figure>
+			</article>
+		</div>
+	</main><nav aria-label="Navigation" class="container-lg chulapa-pagination  ">
+ <ul class="col-lg-8 offset-lg-2 pagination chulapa-pagination-round px-0 ">
+   <li class="page-item text-left mr-0 ">
+      <a class="page-link border-0 px-4" href="https://thomasburgess.github.io/2021/07/18/tree_hack.html" tabindex="-1">
+	  <i class="fa fa-chevron-left" aria-hidden="true"></i><span class="sr-only">Previous</span>
+	  </a>
+   </li>
+   <li class="page-item border-0 disabled text-left ml-0 mr-auto d-none d-md-inline ">
+     <p class="page-link chulapa-label">Tree hack</p>
+   </li>
+   <li class="page-item border-0 disabled text-left ml-0 mr-auto d-none d-sm-inline d-md-none ">
+     <p class="page-link chulapa-label">Tree hack</p>
+   </li>
+	 <li class="page-item disabled mx-auto invisible">
+	  <p class="page-link">|</p>
+	 </li>	
+	 <li class="page-item border-0 disabled text-right mr-0 ml-auto d-none d-sm-inline d-md-none ">
+	   <p class="page-link chulapa-label">Parameter space</p>
+	 </li>
+	 <li class="page-item border-0 disabled text-right mr-0 ml-auto d-none d-md-inline ">
+	   <p class="page-link chulapa-label">Parameter space</p>
+	 </li>
+   <li class="page-item text-right ml-0 ">
+      <a class="page-link border-0 px-4" href="https://thomasburgess.github.io/2022/05/31/Parameter-Space.html">
+	  <i class="fa fa-chevron-right" aria-hidden="true"></i><span class="sr-only">Next</span></a>
+   </li>
+ </ul>
+</nav>
+<div class="container-lg my-1">
+ <div class="row">
+   <div class="col-lg-8 offset-lg-2 col">
+      <i class="far fa-folder-open fa-xs" aria-hidden="true"></i>
+      <a href="https://thomasburgess.github.io/categories#blog" class="badge chulapa-pill-bg-secondary p-category" rel="tag">blog</a>
+      <a href="https://thomasburgess.github.io/categories#math" class="badge chulapa-pill-bg-secondary p-category" rel="tag">math</a>
+     </div>
+   </div>
+</div>
+<div class="container-lg my-1">
+ <div class="row">
+   <div class="col-lg-8 offset-lg-2 col">
+      <i class="fas fa-tag mr-1 fa-xs" aria-hidden="true"></i>
+      <a href="https://thomasburgess.github.io/tags#geometry" class="badge chulapa-pill-bg-primary p-category" rel="tag" >geometry</a>
+      <a href="https://thomasburgess.github.io/tags#maths" class="badge chulapa-pill-bg-primary p-category" rel="tag" >maths</a>
+      <a href="https://thomasburgess.github.io/tags#polygon" class="badge chulapa-pill-bg-primary p-category" rel="tag" >polygon</a>
+      <a href="https://thomasburgess.github.io/tags#python" class="badge chulapa-pill-bg-primary p-category" rel="tag" >python</a>
+     </div>
+   </div>
+</div>
+<div class="container-lg mt-1 mb-2">
+ <div class="row">
+   <div class="col-lg-8 offset-lg-2">
+     <hr>
+     <p><i class="fa-solid fa-shuffle fa-xl"></i><span class="sr-only">Related</span></p>
+     <nav class="card-group" aria-label="related-articles">
+        <div class="card  border chulapa-related">
+         <div class="card-body">
+         <p class="card-title chulapa-headingfont"><a href="https://thomasburgess.github.io/2024/10/26/mersenne.html" class="chulapa-text-body-color">Mersenne Primes.</a></p>
+         <p class="card-text"><small>Searching for rare numbers with python.</small></p></div>
+   <div class="card-footer bg-transparent">
+      <small><i class="far fa-calendar" aria-hidden="true"></i> <time datetime="2024-10-26T00:00:00+02:00">october 26, 2024</time></small>
+   </div>
+ </div>
+        <div class="card ml-sm-1 border chulapa-related">
+         <div class="card-body">
+         <p class="card-title chulapa-headingfont"><a href="https://thomasburgess.github.io/2023/02/02/Matrix_Multiplication.html" class="chulapa-text-body-color">Optimizing matrix multiplication</a></p>
+         <p class="card-text"><small>Speeding up sloww matrix operations in python</small></p></div>
+   <div class="card-footer bg-transparent">
+      <small><i class="far fa-calendar" aria-hidden="true"></i> <time datetime="2023-02-02T00:00:00+01:00">february 02, 2023</time></small>
+   </div>
+ </div></nav>
+   </div>
+ </div>
+</div><!-- Footer -->
+ <footer class="footer-chulapa text-center mt-0 pt-3">
+   <div class="container">
+         <div class="row">
+           <div class="col-lg-8 offset-lg-2">
+         <script src="https://giscus.app/client.js" data-repo="thomasburgess/thomasburgess.github.io"
+  data-repo-id="MDEwOlJlcG9zaXRvcnkzNzQ0MDI0Mzg=" data-category="General" data-category-id="DIC_kwDOFlDths4Cj1pu"
+  data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top"
+  data-theme="preferred_color_scheme" data-lang="en" data-loading="lazy" crossorigin="anonymous" async>
+  </script>
+           </div>
+        </div>
+      </div>
+   <div class="container">
+     <div class="row">
+       <div class="col-xl-10 offset-xl-1"><div role="navigation" class="d-flex flex-wrap justify-content-center"><a href="https://github.com/thomasburgess" title="footerRepo on Github" class="chulapa-footer-sociallink lead"><span class="fa-stack fa-lg" aria-hidden="true">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+              </span><span class="sr-only">Repo on Github</span>
+            </a><a href="https://thomasburgess.github.io/atom.xml" title="footerRSS" class="chulapa-footer-sociallink lead"><span class="fa-stack fa-lg" aria-hidden="true">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+              </span><span class="sr-only">RSS</span>
+            </a></div><p class="mt-2 mb-3">&copy; 2025 Thomas T Burgess</p>
+          <!-- Do not remove this in order to give  attributions -->
+         <p class="chulapa-footer-brand">Powered by <a href="https://dieghernan.github.io/chulapa"> <span class="chulapa">Chulapa</span> Jekyll Theme</a><br><b>Minty</b> skin by <a href="https://bootswatch.com/">Bootswatch</a></p>
+          <!-- End  attributions -->
+       </div>
+     </div>
+ </div>
+</footer>
+<!-- Footer -->
+<!-- JS, Popper.js, and jQuery -->
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/gh/dieghernan/chulapa@master/assets/js/chulapa_script.js"></script>
+	<!-- start custom scripts to be placed at the bottom of the page -->
+<!-- end custom bottom scripts -->
+	</body>
+</html>

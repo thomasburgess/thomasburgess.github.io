@@ -1,0 +1,1095 @@
+<!doctype html>
+<html lang="en-US"><head>
+   <meta charset="utf-8">
+    <!-- Chulapa Jekyll Theme -  -->
+    <!--  MIT License-->
+    <!-- Docs: https://dieghernan.github.io/chulapa -->
+    <!-- Repo: https://github.com/dieghernan/chulapa -->
+    <!-- Page build 2025-01-03 19:53:22 +0100 -->
+    <!--Google Structured Data-->
+    <script type="application/ld+json">
+        {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://thomasburgess.github.io/2024/10/26/mersenne.html"
+      },
+      "headline": "Mersenne Primes.",
+      "image": "https://thomasburgess.github.io/assets/images/2024/10/26/mersennes.png",
+      "datePublished": "2024-10-26T00:00:00+02:00",
+      "dateModified": "2024-11-02T00:00:00+01:00",
+      "author": {
+        "@type": "Person",
+        "name": "Thomas T Burgess"
+        , "url": "https://mathstodon.xyz/@ngons"
+        ,  "sameAs" : [
+             "https://github.com/thomasburgess"
+            ,
+             "https://orcid.org/0000-0002-6993-5918"
+            ]
+      },
+       "publisher": {
+        "@type": "Organization",
+        "name": "Thomas T Burgess",
+        "url": "https://thomasburgess.github.io/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://github.com/thomasburgess.png"
+        }
+      }
+    }
+    </script>
+        <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://thomasburgess.github.io/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Blog",
+        "item": "https://thomasburgess.github.io/blog"
+      },
+    {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Mersenne Primes."
+      }]
+    }
+    </script>
+    <script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "WebPage",
+    "name": "Mersenne Primes.",
+    "description": "Searching for rare numbers with python. - The 52nd Mersenne prime was discovered on October 21, 2024. Despite intense effort,  it took six years to surpass the 51st! It is the largest prime number ever found so  far!
+"
+    }
+}
+</script><script type="application/ld+json">
+{
+  "@context" : "https://schema.org",
+  "@type" : "Person",
+  "image": "https://github.com/thomasburgess.png",
+  "homeLocation": {
+    "@type": "Place",
+    "name": "Vienna, Austria"
+    },
+  "description": "Publisher",
+  "name" : "Thomas T Burgess",
+  "url" : "https://thomasburgess.github.io/"
+  ,  "sameAs" : [
+  "https://mathstodon.xyz/@ngons",
+  "https://github.com/thomasburgess",
+  "https://orcid.org/0000-0002-6993-5918"
+  ]
+}
+</script>
+   <title>Mersenne Primes. | Thomas T Burgess's Blog</title>
+  <link rel="canonical" href="https://thomasburgess.github.io/2024/10/26/mersenne.html">
+    <!-- Atom feed -->
+  <link href="https://thomasburgess.github.io/atom.xml" type="application/atom+xml" rel="alternate" title="Atom feed Thomas T Burgess's Blog" >
+    <!-- RSS 2.0 feed -->
+  <link href="https://thomasburgess.github.io/rss.xml" type="application/rss+xml" rel="alternate" title="RSS 2.0 feed Thomas T Burgess's Blog" >
+    <!-- Meta tags -->
+   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+   <meta name="author" content="Thomas T Burgess" >
+   <meta name="copyright" content="Thomas T Burgess" >
+   <meta name="description" content="Searching for rare numbers with python. - The 52nd Mersenne prime was discovered on October 21, 2024. Despite intense effort,  it took six years to surpass t...">
+   <meta name="thumbnail" content="https://thomasburgess.github.io/assets/images/2024/10/26/mersennes.png" >
+   <meta name="robots" content="index, follow"><meta name="keywords" content="">
+    <!-- OpenGraph -->
+   <meta property="og:title" content="Mersenne Primes. | Thomas T Burgess's Blog" >
+   <meta property="og:site_name" content="Thomas T Burgess's Blog | Numbers, numbers - everywhere!" >
+   <meta property="og:url" content="https://thomasburgess.github.io/2024/10/26/mersenne.html" >
+   <meta property="og:type" content="website" >
+   <meta property="og:description" content="Searching for rare numbers with python. - The 52nd Mersenne prime was discovered on October 21, 2024. Despite intense effort,..." >
+   <meta property="og:locale" content="en-US" >
+   <meta property="og:image" content="https://thomasburgess.github.io/assets/images/2024/10/26/mersennes.png" >
+    <!-- Twitter/X Cards -->
+   <meta name="twitter:card" content="summary_large_image"><!-- start custom head snippets -->
+<!-- this script is inserted before the css stylesheet -->
+<!-- end custom head snippets -->
+<!-- CSS -->
+    <!-- Preconnect with Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Fontawesome-->
+    <!-- v6 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6/css/all.min.css">
+  <link rel="preload" href="https://cdn.jsdelivr.net/gh/dieghernan/chulapa@master/assets/js/chulapa_script.js" as="script" >
+  <link rel="preload" href="https://cdn.jsdelivr.net/gh/dieghernan/chulapa@master/assets/fonts/Chulapa/Chulapa-Bold_vmod.otf" as="font" type="font/otf" crossorigin>
+    <!-- Theme css (Bootstrap included) -->
+  <link rel="stylesheet" id="maincss" href="https://thomasburgess.github.io/assets/css/main.css" >
+    <!-- Highlighter -->
+  <link id="csshigh" rel="stylesheet" href="https://thomasburgess.github.io/assets/css/highlighter.css" >
+    <!-- Custom css -->
+  <link rel="stylesheet" href="https://thomasburgess.github.io/assets/css/custom.css" >
+      <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.min.js"></script><!-- start custom head snippets -->
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/images/favicons/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="96x96" href="/assets/images/favicons/favicon-96x96.png">
+<link rel="manifest" href="/assets/images/favicons/site.webmanifest">
+<link rel="mask-icon" href="/assets/images/favicons/safari-pinned-tab.svg" color="#5bbad5">
+<link rel="shortcut icon" href="/assets/images/favicons/favicon.ico">
+<meta name="msapplication-TileColor" content="#2b5797">
+<meta name="msapplication-TileImage" content="/assets/images/favicons/mstile-144x144.png">
+<meta name="msapplication-config" content="/assets/images/favicons/browserconfig.xml">
+<meta name="theme-color" content="#78c2ad">
+<!-- end custom head snippets --></head>
+<body class="d-flex flex-column h-entry" id="body">
+	<a class="u-url d-none" href="https://thomasburgess.github.io/2024/10/26/mersenne.html">Invisible link to canonical for Microformats</a>
+	<div class="navbar-chulapa-fab d-md-none">
+		<input type="checkbox" class="navbar-chulapa-fab-button d-none" id="navi-toggle">
+		<label for="navi-toggle" class="navbar-toggler p-1 m-0 text-center d-flex">
+			<span class="navbar-toggler-icon m-auto">&nbsp;</span>
+		</label>
+		<div class="navbar-chulapa-fab-background">&nbsp;</div>
+		<nav class="navbar-chulapa-fab-nav" aria-label="alternative-navigation">
+			<ul class="navbar-nav text-center text-uppercase font-weight-light mt-0 mb-1 py-1">
+				<li class="nav-item">
+					<a class="nav-link px-3 navbar-brand mx-1 " href="https://thomasburgess.github.io/"><img src="https://thomasburgess.github.io/assets/images/favicons/favicon-96x96.png" width="30" height="30" class="d-inline-block align-top rounded-lg text-center mr-1" alt="NavbarLogo">Home</a>
+				</li><li class="nav-item my-0 py-1">
+					<a class="nav-link px-3 py-1" href="https://thomasburgess.github.io/blog/">Blog</a>
+				</li><li class="nav-item my-0 py-1">
+					<a class="nav-link px-3 py-1" href="https://thomasburgess.github.io/tags">Tags</a>
+				</li><li class="nav-item my-0 py-1">
+					<a class="nav-link px-3 py-1" href="https://thomasburgess.github.io/categories">Categories</a>
+				</li><li class="nav-item my-0 py-1">
+					<a class="nav-link px-3 py-1" href="https://thomasburgess.github.io/archive">Archive</a>
+				</li><li class="nav-item my-0 py-1">
+					<a class="nav-link px-3 py-1 " href="https://thomasburgess.github.io/search">search</a>
+				</li></ul>
+		</nav>
+	</div>
+	<nav class="navbar navbar-expand sticky-top navbar-chulapa d-none d-md-block " aria-label="primary-navigation">
+	<div class="container-fluid mx-md-2">
+			<a class="navbar-brand text-uppercase font-weight-light" href="https://thomasburgess.github.io/"><img src="https://thomasburgess.github.io/assets/images/favicons/favicon-96x96.png" width="30" height="30" class="d-inline-block align-top rounded-lg mr-1" alt="NavbarLogo">Home</a><ul class="navbar-nav ml-auto"><li class="nav-item mx-2">
+						<a class="nav-link text-uppercase font-weight-light " href="https://thomasburgess.github.io/blog/">Blog</a>
+					</li><li class="nav-item mx-2">
+						<a class="nav-link text-uppercase font-weight-light " href="https://thomasburgess.github.io/tags">Tags</a>
+					</li><li class="nav-item mx-2">
+						<a class="nav-link text-uppercase font-weight-light " href="https://thomasburgess.github.io/categories">Categories</a>
+					</li><li class="nav-item mx-2">
+						<a class="nav-link text-uppercase font-weight-light " href="https://thomasburgess.github.io/archive">Archive</a>
+					</li><li class="nav-item mx-2">
+						<a class="nav-link text-uppercase font-weight-light " href="https://thomasburgess.github.io/search">
+							<i class="fa fa-search" aria-hidden="true"></i><span class="sr-only">search</span>
+						</a>
+					</li></ul></div>
+</nav>	<header class="d-flex align-items-center hero-chulapa-image" style="background-image: linear-gradient(rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.7)), url('https://thomasburgess.github.io/assets/images/2024/10/26/mersennes.png')"><div class="container-lg py-4">
+   <h1 class="p-name">Mersenne Primes.</h1><hr class="my-3">
+   <p class="chulapa-subtitle p-summary">Searching for rare numbers with python.</p>
+ </div>
+</header>
+	<main class="container-lg pb-3 flex-fill">
+<div class="row my-1">
+<div class="col-lg-5 offset-lg-2 col small">
+ <nav aria-label="breadcrumb">
+  <ol class="breadcrumb my-0 py-0 chulapa-bg-transparent pl-0" itemscope itemtype="https://schema.org/BreadcrumbList">
+            <li class="breadcrumb-item" itemprop="itemListElement" itemscope
+          itemtype="https://schema.org/ListItem"><a href="https://thomasburgess.github.io/" itemprop="item"><span itemprop="name">Home</span></a>
+         <meta itemprop="position" content="1" ></li>
+            <li class="breadcrumb-item" itemprop="itemListElement" itemscope
+          itemtype="https://schema.org/ListItem"><a href="https://thomasburgess.github.io/blog" itemprop="item"><span itemprop="name">Blog</span></a>
+         <meta itemprop="position" content="2" ></li>
+      <li class="breadcrumb-item active" aria-current="page" itemprop="itemListElement" itemscope
+          itemtype="https://schema.org/ListItem">
+        <span itemprop="name">Mersenne Primes.</span>
+       <meta itemprop="position" content="3" >
+     </li>
+ </ol>
+ </nav>
+ <div class="chulapaDateSocial">
+            <time class="dt-updated" datetime="2024-11-02T00:00:00+01:00">02 nov 2024</time> 
+            <i class="fa fa-redo fa-xs" aria-hidden="true"></i>
+            <br>
+            <span class="font-weight-light chulapa-text-line-through">26 oct 2024</span>
+        </div></div>
+         <div class="col-lg-3 col-sm-4 col-3 text-right lead chulapaDateSocial">
+            <a  href="https://twitter.com/intent/tweet?url=https://thomasburgess.github.io/2024/10/26/mersenne.html&text=Mersenne+Primes.&hashtags=maths,primes,python,GIMPS" title="Share on X" aria-label="Share on X" ><i class="fab fa-square-x-twitter fa-lg" aria-hidden="true"></i></a>
+            <a href="https://toot.kytta.dev/?text=Mersenne%20Primes.%20https://thomasburgess.github.io/2024/10/26/mersenne.html%20%23maths%20%23primes%20%23python%20%23GIMPS" title="Share on Mastodon" aria-label="Share on Mastodon"><i class="fa-brands fa-mastodon fa-lg" aria-hidden="true"></i></a>
+            <a  class="d-none d-sm-inline" href="https://www.facebook.com/sharer.php?u=https://thomasburgess.github.io/2024/10/26/mersenne.html" title="Share on Facebook" aria-label="Share on Facebook" ><i class="fab fa-facebook-square fa-lg" aria-hidden="true"></i></a>
+             <a  class="d-none d-sm-inline" href="https://api.whatsapp.com/send?&text=Mersenne+Primes.%20https://thomasburgess.github.io/2024/10/26/mersenne.html" title="Share on Whatsapp" aria-label="Share on Whatsapp" ><i class="fab fa-whatsapp-square fa-lg" aria-hidden="true"></i></a>
+         <a  class="d-none d-sm-inline" href="https://www.linkedin.com/shareArticle?url=https://thomasburgess.github.io/2024/10/26/mersenne.html&title=Mersenne+Primes." title="Share on LinkedIn" aria-label="Share on LinkedIn"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a>
+         </div></div>
+		<div class="row pt-2">
+			<aside class="col-lg-2 mt-lg-3 small"><div rel="author" class="h-card p-author">
+				<div class="row d-flex align-items-center mb-2"><img src="https://github.com/thomasburgess.png" alt="Thomas T Burgess" class="ml-3 mr-0 mx-lg-auto mb-lg-1 chulapa-avatar-size u-photo"><div class="col-9 col-lg-12 text-lg-center p-name">
+						Thomas T Burgess
+					</div>
+				</div>
+				<div class="row mb-2 mb-lg-0">
+					<div class="col text-lg-center"><address class="d-inline d-lg-block mr-2 mx-lg-auto mb-lg-2 small chulapa-links-hover-only">
+						  <a class="pr-lg-0 p-region" href="https://www.google.com/maps/search/?api=1&query=Vienna%2C+Austria">
+						    <i class="fas fa-map-marker-alt fa-lg mr-1" aria-hidden="true"></i>Vienna, Austria</a>
+						</address><div class="d-inline my-1 mx-lg-0 chulapa-links-hover-only"><a class="mr-2 mx-lg-1 u-url" rel="me" href="https://mathstodon.xyz/@ngons" title="@ngons@mathstodon.xyz - my mastodon social" aria-label="@ngons@mathstodon.xyz - my mastodon social" ><i class="fab fa-mastodon fa-lg" aria-hidden="true"></i></a><a class="mr-2 mx-lg-1 u-url" rel="me" href="https://github.com/thomasburgess" title="my code at github." aria-label="my code at github." ><i class="fab fa-github fa-lg" aria-hidden="true"></i></a><a class="mr-2 mx-lg-1 u-email" href="mailto:nxpnsv+thomastburgess@gmail.com?subject=Thomas%20T%20Burgess's%20Blog%20web%20-%20Mersenne%20Primes." title="My personal email" aria-label="My personal email" ><i class="far fa-envelope fa-lg" aria-hidden="true"></i></a>
+							<a class="mr-2 mx-lg-1 u-url" rel="me" href="https://orcid.org/0000-0002-6993-5918" title="My Orcid" aria-label="My Orcid" ><i class="fa-brands fa-orcid fa-lg" aria-hidden="true"></i></a></div></div>
+				</div>
+				</div>
+</aside>
+			<article id="maincontent" class="col-lg-8 mt-3 e-content">
+	<button class="btn btn-primary btn-sm rounded-right position-fixed chulapa-btn-sidebar bs-canvas-anim chulapa-btn-nofocus chulapa-fa-static" id='demo' onclick="openSideBar()" aria-label="Open Sidebar" aria-expanded="false" aria-controls="sideBar">
+		<i class="fa-solid fa-plus"></i><span class="sr-only">Open Sidebar</span>
+	</button>
+	<div class="bs-canvas bs-canvas-anim bs-canvas-left position-fixed navbar-chulapa h-100" id='sideBar'>
+		<p class="pt-2 pb-1 px-3">
+			<button type="button" class="navbar-text close chulapa-btn-nofocus chulapa-fa-static" aria-label="Close" onclick="closeSideBar()">
+				<i class="fa-solid fa-times"></i><span class="sr-only">Close Sidebar</span>
+			</button>
+		</p>
+		<nav class="navbar-nav px-3 my-auto">		  <p class="mb-2" ><a class="nav-link font-weight-bold lead" href="#">Mersenne Primes.</a></p>		
+			<ul class="nav flex-column" id="sidetoc"><li class="nav-item nav d-block"><a href="#introduction" class="nav-link">Introduction</a></li><li class="nav-item nav d-block"><a href="#python-setup" class="nav-link">Python setup</a></li><li class="nav-item nav d-block"><a href="#checking-for-prime-numbers" class="nav-link">Checking for prime numbers</a></li><li class="nav-item nav d-block"><a href="#generating-prime-numbers" class="nav-link">Generating Prime Numbers</a></li><li class="nav-item nav d-block"><a href="#finding-mersenne-primes" class="nav-link">Finding Mersenne primes</a></li><li class="nav-item nav d-block"><a href="#conclusion" class="nav-link">Conclusion</a></li></ul>
+		</nav>   
+	</div>
+            <nav aria-label="table-of-contents">
+			<ul class="chulapa-toc-wrapper list-group mb-5 mx-3 mx-lg-5" id="toc"><li class="list-group-item font-weight-bold py-1 pr-0 mr-0 chulapa-toc-reset"><a href="#introduction">Introduction</a></li><li class="list-group-item font-weight-bold py-1 pr-0 mr-0 chulapa-toc-reset"><a href="#python-setup">Python setup</a></li><li class="list-group-item font-weight-bold py-1 pr-0 mr-0 chulapa-toc-reset"><a href="#checking-for-prime-numbers">Checking for prime numbers</a></li><li class="list-group-item font-weight-bold py-1 pr-0 mr-0 chulapa-toc-reset"><a href="#generating-prime-numbers">Generating Prime Numbers</a></li><li class="list-group-item font-weight-bold py-1 pr-0 mr-0 chulapa-toc-reset"><a href="#finding-mersenne-primes">Finding Mersenne primes</a></li><li class="list-group-item font-weight-bold py-1 pr-0 mr-0 chulapa-toc-reset"><a href="#conclusion">Conclusion</a></li></ul>
+			</nav>
+			 <h2 id="introduction">Introduction</h2>
+<p><em>Update: I recorded myself reading 419 digits from the 52nd Mersenne prime for
+<a href="/2024/11/02/saytheprime.html">Say the prime</a>.</em></p>
+<p>The 52nd Mersenne prime was discovered on October 21, 2024 
+(<a href="https://www.mersenne.org/primes/?press=M136279841">Source: GIMPS</a>). 
+Despite intense effort, it took six years to surpass the 51st! It is the largest prime
+number ever found so far! A prime number is a number that is only divisible by 1 and 
+itself. A Mersenne prime is a <a href="https://en.wikipedia.org/wiki/Prime_number">prime number</a> 
+of the form \(m = 2^p - 1\), where \(p\) itself is a prime number.</p>
+<p>The first few Mersenne primes (source: 
+<a href="https://en.wikipedia.org/wiki/List_of_Mersenne_primes_and_perfect_numbers">Wikipedia</a>)
+are:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>3, 7, 31, 127, 8191, 131071, 524287, 2147483647
+</code></pre></div></div>
+<p>The specific form of Mersenne primes enables the use of a fast prime-testing algorithm 
+called the <a href="https://en.wikipedia.org/wiki/Lucas%E2%80%93Lehmer_primality_test">Lucas-Lehmer test</a>.
+Mersenne primes are closely connected to 
+<a href="https://en.wikipedia.org/wiki/Perfect_number">perfect numbers</a> — numbers that are equal 
+to the sum of their proper divisors. Perfect numbers take the form 
+\(N = 2^{p-1}(2^p-1)\), where \(2^p - 1\) is a Mersenne prime.</p>
+<p>Mersenne primes are rare, and the numbers grow exponentially as \(p\) increases, 
+making them increasingly difficult to discover. The computational effort needed to 
+verify whether a number of the form \(2^p - 1\) is prime also grows significantly, 
+requiring sophisticated algorithms and powerful hardware, especially for large 
+candidates. In this blog post, I will generate some Mersenne primes and explore how fast
+they grow.</p>
+<h2 id="python-setup">Python setup</h2>
+<p>For this project, I use the standard Python library, 
+<a href="https://www.sympy.org/en/index.html">SymPy</a> for fast prime number calculations, and 
+<a href="https://github.com/astanin/python-tabulate">tabulate</a> for formatting tables in a 
+readable way. I use the following imports:</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">time</span> 
+<span class="kn">import</span> <span class="nn">sympy</span>
+<span class="kn">import</span> <span class="nn">tabulate</span>
+</code></pre></div></div>
+<p>To easily print tables, I created <code class="highlighter-rouge">tabuliterate</code>, which runs a function on each value 
+of an iterable and optionally applies a condition.</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">tabuliterate</span><span class="p">(</span><span class="n">fun</span><span class="p">,</span> <span class="n">iterable</span><span class="p">,</span> <span class="n">cond</span><span class="p">):</span>
+    <span class="n">table</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="p">.</span><span class="n">perf_counter</span><span class="p">()</span> 
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">iterable</span><span class="p">):</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="n">fun</span><span class="p">(</span><span class="n">j</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">cond</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">cond</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+            <span class="k">continue</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="n">time</span><span class="p">.</span><span class="n">perf_counter</span><span class="p">()</span>
+        <span class="n">table</span><span class="p">.</span><span class="n">append</span><span class="p">([</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">t</span> <span class="o">-</span> <span class="n">t0</span><span class="p">,</span> <span class="n">n</span><span class="p">])</span>
+        <span class="n">t0</span> <span class="o">=</span> <span class="n">t</span>
+    <span class="k">return</span> <span class="n">table</span>
+</code></pre></div></div>
+<h2 id="checking-for-prime-numbers">Checking for prime numbers</h2>
+<p>One can check if a candidate number \(n\) is prime by verifying if it is divisible 
+by any smaller prime up to \(\sqrt{n}\). Here’s a simple python implementation of this:</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">is_prime</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">False</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">n</span><span class="o">**</span><span class="mf">0.5</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">n</span> <span class="o">%</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">False</span>
+    <span class="k">return</span> <span class="bp">True</span>
+</code></pre></div></div>
+<p>Let’s use this to print all primes in the range (1, 50).</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">%%</span><span class="n">time</span>
+<span class="n">prime_table</span> <span class="o">=</span> <span class="n">tabuliterate</span><span class="p">(</span><span class="n">is_prime</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">50</span><span class="p">),</span> <span class="n">cond</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span>
+    <span class="n">tabulate</span><span class="p">.</span><span class="n">tabulate</span><span class="p">(</span>
+        <span class="n">prime_table</span><span class="p">,</span>
+        <span class="n">headers</span><span class="o">=</span><span class="p">[</span><span class="s">"i"</span><span class="p">,</span> <span class="s">"prime(i)"</span><span class="p">,</span> <span class="s">"t (s)"</span><span class="p">,</span> <span class="s">"is_prime"</span><span class="p">],</span>
+        <span class="n">tablefmt</span><span class="o">=</span><span class="s">"github"</span><span class="p">))</span>
+</code></pre></div></div>
+<p>The <code class="highlighter-rouge">tabuliterate</code> function runs <code class="highlighter-rouge">is_prime</code> for each value in the range, and saves the 
+results if <code class="highlighter-rouge">is_prime</code> returns <code class="highlighter-rouge">True</code>. I then use <code class="highlighter-rouge">tabulate</code> to print a well-formatted, 
+blog-ready Markdown table. To better understand performance, I use <code class="highlighter-rouge">time.perf_counter</code> 
+to measure the time between iterations (in column <code class="highlighter-rouge">t (s)</code>).  Additionally, I use the 
+Jupyter magic <code class="highlighter-rouge">%%time</code> to print timing information for the entire cell. While these are 
+not substitutes for proper profiling, they provide sufficient insight for this blog, 
+optimization is not the main focus.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>CPU times: user 91 μs, sys: 7 μs, total: 98 μs
+Wall time: 101 μs
+</code></pre></div></div>
+<table>
+<thead>
+   <tr>
+     <th>i</th>
+     <th>prime(i)</th>
+     <th>t (s)</th>
+     <th>is_prime</th>
+   </tr>
+ </thead>
+ <tbody>
+   <tr>
+     <td>1</td>
+     <td>2</td>
+     <td>1.4666e-05</td>
+     <td>True</td>
+   </tr>
+   <tr>
+     <td>2</td>
+     <td>3</td>
+     <td>2.45901e-06</td>
+     <td>True</td>
+   </tr>
+   <tr>
+     <td>3</td>
+     <td>5</td>
+     <td>3.66601e-06</td>
+     <td>True</td>
+   </tr>
+   <tr>
+     <td>4</td>
+     <td>7</td>
+     <td>3.45899e-06</td>
+     <td>True</td>
+   </tr>
+   <tr>
+     <td>5</td>
+     <td>11</td>
+     <td>5.83302e-06</td>
+     <td>True</td>
+   </tr>
+   <tr>
+     <td>6</td>
+     <td>13</td>
+     <td>3.208e-06</td>
+     <td>True</td>
+   </tr>
+   <tr>
+     <td>7</td>
+     <td>17</td>
+     <td>4.959e-06</td>
+     <td>True</td>
+   </tr>
+   <tr>
+     <td>8</td>
+     <td>19</td>
+     <td>2.541e-06</td>
+     <td>True</td>
+   </tr>
+   <tr>
+     <td>9</td>
+     <td>23</td>
+     <td>5.58398e-06</td>
+     <td>True</td>
+   </tr>
+   <tr>
+     <td>10</td>
+     <td>29</td>
+     <td>6.916e-06</td>
+     <td>True</td>
+   </tr>
+   <tr>
+     <td>11</td>
+     <td>31</td>
+     <td>2.79202e-06</td>
+     <td>True</td>
+   </tr>
+   <tr>
+     <td>12</td>
+     <td>37</td>
+     <td>7.125e-06</td>
+     <td>True</td>
+   </tr>
+   <tr>
+     <td>13</td>
+     <td>41</td>
+     <td>5.04201e-06</td>
+     <td>True</td>
+   </tr>
+   <tr>
+     <td>14</td>
+     <td>43</td>
+     <td>3.375e-06</td>
+     <td>True</td>
+   </tr>
+   <tr>
+     <td>15</td>
+     <td>47</td>
+     <td>4.95798e-06</td>
+     <td>True</td>
+   </tr>
+   <tr>
+     <td>16</td>
+     <td>53</td>
+     <td>7.04202e-06</td>
+     <td>True</td>
+   </tr>
+   <tr>
+     <td>17</td>
+     <td>59</td>
+     <td>8.41598e-06</td>
+     <td>True</td>
+   </tr>
+   <tr>
+     <td>18</td>
+     <td>61</td>
+     <td>3.667e-06</td>
+     <td>True</td>
+   </tr>
+   <tr>
+     <td>19</td>
+     <td>67</td>
+     <td>7.208e-06</td>
+     <td>True</td>
+   </tr>
+   <tr>
+     <td>20</td>
+     <td>71</td>
+     <td>5.04201e-06</td>
+     <td>True</td>
+   </tr>
+   <tr>
+     <td>21</td>
+     <td>73</td>
+     <td>3.54199e-06</td>
+     <td>True</td>
+   </tr>
+   <tr>
+     <td>22</td>
+     <td>79</td>
+     <td>7.125e-06</td>
+     <td>True</td>
+   </tr>
+   <tr>
+     <td>23</td>
+     <td>83</td>
+     <td>5.37501e-06</td>
+     <td>True</td>
+   </tr>
+   <tr>
+     <td>24</td>
+     <td>89</td>
+     <td>6.666e-06</td>
+     <td>True</td>
+   </tr>
+   <tr>
+     <td>25</td>
+     <td>97</td>
+     <td>8.542e-06</td>
+     <td>True</td>
+   </tr>
+ </tbody>
+</table>
+<p>Now let’s try a few bigger numbers, including powers of ten and some known Mersenne 
+primes:</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">%%</span><span class="n">time</span> 
+<span class="n">candidates</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">10000</span><span class="p">,</span> <span class="mi">100000</span><span class="p">,</span> <span class="mi">1000000</span><span class="p">,</span> <span class="mi">131071</span><span class="p">,</span> <span class="mi">524287</span><span class="p">,</span> <span class="mi">2147483647</span>
+<span class="n">is_prime_table</span> <span class="o">=</span> <span class="n">tabuliterate</span><span class="p">(</span><span class="n">is_prime</span><span class="p">,</span> <span class="n">candidates</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">tabulate</span><span class="p">.</span><span class="n">tabulate</span><span class="p">(</span>
+    <span class="n">is_prime_table</span><span class="p">,</span>
+    <span class="n">headers</span><span class="o">=</span><span class="p">[</span><span class="s">"i"</span><span class="p">,</span> <span class="s">"n"</span><span class="p">,</span> <span class="s">"t (s)"</span><span class="p">,</span> <span class="s">"is_prime"</span><span class="p">],</span>
+    <span class="n">tablefmt</span><span class="o">=</span><span class="s">"github"</span><span class="p">))</span>
+</code></pre></div></div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>CPU times: user 8.42 ms, sys: 367 μs, total: 8.79 ms
+Wall time: 8.92 ms
+</code></pre></div></div>
+<table>
+<thead>
+   <tr>
+     <th>i</th>
+     <th>n</th>
+     <th>t (s)</th>
+     <th>is_prime</th>
+   </tr>
+ </thead>
+ <tbody>
+   <tr>
+     <td>0</td>
+     <td>1000</td>
+     <td>1.1542e-05</td>
+     <td>False</td>
+   </tr>
+   <tr>
+     <td>1</td>
+     <td>10000</td>
+     <td>4.29098e-06</td>
+     <td>False</td>
+   </tr>
+   <tr>
+     <td>2</td>
+     <td>100000</td>
+     <td>3.29202e-06</td>
+     <td>False</td>
+   </tr>
+   <tr>
+     <td>3</td>
+     <td>1000000</td>
+     <td>2.29198e-06</td>
+     <td>False</td>
+   </tr>
+   <tr>
+     <td>4</td>
+     <td>131071</td>
+     <td>4.9333e-05</td>
+     <td>True</td>
+   </tr>
+   <tr>
+     <td>5</td>
+     <td>524287</td>
+     <td>0.000114417</td>
+     <td>True</td>
+   </tr>
+   <tr>
+     <td>6</td>
+     <td>2147483647</td>
+     <td>0.00870742</td>
+     <td>True</td>
+   </tr>
+ </tbody>
+</table>
+<p>Using this very basic and unoptimized prime checker, we can still test prime numbers 
+relatively quickly. However, by the time we reach the 9th Mersenne prime, the 
+computational effort required is no longer feasible for this method without significant 
+optimization.</p>
+<h2 id="generating-prime-numbers">Generating Prime Numbers</h2>
+<p>Before attempting to find Mersenne primes, we first need to generate prime numbers for 
+the Mersenne exponents. Specifically, we need a function to generate the nth prime: 
+<code class="highlighter-rouge">p = prime(n)</code>. We could use the <code class="highlighter-rouge">is_prime</code> function and loop over all possible values 
+of <code class="highlighter-rouge">n</code>, but as Mersenne primes grow very quickly, this approach will soon face 
+performance limitations. The <code class="highlighter-rouge">is_prime</code> function doesn’t store previously checked
+ values, leading to redundant calculations.</p>
+<p>To overcome this, we can use a cache dictionary <code class="highlighter-rouge">{n: prime(n)}</code> to store previously 
+computed primes, allowing us to generate the nth prime more efficiently by avoiding 
+unnecessary recomputation. Here is an implementation to compute the n-th prime:</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">nth_prime</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">cache</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">cache</span><span class="p">:</span> <span class="k">return</span> <span class="n">cache</span><span class="p">[</span><span class="n">n</span><span class="p">]</span>
+    <span class="n">c</span><span class="p">,</span> <span class="n">num</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">cache</span><span class="p">.</span><span class="n">keys</span><span class="p">()),</span> <span class="n">cache</span><span class="p">[</span><span class="nb">max</span><span class="p">(</span><span class="n">cache</span><span class="p">.</span><span class="n">keys</span><span class="p">())]</span> <span class="o">+</span> <span class="mi">2</span>
+    <span class="k">while</span> <span class="n">c</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">:</span>
+        <span class="n">is_prime</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="n">limit</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">num</span><span class="o">**</span><span class="mf">0.5</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">cache</span><span class="p">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">p</span> <span class="o">&gt;</span> <span class="n">limit</span><span class="p">:</span> <span class="k">break</span>
+            <span class="k">if</span> <span class="n">num</span> <span class="o">%</span> <span class="n">p</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">is_prime</span> <span class="o">=</span> <span class="bp">False</span>
+                <span class="k">break</span>
+        <span class="k">if</span> <span class="n">is_prime</span><span class="p">:</span> <span class="n">c</span><span class="p">,</span> <span class="n">cache</span><span class="p">[</span><span class="n">c</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">c</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">num</span>
+        <span class="n">num</span> <span class="o">+=</span> <span class="mi">2</span>
+    <span class="k">return</span> <span class="n">cache</span><span class="p">[</span><span class="n">n</span><span class="p">]</span>
+</code></pre></div></div>
+<p>Now let’s generate some prime numbers:</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">%%</span><span class="n">time</span>
+<span class="n">cache</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">:</span> <span class="mi">5</span><span class="p">}</span>
+<span class="n">nth_primes_table</span> <span class="o">=</span> <span class="n">tabuliterate</span><span class="p">(</span>
+    <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">nth_prime</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">cache</span><span class="o">=</span><span class="n">cache</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">10</span><span class="o">**</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
+<span class="p">)</span>
+<span class="k">print</span><span class="p">(</span>
+    <span class="n">tabulate</span><span class="p">.</span><span class="n">tabulate</span><span class="p">(</span>
+        <span class="n">nth_primes_table</span><span class="p">,</span>
+        <span class="n">headers</span><span class="o">=</span><span class="p">[</span><span class="s">"i"</span><span class="p">,</span> <span class="s">"n"</span><span class="p">,</span> <span class="s">"t (s)"</span><span class="p">,</span> <span class="s">"prime(n)"</span><span class="p">],</span>
+        <span class="n">tablefmt</span><span class="o">=</span><span class="s">"github"</span><span class="p">))</span>
+</code></pre></div></div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>CPU times: user 20.6 s, sys: 124 ms, total: 20.8 s
+Wall time: 20.8 s
+</code></pre></div></div>
+<table>
+<thead>
+   <tr>
+     <th>i</th>
+     <th>n</th>
+     <th>t (s)</th>
+     <th>prime(n)</th>
+   </tr>
+ </thead>
+ <tbody>
+   <tr>
+     <td>0</td>
+     <td>1000</td>
+     <td>0.00183408</td>
+     <td>7907</td>
+   </tr>
+   <tr>
+     <td>1</td>
+     <td>10000</td>
+     <td>0.0355349</td>
+     <td>104717</td>
+   </tr>
+   <tr>
+     <td>2</td>
+     <td>100000</td>
+     <td>0.770876</td>
+     <td>1299653</td>
+   </tr>
+   <tr>
+     <td>3</td>
+     <td>1000000</td>
+     <td>19.9434</td>
+     <td>15485837</td>
+   </tr>
+ </tbody>
+</table>
+<p>We are able to generate the millionth prime, but the approach becomes impractical for 
+larger primes. Notably, the 8th Mersenne prime is already 2,147,483,647, making this 
+method unsuitable without significant optimization for larger primes.</p>
+<h2 id="finding-mersenne-primes">Finding Mersenne primes</h2>
+<p>Instead of trying to reinvent a faster and smarter prime generator and tester, here is
+the same test implemented with SymPy:</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">%%</span><span class="n">time</span>
+<span class="n">sympy_nth_primes_table</span> <span class="o">=</span> <span class="n">tabuliterate</span><span class="p">(</span>
+    <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">sympy</span><span class="p">.</span><span class="n">prime</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">10</span><span class="o">**</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
+<span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">tabulate</span><span class="p">.</span><span class="n">tabulate</span><span class="p">(</span>
+    <span class="n">sympy_nth_primes_table</span><span class="p">,</span> 
+    <span class="n">headers</span><span class="o">=</span><span class="p">[</span><span class="s">"i"</span><span class="p">,</span> <span class="s">"n"</span><span class="p">,</span> <span class="s">"t (s)"</span><span class="p">,</span> <span class="s">"prime(n)"</span><span class="p">],</span>
+    <span class="n">tablefmt</span><span class="o">=</span><span class="s">"github"</span><span class="p">))</span>
+</code></pre></div></div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>CPU times: user 47 μs, sys: 1 μs, total: 48 μs
+Wall time: 57 μs
+</code></pre></div></div>
+<table>
+<thead>
+   <tr>
+     <th>i</th>
+     <th>n</th>
+     <th>t (s)</th>
+     <th>prime(n)</th>
+   </tr>
+ </thead>
+ <tbody>
+   <tr>
+     <td>0</td>
+     <td>1000</td>
+     <td>0.0163215</td>
+     <td>7919</td>
+   </tr>
+   <tr>
+     <td>1</td>
+     <td>10000</td>
+     <td>0.00630858</td>
+     <td>104729</td>
+   </tr>
+   <tr>
+     <td>2</td>
+     <td>100000</td>
+     <td>0.0111348</td>
+     <td>1299709</td>
+   </tr>
+   <tr>
+     <td>3</td>
+     <td>1000000</td>
+     <td>0.0328108</td>
+     <td>15485863</td>
+   </tr>
+ </tbody>
+</table>
+<p>This approach is significantly faster. Now, let’s try finding some Mersenne primes! 
+To do this, we use <code class="highlighter-rouge">sympy.isprime</code> as a filter to determine if numbers of the form are
+prime:</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">%%</span><span class="n">time</span>
+<span class="n">N</span><span class="o">=</span><span class="mi">600</span>
+<span class="n">mersenne_primes_table</span> <span class="o">=</span> <span class="n">tabuliterate</span><span class="p">(</span>
+    <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="mi">2</span><span class="o">**</span><span class="n">x</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span>
+    <span class="p">(</span><span class="n">sympy</span><span class="p">.</span><span class="n">prime</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N</span><span class="p">)),</span>
+    <span class="n">sympy</span><span class="p">.</span><span class="n">isprime</span>
+<span class="p">)</span>
+</code></pre></div></div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>CPU times: user 1min 14s, sys: 574 ms, total: 1min 14s
+Wall time: 1min 14s
+</code></pre></div></div>
+<p>It takes a little over one minute to test the first 600 primes. However, we can optimize 
+this further by leveraging SymPy’s `is_mersenne_prime, which is specifically designed 
+for testing Mersenne primes:</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">%%</span><span class="n">time</span>
+<span class="n">N</span><span class="o">=</span><span class="mi">600</span>
+<span class="n">mersenne_primes_table</span> <span class="o">=</span> <span class="n">tabuliterate</span><span class="p">(</span>
+    <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="mi">2</span><span class="o">**</span><span class="n">x</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span>
+    <span class="p">(</span><span class="n">sympy</span><span class="p">.</span><span class="n">prime</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N</span><span class="p">)),</span>
+    <span class="n">sympy</span><span class="p">.</span><span class="n">ntheory</span><span class="p">.</span><span class="n">primetest</span><span class="p">.</span><span class="n">is_mersenne_prime</span>
+<span class="p">)</span>
+</code></pre></div></div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>CPU times: user 1min 7s, sys: 94.7 ms, total: 1min 7s
+Wall time: 1min 7s
+</code></pre></div></div>
+<table>
+<thead>
+   <tr>
+     <th>i</th>
+     <th>n</th>
+     <th>p(n)</th>
+     <th>t (s)</th>
+     <th>D(m)</th>
+     <th>m(p)</th>
+   </tr>
+ </thead>
+ <tbody>
+   <tr>
+     <td>1</td>
+     <td>0</td>
+     <td>2</td>
+     <td>4.0125e-05</td>
+     <td>1</td>
+     <td>3</td>
+   </tr>
+   <tr>
+     <td>2</td>
+     <td>1</td>
+     <td>3</td>
+     <td>9.33401e-06</td>
+     <td>1</td>
+     <td>7</td>
+   </tr>
+   <tr>
+     <td>3</td>
+     <td>2</td>
+     <td>5</td>
+     <td>6.666e-06</td>
+     <td>2</td>
+     <td>31</td>
+   </tr>
+   <tr>
+     <td>4</td>
+     <td>3</td>
+     <td>7</td>
+     <td>5.24998e-06</td>
+     <td>3</td>
+     <td>127</td>
+   </tr>
+   <tr>
+     <td>5</td>
+     <td>5</td>
+     <td>13</td>
+     <td>1.8209e-05</td>
+     <td>4</td>
+     <td>8191</td>
+   </tr>
+   <tr>
+     <td>6</td>
+     <td>6</td>
+     <td>17</td>
+     <td>0.0152827</td>
+     <td>6</td>
+     <td>131071</td>
+   </tr>
+   <tr>
+     <td>7</td>
+     <td>7</td>
+     <td>19</td>
+     <td>0.00496579</td>
+     <td>6</td>
+     <td>524287</td>
+   </tr>
+   <tr>
+     <td>8</td>
+     <td>10</td>
+     <td>31</td>
+     <td>0.0177748</td>
+     <td>10</td>
+     <td>2147483</td>
+   </tr>
+   <tr>
+     <td>9</td>
+     <td>17</td>
+     <td>61</td>
+     <td>0.0320199</td>
+     <td>19</td>
+     <td>2305843…3693951</td>
+   </tr>
+   <tr>
+     <td>10</td>
+     <td>23</td>
+     <td>89</td>
+     <td>0.02063</td>
+     <td>27</td>
+     <td>6189700…9562111</td>
+   </tr>
+   <tr>
+     <td>11</td>
+     <td>27</td>
+     <td>107</td>
+     <td>0.0131295</td>
+     <td>33</td>
+     <td>1622592…0288127</td>
+   </tr>
+   <tr>
+     <td>12</td>
+     <td>30</td>
+     <td>127</td>
+     <td>0.00890125</td>
+     <td>39</td>
+     <td>1701411…4105727</td>
+   </tr>
+   <tr>
+     <td>13</td>
+     <td>97</td>
+     <td>521</td>
+     <td>0.241578</td>
+     <td>157</td>
+     <td>6864797…5057151</td>
+   </tr>
+   <tr>
+     <td>14</td>
+     <td>110</td>
+     <td>607</td>
+     <td>0.0484024</td>
+     <td>183</td>
+     <td>5311379…1728127</td>
+   </tr>
+   <tr>
+     <td>15</td>
+     <td>206</td>
+     <td>1279</td>
+     <td>0.405773</td>
+     <td>386</td>
+     <td>1040793…8729087</td>
+   </tr>
+   <tr>
+     <td>16</td>
+     <td>327</td>
+     <td>2203</td>
+     <td>0.534715</td>
+     <td>664</td>
+     <td>1475979…7771007</td>
+   </tr>
+   <tr>
+     <td>17</td>
+     <td>338</td>
+     <td>2281</td>
+     <td>0.0510051</td>
+     <td>687</td>
+     <td>4460875…2836351</td>
+   </tr>
+   <tr>
+     <td>18</td>
+     <td>454</td>
+     <td>3217</td>
+     <td>0.548838</td>
+     <td>969</td>
+     <td>2591170…9315071</td>
+   </tr>
+   <tr>
+     <td>19</td>
+     <td>582</td>
+     <td>4253</td>
+     <td>0.639087</td>
+     <td>1281</td>
+     <td>1907970…0484991</td>
+   </tr>
+   <tr>
+     <td>20</td>
+     <td>601</td>
+     <td>4423</td>
+     <td>0.0981187</td>
+     <td>1332</td>
+     <td>2855425…8580607</td>
+   </tr>
+   <tr>
+     <td>21</td>
+     <td>1195</td>
+     <td>9689</td>
+     <td>3.24355</td>
+     <td>2917</td>
+     <td>4782202…5754111</td>
+   </tr>
+   <tr>
+     <td>22</td>
+     <td>1225</td>
+     <td>9941</td>
+     <td>0.17318</td>
+     <td>2993</td>
+     <td>3460882…9463551</td>
+   </tr>
+   <tr>
+     <td>23</td>
+     <td>1356</td>
+     <td>11213</td>
+     <td>0.750064</td>
+     <td>3376</td>
+     <td>2814112…6392191</td>
+   </tr>
+   <tr>
+     <td>24</td>
+     <td>2253</td>
+     <td>19937</td>
+     <td>5.40748</td>
+     <td>6002</td>
+     <td>4315424…8041471</td>
+   </tr>
+   <tr>
+     <td>25</td>
+     <td>2434</td>
+     <td>21701</td>
+     <td>1.1508</td>
+     <td>6533</td>
+     <td>4486791…1882751</td>
+   </tr>
+   <tr>
+     <td>26</td>
+     <td>2590</td>
+     <td>23209</td>
+     <td>0.983179</td>
+     <td>6987</td>
+     <td>4028741…9264511</td>
+   </tr>
+   <tr>
+     <td>27</td>
+     <td>4623</td>
+     <td>44497</td>
+     <td>13.4968</td>
+     <td>13395</td>
+     <td>8545098…1228671</td>
+   </tr>
+   <tr>
+     <td>28</td>
+     <td>8383</td>
+     <td>86243</td>
+     <td>27.3762</td>
+     <td>25962</td>
+     <td>5369279…3438207</td>
+   </tr>
+ </tbody>
+</table>
+<p>We managed to test up to  and found the first 28 Mersenne primes in about a minute!</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>Mersenne primes are fascinating mathematical objects with deep connections to number 
+theory. Discovering them requires both computational ingenuity and efficient algorithms, 
+as they grow exponentially large and exceedingly rare. I was amazed I could generate a 
+25962 digit Mersenne prime on my laptop in a minute. However, noticing that the last 
+number took more than twice as much as the previous one, and the 52 is another 24 steps
+away… the resent discovery really is something.</p>
+			</article>
+		</div>
+	</main><nav aria-label="Navigation" class="container-lg chulapa-pagination  ">
+ <ul class="col-lg-8 offset-lg-2 pagination chulapa-pagination-round px-0 ">
+   <li class="page-item text-left mr-0 ">
+      <a class="page-link border-0 px-4" href="https://thomasburgess.github.io/2024/07/30/rectangles.html" tabindex="-1">
+	  <i class="fa fa-chevron-left" aria-hidden="true"></i><span class="sr-only">Previous</span>
+	  </a>
+   </li>
+   <li class="page-item border-0 disabled text-left ml-0 mr-auto d-none d-md-inline ">
+     <p class="page-link chulapa-label">Rectangle areas!</p>
+   </li>
+   <li class="page-item border-0 disabled text-left ml-0 mr-auto d-none d-sm-inline d-md-none ">
+     <p class="page-link chulapa-label">Rectangle areas!</p>
+   </li>
+	 <li class="page-item disabled mx-auto invisible">
+	  <p class="page-link">|</p>
+	 </li>	
+	 <li class="page-item border-0 disabled text-right mr-0 ml-auto d-none d-sm-inline d-md-none ">
+	   <p class="page-link chulapa-label">Blog setup</p>
+	 </li>
+	 <li class="page-item border-0 disabled text-right mr-0 ml-auto d-none d-md-inline ">
+	   <p class="page-link chulapa-label">Blog setup</p>
+	 </li>
+   <li class="page-item text-right ml-0 ">
+      <a class="page-link border-0 px-4" href="https://thomasburgess.github.io/2024/10/30/Blog-setup.html">
+	  <i class="fa fa-chevron-right" aria-hidden="true"></i><span class="sr-only">Next</span></a>
+   </li>
+ </ul>
+</nav>
+<div class="container-lg my-1">
+ <div class="row">
+   <div class="col-lg-8 offset-lg-2 col">
+      <i class="far fa-folder-open fa-xs" aria-hidden="true"></i>
+      <a href="https://thomasburgess.github.io/categories#blog" class="badge chulapa-pill-bg-secondary p-category" rel="tag">blog</a>
+      <a href="https://thomasburgess.github.io/categories#math" class="badge chulapa-pill-bg-secondary p-category" rel="tag">math</a>
+     </div>
+   </div>
+</div>
+<div class="container-lg my-1">
+ <div class="row">
+   <div class="col-lg-8 offset-lg-2 col">
+      <i class="fas fa-tag mr-1 fa-xs" aria-hidden="true"></i>
+      <a href="https://thomasburgess.github.io/tags#maths" class="badge chulapa-pill-bg-primary p-category" rel="tag" >maths</a>
+      <a href="https://thomasburgess.github.io/tags#primes" class="badge chulapa-pill-bg-primary p-category" rel="tag" >primes</a>
+      <a href="https://thomasburgess.github.io/tags#python" class="badge chulapa-pill-bg-primary p-category" rel="tag" >python</a>
+      <a href="https://thomasburgess.github.io/tags#GIMPS" class="badge chulapa-pill-bg-primary p-category" rel="tag" >GIMPS</a>
+     </div>
+   </div>
+</div>
+<div class="container-lg mt-1 mb-2">
+ <div class="row">
+   <div class="col-lg-8 offset-lg-2">
+     <hr>
+     <p><i class="fa-solid fa-shuffle fa-xl"></i><span class="sr-only">Related</span></p>
+     <nav class="card-group" aria-label="related-articles">
+        <div class="card  border chulapa-related">
+         <div class="card-body">
+         <p class="card-title chulapa-headingfont"><a href="https://thomasburgess.github.io/2024/11/02/saytheprime.html" class="chulapa-text-body-color">Say the prime</a></p>
+         <p class="card-text"><small>The 52nd Mersenne Prime digits 3772-4190.</small></p></div>
+   <div class="card-footer bg-transparent">
+      <small><i class="far fa-calendar" aria-hidden="true"></i> <time datetime="2024-11-02T00:00:00+01:00">november 02, 2024</time></small>
+   </div>
+ </div>
+        <div class="card ml-sm-1 border chulapa-related">
+         <div class="card-body">
+         <p class="card-title chulapa-headingfont"><a href="https://thomasburgess.github.io/2023/02/02/Matrix_Multiplication.html" class="chulapa-text-body-color">Optimizing matrix multiplication</a></p>
+         <p class="card-text"><small>Speeding up sloww matrix operations in python</small></p></div>
+   <div class="card-footer bg-transparent">
+      <small><i class="far fa-calendar" aria-hidden="true"></i> <time datetime="2023-02-02T00:00:00+01:00">february 02, 2023</time></small>
+   </div>
+ </div>
+        <div class="card ml-sm-1 border chulapa-related">
+         <div class="card-body">
+         <p class="card-title chulapa-headingfont"><a href="https://thomasburgess.github.io/2022/04/17/Vertices.html" class="chulapa-text-body-color">Polygon vertices</a></p>
+         <p class="card-text"><small>All the ways regular polygons tile the plane</small></p></div>
+   <div class="card-footer bg-transparent">
+      <small><i class="far fa-calendar" aria-hidden="true"></i> <time datetime="2022-04-17T00:00:00+02:00">april 17, 2022</time></small>
+   </div>
+ </div></nav>
+   </div>
+ </div>
+</div><!-- Footer -->
+ <footer class="footer-chulapa text-center mt-0 pt-3">
+   <div class="container">
+         <div class="row">
+           <div class="col-lg-8 offset-lg-2">
+         <script src="https://giscus.app/client.js" data-repo="thomasburgess/thomasburgess.github.io"
+  data-repo-id="MDEwOlJlcG9zaXRvcnkzNzQ0MDI0Mzg=" data-category="General" data-category-id="DIC_kwDOFlDths4Cj1pu"
+  data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top"
+  data-theme="preferred_color_scheme" data-lang="en" data-loading="lazy" crossorigin="anonymous" async>
+  </script>
+           </div>
+        </div>
+      </div>
+   <div class="container">
+     <div class="row">
+       <div class="col-xl-10 offset-xl-1"><div role="navigation" class="d-flex flex-wrap justify-content-center"><a href="https://github.com/thomasburgess" title="footerRepo on Github" class="chulapa-footer-sociallink lead"><span class="fa-stack fa-lg" aria-hidden="true">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+              </span><span class="sr-only">Repo on Github</span>
+            </a><a href="https://thomasburgess.github.io/atom.xml" title="footerRSS" class="chulapa-footer-sociallink lead"><span class="fa-stack fa-lg" aria-hidden="true">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+              </span><span class="sr-only">RSS</span>
+            </a></div><p class="mt-2 mb-3">&copy; 2025 Thomas T Burgess</p>
+          <!-- Do not remove this in order to give  attributions -->
+         <p class="chulapa-footer-brand">Powered by <a href="https://dieghernan.github.io/chulapa"> <span class="chulapa">Chulapa</span> Jekyll Theme</a><br><b>Minty</b> skin by <a href="https://bootswatch.com/">Bootswatch</a></p>
+          <!-- End  attributions -->
+       </div>
+     </div>
+ </div>
+</footer>
+<!-- Footer -->
+<!-- JS, Popper.js, and jQuery -->
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/gh/dieghernan/chulapa@master/assets/js/chulapa_script.js"></script>
+	<!-- start custom scripts to be placed at the bottom of the page -->
+<!-- end custom bottom scripts -->
+	</body>
+</html>

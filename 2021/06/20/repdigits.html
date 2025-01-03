@@ -1,0 +1,443 @@
+<!doctype html>
+<html lang="en-US"><head>
+   <meta charset="utf-8">
+    <!-- Chulapa Jekyll Theme -  -->
+    <!--  MIT License-->
+    <!-- Docs: https://dieghernan.github.io/chulapa -->
+    <!-- Repo: https://github.com/dieghernan/chulapa -->
+    <!-- Page build 2025-01-03 19:53:22 +0100 -->
+    <!--Google Structured Data-->
+    <script type="application/ld+json">
+        {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://thomasburgess.github.io/2021/06/20/repdigits.html"
+      },
+      "headline": "Exploring repunit digit sum fractions",
+      "image": "https://thomasburgess.github.io/assets/images/2021/06/20/APOD_Ganymede_repunit.jpg",
+      "datePublished": "2021-06-20T00:00:00+02:00",
+      "dateModified": "2024-10-31T00:00:00+01:00",
+      "author": {
+        "@type": "Person",
+        "name": "Thomas T Burgess"
+        , "url": "https://mathstodon.xyz/@ngons"
+        ,  "sameAs" : [
+             "https://github.com/thomasburgess"
+            ,
+             "https://orcid.org/0000-0002-6993-5918"
+            ]
+      },
+       "publisher": {
+        "@type": "Organization",
+        "name": "Thomas T Burgess",
+        "url": "https://thomasburgess.github.io/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://github.com/thomasburgess.png"
+        }
+      }
+    }
+    </script>
+        <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://thomasburgess.github.io/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Blog",
+        "item": "https://thomasburgess.github.io/blog"
+      },
+    {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Exploring repunit digit sum fractions"
+      }]
+    }
+    </script>
+    <script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "WebPage",
+    "name": "Exploring repunit digit sum fractions",
+    "description": "Down the integer sequences rabbit hole - The freaction of a repdigit and the sum of its digits ... it is sometimes an integer.
+"
+    }
+}
+</script><script type="application/ld+json">
+{
+  "@context" : "https://schema.org",
+  "@type" : "Person",
+  "image": "https://github.com/thomasburgess.png",
+  "homeLocation": {
+    "@type": "Place",
+    "name": "Vienna, Austria"
+    },
+  "description": "Publisher",
+  "name" : "Thomas T Burgess",
+  "url" : "https://thomasburgess.github.io/"
+  ,  "sameAs" : [
+  "https://mathstodon.xyz/@ngons",
+  "https://github.com/thomasburgess",
+  "https://orcid.org/0000-0002-6993-5918"
+  ]
+}
+</script>
+   <title>Exploring repunit digit sum fractions | Thomas T Burgess's Blog</title>
+  <link rel="canonical" href="https://thomasburgess.github.io/2021/06/20/repdigits.html">
+    <!-- Atom feed -->
+  <link href="https://thomasburgess.github.io/atom.xml" type="application/atom+xml" rel="alternate" title="Atom feed Thomas T Burgess's Blog" >
+    <!-- RSS 2.0 feed -->
+  <link href="https://thomasburgess.github.io/rss.xml" type="application/rss+xml" rel="alternate" title="RSS 2.0 feed Thomas T Burgess's Blog" >
+    <!-- Meta tags -->
+   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+   <meta name="author" content="Thomas T Burgess" >
+   <meta name="copyright" content="Thomas T Burgess" >
+   <meta name="description" content="Down the integer sequences rabbit hole - The freaction of a repdigit and the sum of its digits ... it is sometimes an integer.
+">
+   <meta name="thumbnail" content="https://thomasburgess.github.io/assets/images/2021/06/20/APOD_Ganymede_repunit.jpg" >
+   <meta name="robots" content="index, follow"><meta name="keywords" content="">
+    <!-- OpenGraph -->
+   <meta property="og:title" content="Exploring repunit digit sum fractions | Thomas T Burgess's Blog" >
+   <meta property="og:site_name" content="Thomas T Burgess's Blog | Numbers, numbers - everywhere!" >
+   <meta property="og:url" content="https://thomasburgess.github.io/2021/06/20/repdigits.html" >
+   <meta property="og:type" content="website" >
+   <meta property="og:description" content="Down the integer sequences rabbit hole - The freaction of a repdigit and the sum of its digits ... it..." >
+   <meta property="og:locale" content="en-US" >
+   <meta property="og:image" content="https://thomasburgess.github.io/assets/images/2021/06/20/APOD_Ganymede_repunit.jpg" >
+    <!-- Twitter/X Cards -->
+   <meta name="twitter:card" content="summary_large_image"><!-- start custom head snippets -->
+<!-- this script is inserted before the css stylesheet -->
+<!-- end custom head snippets -->
+<!-- CSS -->
+    <!-- Preconnect with Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Fontawesome-->
+    <!-- v6 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6/css/all.min.css">
+  <link rel="preload" href="https://cdn.jsdelivr.net/gh/dieghernan/chulapa@master/assets/js/chulapa_script.js" as="script" >
+  <link rel="preload" href="https://cdn.jsdelivr.net/gh/dieghernan/chulapa@master/assets/fonts/Chulapa/Chulapa-Bold_vmod.otf" as="font" type="font/otf" crossorigin>
+    <!-- Theme css (Bootstrap included) -->
+  <link rel="stylesheet" id="maincss" href="https://thomasburgess.github.io/assets/css/main.css" >
+    <!-- Highlighter -->
+  <link id="csshigh" rel="stylesheet" href="https://thomasburgess.github.io/assets/css/highlighter.css" >
+    <!-- Custom css -->
+  <link rel="stylesheet" href="https://thomasburgess.github.io/assets/css/custom.css" >
+      <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.min.js"></script><!-- start custom head snippets -->
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/images/favicons/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="96x96" href="/assets/images/favicons/favicon-96x96.png">
+<link rel="manifest" href="/assets/images/favicons/site.webmanifest">
+<link rel="mask-icon" href="/assets/images/favicons/safari-pinned-tab.svg" color="#5bbad5">
+<link rel="shortcut icon" href="/assets/images/favicons/favicon.ico">
+<meta name="msapplication-TileColor" content="#2b5797">
+<meta name="msapplication-TileImage" content="/assets/images/favicons/mstile-144x144.png">
+<meta name="msapplication-config" content="/assets/images/favicons/browserconfig.xml">
+<meta name="theme-color" content="#78c2ad">
+<!-- end custom head snippets --></head>
+<body class="d-flex flex-column h-entry" id="body">
+	<a class="u-url d-none" href="https://thomasburgess.github.io/2021/06/20/repdigits.html">Invisible link to canonical for Microformats</a>
+	<div class="navbar-chulapa-fab d-md-none">
+		<input type="checkbox" class="navbar-chulapa-fab-button d-none" id="navi-toggle">
+		<label for="navi-toggle" class="navbar-toggler p-1 m-0 text-center d-flex">
+			<span class="navbar-toggler-icon m-auto">&nbsp;</span>
+		</label>
+		<div class="navbar-chulapa-fab-background">&nbsp;</div>
+		<nav class="navbar-chulapa-fab-nav" aria-label="alternative-navigation">
+			<ul class="navbar-nav text-center text-uppercase font-weight-light mt-0 mb-1 py-1">
+				<li class="nav-item">
+					<a class="nav-link px-3 navbar-brand mx-1 " href="https://thomasburgess.github.io/"><img src="https://thomasburgess.github.io/assets/images/favicons/favicon-96x96.png" width="30" height="30" class="d-inline-block align-top rounded-lg text-center mr-1" alt="NavbarLogo">Home</a>
+				</li><li class="nav-item my-0 py-1">
+					<a class="nav-link px-3 py-1" href="https://thomasburgess.github.io/blog/">Blog</a>
+				</li><li class="nav-item my-0 py-1">
+					<a class="nav-link px-3 py-1" href="https://thomasburgess.github.io/tags">Tags</a>
+				</li><li class="nav-item my-0 py-1">
+					<a class="nav-link px-3 py-1" href="https://thomasburgess.github.io/categories">Categories</a>
+				</li><li class="nav-item my-0 py-1">
+					<a class="nav-link px-3 py-1" href="https://thomasburgess.github.io/archive">Archive</a>
+				</li><li class="nav-item my-0 py-1">
+					<a class="nav-link px-3 py-1 " href="https://thomasburgess.github.io/search">search</a>
+				</li></ul>
+		</nav>
+	</div>
+	<nav class="navbar navbar-expand sticky-top navbar-chulapa d-none d-md-block " aria-label="primary-navigation">
+	<div class="container-fluid mx-md-2">
+			<a class="navbar-brand text-uppercase font-weight-light" href="https://thomasburgess.github.io/"><img src="https://thomasburgess.github.io/assets/images/favicons/favicon-96x96.png" width="30" height="30" class="d-inline-block align-top rounded-lg mr-1" alt="NavbarLogo">Home</a><ul class="navbar-nav ml-auto"><li class="nav-item mx-2">
+						<a class="nav-link text-uppercase font-weight-light " href="https://thomasburgess.github.io/blog/">Blog</a>
+					</li><li class="nav-item mx-2">
+						<a class="nav-link text-uppercase font-weight-light " href="https://thomasburgess.github.io/tags">Tags</a>
+					</li><li class="nav-item mx-2">
+						<a class="nav-link text-uppercase font-weight-light " href="https://thomasburgess.github.io/categories">Categories</a>
+					</li><li class="nav-item mx-2">
+						<a class="nav-link text-uppercase font-weight-light " href="https://thomasburgess.github.io/archive">Archive</a>
+					</li><li class="nav-item mx-2">
+						<a class="nav-link text-uppercase font-weight-light " href="https://thomasburgess.github.io/search">
+							<i class="fa fa-search" aria-hidden="true"></i><span class="sr-only">search</span>
+						</a>
+					</li></ul></div>
+</nav>	<header class="d-flex align-items-center hero-chulapa-image" style="background-image: linear-gradient(rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.7)), url('https://thomasburgess.github.io/assets/images/2021/06/20/APOD_Ganymede_repunit.jpg')"><div class="container-lg py-4">
+   <h1 class="p-name">Exploring repunit digit sum fractions</h1><hr class="my-3">
+   <p class="chulapa-subtitle p-summary">Down the integer sequences rabbit hole</p>
+ </div>
+</header>
+	<main class="container-lg pb-3 flex-fill">
+<div class="row my-1">
+<div class="col-lg-5 offset-lg-2 col small">
+ <nav aria-label="breadcrumb">
+  <ol class="breadcrumb my-0 py-0 chulapa-bg-transparent pl-0" itemscope itemtype="https://schema.org/BreadcrumbList">
+            <li class="breadcrumb-item" itemprop="itemListElement" itemscope
+          itemtype="https://schema.org/ListItem"><a href="https://thomasburgess.github.io/" itemprop="item"><span itemprop="name">Home</span></a>
+         <meta itemprop="position" content="1" ></li>
+            <li class="breadcrumb-item" itemprop="itemListElement" itemscope
+          itemtype="https://schema.org/ListItem"><a href="https://thomasburgess.github.io/blog" itemprop="item"><span itemprop="name">Blog</span></a>
+         <meta itemprop="position" content="2" ></li>
+      <li class="breadcrumb-item active" aria-current="page" itemprop="itemListElement" itemscope
+          itemtype="https://schema.org/ListItem">
+        <span itemprop="name">Exploring repunit digit sum fractions</span>
+       <meta itemprop="position" content="3" >
+     </li>
+ </ol>
+ </nav>
+ <div class="chulapaDateSocial">
+            <time class="dt-updated" datetime="2024-10-31T00:00:00+01:00">31 oct 2024</time> 
+            <i class="fa fa-redo fa-xs" aria-hidden="true"></i>
+            <br>
+            <span class="font-weight-light chulapa-text-line-through">20 jun 2021</span>
+        </div></div>
+         <div class="col-lg-3 col-sm-4 col-3 text-right lead chulapaDateSocial">
+            <a  href="https://twitter.com/intent/tweet?url=https://thomasburgess.github.io/2021/06/20/repdigits.html&text=Exploring+repunit+digit+sum+fractions&hashtags=maths,oeis" title="Share on X" aria-label="Share on X" ><i class="fab fa-square-x-twitter fa-lg" aria-hidden="true"></i></a>
+            <a href="https://toot.kytta.dev/?text=Exploring%20repunit%20digit%20sum%20fractions%20https://thomasburgess.github.io/2021/06/20/repdigits.html%20%23maths%20%23oeis" title="Share on Mastodon" aria-label="Share on Mastodon"><i class="fa-brands fa-mastodon fa-lg" aria-hidden="true"></i></a>
+            <a  class="d-none d-sm-inline" href="https://www.facebook.com/sharer.php?u=https://thomasburgess.github.io/2021/06/20/repdigits.html" title="Share on Facebook" aria-label="Share on Facebook" ><i class="fab fa-facebook-square fa-lg" aria-hidden="true"></i></a>
+             <a  class="d-none d-sm-inline" href="https://api.whatsapp.com/send?&text=Exploring+repunit+digit+sum+fractions%20https://thomasburgess.github.io/2021/06/20/repdigits.html" title="Share on Whatsapp" aria-label="Share on Whatsapp" ><i class="fab fa-whatsapp-square fa-lg" aria-hidden="true"></i></a>
+         <a  class="d-none d-sm-inline" href="https://www.linkedin.com/shareArticle?url=https://thomasburgess.github.io/2021/06/20/repdigits.html&title=Exploring+repunit+digit+sum+fractions" title="Share on LinkedIn" aria-label="Share on LinkedIn"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a>
+         </div></div>
+		<div class="row pt-2">
+			<aside class="col-lg-2 mt-lg-3 small"><div rel="author" class="h-card p-author">
+				<div class="row d-flex align-items-center mb-2"><img src="https://github.com/thomasburgess.png" alt="Thomas T Burgess" class="ml-3 mr-0 mx-lg-auto mb-lg-1 chulapa-avatar-size u-photo"><div class="col-9 col-lg-12 text-lg-center p-name">
+						Thomas T Burgess
+					</div>
+				</div>
+				<div class="row mb-2 mb-lg-0">
+					<div class="col text-lg-center"><address class="d-inline d-lg-block mr-2 mx-lg-auto mb-lg-2 small chulapa-links-hover-only">
+						  <a class="pr-lg-0 p-region" href="https://www.google.com/maps/search/?api=1&query=Vienna%2C+Austria">
+						    <i class="fas fa-map-marker-alt fa-lg mr-1" aria-hidden="true"></i>Vienna, Austria</a>
+						</address><div class="d-inline my-1 mx-lg-0 chulapa-links-hover-only"><a class="mr-2 mx-lg-1 u-url" rel="me" href="https://mathstodon.xyz/@ngons" title="@ngons@mathstodon.xyz - my mastodon social" aria-label="@ngons@mathstodon.xyz - my mastodon social" ><i class="fab fa-mastodon fa-lg" aria-hidden="true"></i></a><a class="mr-2 mx-lg-1 u-url" rel="me" href="https://github.com/thomasburgess" title="my code at github." aria-label="my code at github." ><i class="fab fa-github fa-lg" aria-hidden="true"></i></a><a class="mr-2 mx-lg-1 u-email" href="mailto:nxpnsv+thomastburgess@gmail.com?subject=Thomas%20T%20Burgess's%20Blog%20web%20-%20Exploring%20repunit%20digit%20sum%20fractions" title="My personal email" aria-label="My personal email" ><i class="far fa-envelope fa-lg" aria-hidden="true"></i></a>
+							<a class="mr-2 mx-lg-1 u-url" rel="me" href="https://orcid.org/0000-0002-6993-5918" title="My Orcid" aria-label="My Orcid" ><i class="fa-brands fa-orcid fa-lg" aria-hidden="true"></i></a></div></div>
+				</div>
+				</div>
+</aside>
+			<article id="maincontent" class="col-lg-8 mt-3 e-content">
+	<button class="btn btn-primary btn-sm rounded-right position-fixed chulapa-btn-sidebar bs-canvas-anim chulapa-btn-nofocus chulapa-fa-static" id='demo' onclick="openSideBar()" aria-label="Open Sidebar" aria-expanded="false" aria-controls="sideBar">
+		<i class="fa-solid fa-plus"></i><span class="sr-only">Open Sidebar</span>
+	</button>
+	<div class="bs-canvas bs-canvas-anim bs-canvas-left position-fixed navbar-chulapa h-100" id='sideBar'>
+		<p class="pt-2 pb-1 px-3">
+			<button type="button" class="navbar-text close chulapa-btn-nofocus chulapa-fa-static" aria-label="Close" onclick="closeSideBar()">
+				<i class="fa-solid fa-times"></i><span class="sr-only">Close Sidebar</span>
+			</button>
+		</p>
+		<nav class="navbar-nav px-3 my-auto">		  <p class="mb-2" ><a class="nav-link font-weight-bold lead" href="#">Exploring repunit digit sum fractions</a></p>		
+			<ul class="nav flex-column" id="sidetoc"><li class="nav-item nav d-block"><a href="#the-tweets" class="nav-link">The tweets</a></li><li class="nav-item nav d-block"><a href="#going-deeper" class="nav-link">Going deeper</a></li><li class="nav-item nav d-block"><a href="#takeaway" class="nav-link">Takeaway</a></li></ul>
+		</nav>   
+	</div>
+            <nav aria-label="table-of-contents">
+			<ul class="chulapa-toc-wrapper list-group mb-5 mx-3 mx-lg-5" id="toc"><li class="list-group-item font-weight-bold py-1 pr-0 mr-0 chulapa-toc-reset"><a href="#the-tweets">The tweets</a></li><li class="list-group-item font-weight-bold py-1 pr-0 mr-0 chulapa-toc-reset"><a href="#going-deeper">Going deeper</a></li><li class="list-group-item font-weight-bold py-1 pr-0 mr-0 chulapa-toc-reset"><a href="#takeaway">Takeaway</a></li></ul>
+			</nav>
+			 <p><em>In which I go down a rabbit hole of integer sequences when trying to understand
+a pattern in fractions of repeated digits and their digit sums.</em></p>
+<h2 id="the-tweets">The tweets</h2>
+<p><em>Note: this post was written when I was still using Twitter, I have since moved on to 
+<a href="https://mathstodon.xyz/@ngons">mastodon</a>.</em></p>
+<p>This tweet appeared in my Twitter feed:</p>
+<figure>
+<p><img src="/assets/images/2021/06/20/tweet.png" alt="Mathematics and mystery.555, 666, 777, and friends." id="figure-1" width="100%" /></p>
+ <figcaption>Figure 1: Tweet 1 by Cliff Pickover 17 Jun 2021</figcaption>
+</figure>
+<p>These are the fraction of a <a href="https://en.wikipedia.org/wiki/Repdigit">repdigit</a> and the sum of its digits. My first thought was that I could write all these like this:
+\[
+  \frac{N}{N}\frac{111}{1+1+1}=37\,\quad\text{where } 0 \lt N \lt 10\,.
+\]
+Hence, these fractions are all <a href="https://en.wikipedia.org/wiki/Repunit">repunits</a>. 
+A new question comes to mind: for which numbers of repeated digits n is the fraction an integer?</p>
+<p>This handy formula from the Online Encylopedia of Integer Sequences (OEIS) <a href="https://oeis.org/A002275">A002275</a> generates repunits:
+\[
+  R_n=\frac{10^n - 1}{9}\,.
+\]
+As the sum in the denominator is just the number of digits, the fraction $Q$ then is
+\[
+  Q_n=\frac{R_n}{n} = \frac{10^n - 1}{9n}\,.
+\]</p>
+<p>I made a python script to see when the result is an integer:</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[(</span><span class="n">n</span><span class="p">,</span> <span class="p">(</span><span class="mi">10</span><span class="o">**</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">//</span><span class="mi">9</span><span class="o">/</span><span class="n">n</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">)]</span>
+</code></pre></div></div>
+<p>which gives integer fractions for \(Q=1\) for \(n=1\), \(Q=37\) for \(n=3\), and 
+\(Q=12345679\) for \(n=9\).</p>
+<details>
+  <summary><i>Click to expand the full results of python script...</i><br />&nbsp;<br /></summary>
+ <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[(1, 1.0),
+ (2, 5.5),
+ (3, 37.0),
+ (4, 277.75),
+ (5, 2222.2),
+ (6, 18518.5),
+ (7, 158730.14285714287),
+ (8, 1388888.875),
+ (9, 12345679.0)]
+</code></pre></div></div>
+</details>
+<p>I replied to the post with the case for \(n=9\), which led to this response:</p>
+<figure>
+<p><img src="/assets/images/2021/06/20/reply.png" alt="" id="figure-1" width="100%" /></p>
+ <figcaption>Figure 2: Tweet 2 by Cliff Pickover 17 Jun 2021</figcaption>
+</figure>
+<p>On a tangent, a typo in my first reply pointed out by 
+<a href="https://twitter.com/mikekohnstamm">@mikekohnstamm</a> added the “missing” \(8\) to 
+\(Q=12345679\). Furthermore, <a href="https://twitter.com/Kapil_kant1">@Kapil_kant</a> pointed out 
+that the \(8\) is there if the fraction is:
+\[
+  \frac{1111111101}{1+1+1+1+1+1+1+1+0+1}=123456789\,.
+\]
+I’ll save investigating that for another time.</p>
+<h2 id="going-deeper">Going deeper</h2>
+<p>A better way to search for exact integer fractions is to check when the modulus is 0 and 
+only print those cases using integer division. This is done in the following python 
+snippets:</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">print</span><span class="p">(</span><span class="s">"Q"</span><span class="p">,</span> <span class="p">[(</span><span class="mi">10</span><span class="o">**</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">//</span><span class="p">(</span><span class="mi">9</span><span class="o">*</span><span class="n">n</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span> <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="mi">10</span><span class="o">**</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">//</span><span class="mi">9</span> <span class="o">%</span> <span class="n">n</span><span class="p">])</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"denominators"</span><span class="p">,</span> <span class="p">[</span><span class="n">n</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">20000</span><span class="p">)</span> <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="mi">10</span><span class="o">**</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">//</span><span class="mi">9</span> <span class="o">%</span> <span class="n">n</span><span class="p">])</span>
+</code></pre></div></div>
+<p>This gives the solution sequence \(Q=1, 37, 12345679, 4115226337448559670781893,\ldots\) 
+with denominators \(1, 3, 9, 27, 81, 111, 243, ...\). Evidently \(Q(n)\) grows very fast 
+with \(111\) terms already at \(n=6\).</p>
+<details>
+  <summary><i>Click to expand the full results of python script...</i><br />&nbsp;<br /></summary>
+ <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  Q: [1, 37, 12345679, 4115226337448559670781893, 
+    1371742112482853223593964334705075445816186556927297668038408779149519890260631, 
+    10010010010010010010010010010010010010010010010010010010010010010010010010010010...
+    01001001001001001001001001001]
+  denominators [1, 3, 9, 27, 81, 111, 243, 333, 729, 999, 2187, 2997, 4107, 6561, 
+    8991, 12321, 13203, 19683]
+</code></pre></div></div>
+</details>
+<p>Several series repunit-related sequences mention these numbers: <a href="https://oeis.org/A190301">A190301</a>,  <a href="https://oeis.org/A190301">A215258</a>, <a href="https://oeis.org/A190301">A215258</a>. I couldn’t find this sequence in the OEIS, so I registered and made it my first submission.</p>
+<p>Update 2021-08-02: it is now sequence <a href="https://oeis.org/A345467">A215258</a> - Ratios R(k)/k for which R(k) / k is an integer, where R(k) = A002275(k) is a repunit.</p>
+<p>The sequence of denominators 1, 3, 9, 27, 81, …, suggests the conjecture: \(Q\) is integer when \(n\) is of the form \(n=3^n\). One OEIS editor proved this elegantly for me: \(R_{3n} / R_n = 10^{2n} + 10^n + 1\), which is divisible by 3. Therefore, \(R_{3^m}\) is divisible by \(3^m\) by induction on \(m\). However, there are additional solutions: 111, 333, 999, …. There is no known general rule for the denominator. The full sequence of denominators is <a href="https://oeis.org/A014950">A014950</a> in OEIS. Using this with the OEIS sequence for \(R_n\) (<a href="https://oeis.org/A014950">A002275</a>), all the integer fractions are:
+\[
+  Q(n) = \frac{A002275(A014950(n))}{A014950(n)}\,.
+\]</p>
+<p>My favourite integer fraction so far is:
+\[
+  Q(6)=\frac{R_{111}}{111} = \ldots
+\]
+\[
+\tiny
+\frac{11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111}{111} = \ldots
+\]
+\[
+\tiny
+1001001001001001001001001001001001001001001001001001001001001001001001001001001001001001001001001001001001001
+\]</p>
+<h2 id="takeaway">Takeaway</h2>
+<p>Twitter (in 2021), if done right, can be a source of inspiration and knowledge. Also,
+ recreational maths is fun.</p>
+<hr />
+<p>Header image: repunit digit sum ratio remix of 
+<a href="https://apod.nasa.gov/apod/ap210614.html">Ganymede from Juno</a>.</p>
+			</article>
+		</div>
+	</main><nav aria-label="Navigation" class="container-lg chulapa-pagination  ">
+ <ul class="col-lg-8 offset-lg-2 pagination chulapa-pagination-round px-0 ">
+   <li class="page-item text-left mr-0 invisible">
+      <a class="page-link border-0 px-4" href="#" tabindex="-1">
+	  <i class="fa fa-chevron-left" aria-hidden="true"></i><span class="sr-only">Previous</span>
+	  </a>
+   </li>
+   <li class="page-item border-0 disabled text-left ml-0 mr-auto d-none d-md-inline invisible">
+     <p class="page-link chulapa-label"></p>
+   </li>
+   <li class="page-item border-0 disabled text-left ml-0 mr-auto d-none d-sm-inline d-md-none invisible">
+     <p class="page-link chulapa-label"></p>
+   </li>
+	 <li class="page-item disabled mx-auto invisible">
+	  <p class="page-link">|</p>
+	 </li>	
+	 <li class="page-item border-0 disabled text-right mr-0 ml-auto d-none d-sm-inline d-md-none ">
+	   <p class="page-link chulapa-label">Tree hack</p>
+	 </li>
+	 <li class="page-item border-0 disabled text-right mr-0 ml-auto d-none d-md-inline ">
+	   <p class="page-link chulapa-label">Tree hack</p>
+	 </li>
+   <li class="page-item text-right ml-0 ">
+      <a class="page-link border-0 px-4" href="https://thomasburgess.github.io/2021/07/18/tree_hack.html">
+	  <i class="fa fa-chevron-right" aria-hidden="true"></i><span class="sr-only">Next</span></a>
+   </li>
+ </ul>
+</nav>
+<div class="container-lg my-1">
+ <div class="row">
+   <div class="col-lg-8 offset-lg-2 col">
+      <i class="far fa-folder-open fa-xs" aria-hidden="true"></i>
+      <a href="https://thomasburgess.github.io/categories#blog" class="badge chulapa-pill-bg-secondary p-category" rel="tag">blog</a>
+      <a href="https://thomasburgess.github.io/categories#math" class="badge chulapa-pill-bg-secondary p-category" rel="tag">math</a>
+     </div>
+   </div>
+</div>
+<div class="container-lg my-1">
+ <div class="row">
+   <div class="col-lg-8 offset-lg-2 col">
+      <i class="fas fa-tag mr-1 fa-xs" aria-hidden="true"></i>
+      <a href="https://thomasburgess.github.io/tags#maths" class="badge chulapa-pill-bg-primary p-category" rel="tag" >maths</a>
+      <a href="https://thomasburgess.github.io/tags#oeis" class="badge chulapa-pill-bg-primary p-category" rel="tag" >oeis</a>
+     </div>
+   </div>
+</div>
+<!-- Footer -->
+ <footer class="footer-chulapa text-center mt-0 pt-3">
+   <div class="container">
+         <div class="row">
+           <div class="col-lg-8 offset-lg-2">
+         <script src="https://giscus.app/client.js" data-repo="thomasburgess/thomasburgess.github.io"
+  data-repo-id="MDEwOlJlcG9zaXRvcnkzNzQ0MDI0Mzg=" data-category="General" data-category-id="DIC_kwDOFlDths4Cj1pu"
+  data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top"
+  data-theme="preferred_color_scheme" data-lang="en" data-loading="lazy" crossorigin="anonymous" async>
+  </script>
+           </div>
+        </div>
+      </div>
+   <div class="container">
+     <div class="row">
+       <div class="col-xl-10 offset-xl-1"><div role="navigation" class="d-flex flex-wrap justify-content-center"><a href="https://github.com/thomasburgess" title="footerRepo on Github" class="chulapa-footer-sociallink lead"><span class="fa-stack fa-lg" aria-hidden="true">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+              </span><span class="sr-only">Repo on Github</span>
+            </a><a href="https://thomasburgess.github.io/atom.xml" title="footerRSS" class="chulapa-footer-sociallink lead"><span class="fa-stack fa-lg" aria-hidden="true">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+              </span><span class="sr-only">RSS</span>
+            </a></div><p class="mt-2 mb-3">&copy; 2025 Thomas T Burgess</p>
+          <!-- Do not remove this in order to give  attributions -->
+         <p class="chulapa-footer-brand">Powered by <a href="https://dieghernan.github.io/chulapa"> <span class="chulapa">Chulapa</span> Jekyll Theme</a><br><b>Minty</b> skin by <a href="https://bootswatch.com/">Bootswatch</a></p>
+          <!-- End  attributions -->
+       </div>
+     </div>
+ </div>
+</footer>
+<!-- Footer -->
+<!-- JS, Popper.js, and jQuery -->
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/gh/dieghernan/chulapa@master/assets/js/chulapa_script.js"></script>
+	<!-- start custom scripts to be placed at the bottom of the page -->
+<!-- end custom bottom scripts -->
+	</body>
+</html>

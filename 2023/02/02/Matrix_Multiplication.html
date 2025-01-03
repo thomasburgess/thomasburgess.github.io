@@ -1,0 +1,985 @@
+<!doctype html>
+<html lang="en-US"><head>
+   <meta charset="utf-8">
+    <!-- Chulapa Jekyll Theme -  -->
+    <!--  MIT License-->
+    <!-- Docs: https://dieghernan.github.io/chulapa -->
+    <!-- Repo: https://github.com/dieghernan/chulapa -->
+    <!-- Page build 2025-01-03 19:53:22 +0100 -->
+    <!--Google Structured Data-->
+    <script type="application/ld+json">
+        {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://thomasburgess.github.io/2023/02/02/Matrix_Multiplication.html"
+      },
+      "headline": "Optimizing matrix multiplication",
+      "image": "https://thomasburgess.github.io/assets/images/2023/02/02/mikita-yo-OCrl1Tkt630-unsplash.jpg",
+      "datePublished": "2023-02-02T00:00:00+01:00",
+      "dateModified": "2024-10-31T00:00:00+01:00",
+      "author": {
+        "@type": "Person",
+        "name": "Thomas T Burgess"
+        , "url": "https://mathstodon.xyz/@ngons"
+        ,  "sameAs" : [
+             "https://github.com/thomasburgess"
+            ,
+             "https://orcid.org/0000-0002-6993-5918"
+            ]
+      },
+       "publisher": {
+        "@type": "Organization",
+        "name": "Thomas T Burgess",
+        "url": "https://thomasburgess.github.io/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://github.com/thomasburgess.png"
+        }
+      }
+    }
+    </script>
+        <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://thomasburgess.github.io/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Blog",
+        "item": "https://thomasburgess.github.io/blog"
+      },
+    {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Optimizing matrix multiplication"
+      }]
+    }
+    </script>
+    <script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "WebPage",
+    "name": "Optimizing matrix multiplication",
+    "description": "Speeding up sloww matrix operations in python - I was asked to speed the inner loop that runs many times inside a Markov Chain Monte  Carlo problem. This post is about different approaches to improving performance.  Possibly, some insights here are applicable beyond the details of the specific  problem.
+"
+    }
+}
+</script><script type="application/ld+json">
+{
+  "@context" : "https://schema.org",
+  "@type" : "Person",
+  "image": "https://github.com/thomasburgess.png",
+  "homeLocation": {
+    "@type": "Place",
+    "name": "Vienna, Austria"
+    },
+  "description": "Publisher",
+  "name" : "Thomas T Burgess",
+  "url" : "https://thomasburgess.github.io/"
+  ,  "sameAs" : [
+  "https://mathstodon.xyz/@ngons",
+  "https://github.com/thomasburgess",
+  "https://orcid.org/0000-0002-6993-5918"
+  ]
+}
+</script>
+   <title>Optimizing matrix multiplication | Thomas T Burgess's Blog</title>
+  <link rel="canonical" href="https://thomasburgess.github.io/2023/02/02/Matrix_Multiplication.html">
+    <!-- Atom feed -->
+  <link href="https://thomasburgess.github.io/atom.xml" type="application/atom+xml" rel="alternate" title="Atom feed Thomas T Burgess's Blog" >
+    <!-- RSS 2.0 feed -->
+  <link href="https://thomasburgess.github.io/rss.xml" type="application/rss+xml" rel="alternate" title="RSS 2.0 feed Thomas T Burgess's Blog" >
+    <!-- Meta tags -->
+   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+   <meta name="author" content="Thomas T Burgess" >
+   <meta name="copyright" content="Thomas T Burgess" >
+   <meta name="description" content="Speeding up sloww matrix operations in python - I was asked to speed the inner loop that runs many times inside a Markov Chain Monte  Carlo problem. This pos...">
+   <meta name="thumbnail" content="https://thomasburgess.github.io/assets/images/2023/02/02/mikita-yo-OCrl1Tkt630-unsplash.jpg" >
+   <meta name="robots" content="index, follow"><meta name="keywords" content="">
+    <!-- OpenGraph -->
+   <meta property="og:title" content="Optimizing matrix multiplication | Thomas T Burgess's Blog" >
+   <meta property="og:site_name" content="Thomas T Burgess's Blog | Numbers, numbers - everywhere!" >
+   <meta property="og:url" content="https://thomasburgess.github.io/2023/02/02/Matrix_Multiplication.html" >
+   <meta property="og:type" content="website" >
+   <meta property="og:description" content="Speeding up sloww matrix operations in python - I was asked to speed the inner loop that runs many times..." >
+   <meta property="og:locale" content="en-US" >
+   <meta property="og:image" content="https://thomasburgess.github.io/assets/images/2023/02/02/mikita-yo-OCrl1Tkt630-unsplash.jpg" >
+    <!-- Twitter/X Cards -->
+   <meta name="twitter:card" content="summary_large_image"><!-- start custom head snippets -->
+<!-- this script is inserted before the css stylesheet -->
+<!-- end custom head snippets -->
+<!-- CSS -->
+    <!-- Preconnect with Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Fontawesome-->
+    <!-- v6 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6/css/all.min.css">
+  <link rel="preload" href="https://cdn.jsdelivr.net/gh/dieghernan/chulapa@master/assets/js/chulapa_script.js" as="script" >
+  <link rel="preload" href="https://cdn.jsdelivr.net/gh/dieghernan/chulapa@master/assets/fonts/Chulapa/Chulapa-Bold_vmod.otf" as="font" type="font/otf" crossorigin>
+    <!-- Theme css (Bootstrap included) -->
+  <link rel="stylesheet" id="maincss" href="https://thomasburgess.github.io/assets/css/main.css" >
+    <!-- Highlighter -->
+  <link id="csshigh" rel="stylesheet" href="https://thomasburgess.github.io/assets/css/highlighter.css" >
+    <!-- Custom css -->
+  <link rel="stylesheet" href="https://thomasburgess.github.io/assets/css/custom.css" >
+      <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.min.js"></script><!-- start custom head snippets -->
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/images/favicons/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="96x96" href="/assets/images/favicons/favicon-96x96.png">
+<link rel="manifest" href="/assets/images/favicons/site.webmanifest">
+<link rel="mask-icon" href="/assets/images/favicons/safari-pinned-tab.svg" color="#5bbad5">
+<link rel="shortcut icon" href="/assets/images/favicons/favicon.ico">
+<meta name="msapplication-TileColor" content="#2b5797">
+<meta name="msapplication-TileImage" content="/assets/images/favicons/mstile-144x144.png">
+<meta name="msapplication-config" content="/assets/images/favicons/browserconfig.xml">
+<meta name="theme-color" content="#78c2ad">
+<!-- end custom head snippets --></head>
+<body class="d-flex flex-column h-entry" id="body">
+	<a class="u-url d-none" href="https://thomasburgess.github.io/2023/02/02/Matrix_Multiplication.html">Invisible link to canonical for Microformats</a>
+	<div class="navbar-chulapa-fab d-md-none">
+		<input type="checkbox" class="navbar-chulapa-fab-button d-none" id="navi-toggle">
+		<label for="navi-toggle" class="navbar-toggler p-1 m-0 text-center d-flex">
+			<span class="navbar-toggler-icon m-auto">&nbsp;</span>
+		</label>
+		<div class="navbar-chulapa-fab-background">&nbsp;</div>
+		<nav class="navbar-chulapa-fab-nav" aria-label="alternative-navigation">
+			<ul class="navbar-nav text-center text-uppercase font-weight-light mt-0 mb-1 py-1">
+				<li class="nav-item">
+					<a class="nav-link px-3 navbar-brand mx-1 " href="https://thomasburgess.github.io/"><img src="https://thomasburgess.github.io/assets/images/favicons/favicon-96x96.png" width="30" height="30" class="d-inline-block align-top rounded-lg text-center mr-1" alt="NavbarLogo">Home</a>
+				</li><li class="nav-item my-0 py-1">
+					<a class="nav-link px-3 py-1" href="https://thomasburgess.github.io/blog/">Blog</a>
+				</li><li class="nav-item my-0 py-1">
+					<a class="nav-link px-3 py-1" href="https://thomasburgess.github.io/tags">Tags</a>
+				</li><li class="nav-item my-0 py-1">
+					<a class="nav-link px-3 py-1" href="https://thomasburgess.github.io/categories">Categories</a>
+				</li><li class="nav-item my-0 py-1">
+					<a class="nav-link px-3 py-1" href="https://thomasburgess.github.io/archive">Archive</a>
+				</li><li class="nav-item my-0 py-1">
+					<a class="nav-link px-3 py-1 " href="https://thomasburgess.github.io/search">search</a>
+				</li></ul>
+		</nav>
+	</div>
+	<nav class="navbar navbar-expand sticky-top navbar-chulapa d-none d-md-block " aria-label="primary-navigation">
+	<div class="container-fluid mx-md-2">
+			<a class="navbar-brand text-uppercase font-weight-light" href="https://thomasburgess.github.io/"><img src="https://thomasburgess.github.io/assets/images/favicons/favicon-96x96.png" width="30" height="30" class="d-inline-block align-top rounded-lg mr-1" alt="NavbarLogo">Home</a><ul class="navbar-nav ml-auto"><li class="nav-item mx-2">
+						<a class="nav-link text-uppercase font-weight-light " href="https://thomasburgess.github.io/blog/">Blog</a>
+					</li><li class="nav-item mx-2">
+						<a class="nav-link text-uppercase font-weight-light " href="https://thomasburgess.github.io/tags">Tags</a>
+					</li><li class="nav-item mx-2">
+						<a class="nav-link text-uppercase font-weight-light " href="https://thomasburgess.github.io/categories">Categories</a>
+					</li><li class="nav-item mx-2">
+						<a class="nav-link text-uppercase font-weight-light " href="https://thomasburgess.github.io/archive">Archive</a>
+					</li><li class="nav-item mx-2">
+						<a class="nav-link text-uppercase font-weight-light " href="https://thomasburgess.github.io/search">
+							<i class="fa fa-search" aria-hidden="true"></i><span class="sr-only">search</span>
+						</a>
+					</li></ul></div>
+</nav>	<header class="d-flex align-items-center hero-chulapa-image" style="background-image: linear-gradient(rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.7)), url('https://thomasburgess.github.io/assets/images/2023/02/02/mikita-yo-OCrl1Tkt630-unsplash.jpg')"><div class="container-lg py-4">
+   <h1 class="p-name">Optimizing matrix multiplication</h1><hr class="my-3">
+   <p class="chulapa-subtitle p-summary">Speeding up sloww matrix operations in python</p>
+ </div>
+</header>
+	<main class="container-lg pb-3 flex-fill">
+<div class="row my-1">
+<div class="col-lg-5 offset-lg-2 col small">
+ <nav aria-label="breadcrumb">
+  <ol class="breadcrumb my-0 py-0 chulapa-bg-transparent pl-0" itemscope itemtype="https://schema.org/BreadcrumbList">
+            <li class="breadcrumb-item" itemprop="itemListElement" itemscope
+          itemtype="https://schema.org/ListItem"><a href="https://thomasburgess.github.io/" itemprop="item"><span itemprop="name">Home</span></a>
+         <meta itemprop="position" content="1" ></li>
+            <li class="breadcrumb-item" itemprop="itemListElement" itemscope
+          itemtype="https://schema.org/ListItem"><a href="https://thomasburgess.github.io/blog" itemprop="item"><span itemprop="name">Blog</span></a>
+         <meta itemprop="position" content="2" ></li>
+      <li class="breadcrumb-item active" aria-current="page" itemprop="itemListElement" itemscope
+          itemtype="https://schema.org/ListItem">
+        <span itemprop="name">Optimizing matrix multiplication</span>
+       <meta itemprop="position" content="3" >
+     </li>
+ </ol>
+ </nav>
+ <div class="chulapaDateSocial">
+            <time class="dt-updated" datetime="2024-10-31T00:00:00+01:00">31 oct 2024</time> 
+            <i class="fa fa-redo fa-xs" aria-hidden="true"></i>
+            <br>
+            <span class="font-weight-light chulapa-text-line-through">02 feb 2023</span>
+        </div></div>
+         <div class="col-lg-3 col-sm-4 col-3 text-right lead chulapaDateSocial">
+            <a  href="https://twitter.com/intent/tweet?url=https://thomasburgess.github.io/2023/02/02/Matrix_Multiplication.html&text=Optimizing+matrix+multiplication&hashtags=blog,python,numpy,coding,maths,matrix,mcmc" title="Share on X" aria-label="Share on X" ><i class="fab fa-square-x-twitter fa-lg" aria-hidden="true"></i></a>
+            <a href="https://toot.kytta.dev/?text=Optimizing%20matrix%20multiplication%20https://thomasburgess.github.io/2023/02/02/Matrix_Multiplication.html%20%23blog%20%23python%20%23numpy%20%23coding%20%23maths%20%23matrix%20%23mcmc" title="Share on Mastodon" aria-label="Share on Mastodon"><i class="fa-brands fa-mastodon fa-lg" aria-hidden="true"></i></a>
+            <a  class="d-none d-sm-inline" href="https://www.facebook.com/sharer.php?u=https://thomasburgess.github.io/2023/02/02/Matrix_Multiplication.html" title="Share on Facebook" aria-label="Share on Facebook" ><i class="fab fa-facebook-square fa-lg" aria-hidden="true"></i></a>
+             <a  class="d-none d-sm-inline" href="https://api.whatsapp.com/send?&text=Optimizing+matrix+multiplication%20https://thomasburgess.github.io/2023/02/02/Matrix_Multiplication.html" title="Share on Whatsapp" aria-label="Share on Whatsapp" ><i class="fab fa-whatsapp-square fa-lg" aria-hidden="true"></i></a>
+         <a  class="d-none d-sm-inline" href="https://www.linkedin.com/shareArticle?url=https://thomasburgess.github.io/2023/02/02/Matrix_Multiplication.html&title=Optimizing+matrix+multiplication" title="Share on LinkedIn" aria-label="Share on LinkedIn"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a>
+         </div></div>
+		<div class="row pt-2">
+			<aside class="col-lg-2 mt-lg-3 small"><div rel="author" class="h-card p-author">
+				<div class="row d-flex align-items-center mb-2"><img src="https://github.com/thomasburgess.png" alt="Thomas T Burgess" class="ml-3 mr-0 mx-lg-auto mb-lg-1 chulapa-avatar-size u-photo"><div class="col-9 col-lg-12 text-lg-center p-name">
+						Thomas T Burgess
+					</div>
+				</div>
+				<div class="row mb-2 mb-lg-0">
+					<div class="col text-lg-center"><address class="d-inline d-lg-block mr-2 mx-lg-auto mb-lg-2 small chulapa-links-hover-only">
+						  <a class="pr-lg-0 p-region" href="https://www.google.com/maps/search/?api=1&query=Vienna%2C+Austria">
+						    <i class="fas fa-map-marker-alt fa-lg mr-1" aria-hidden="true"></i>Vienna, Austria</a>
+						</address><div class="d-inline my-1 mx-lg-0 chulapa-links-hover-only"><a class="mr-2 mx-lg-1 u-url" rel="me" href="https://mathstodon.xyz/@ngons" title="@ngons@mathstodon.xyz - my mastodon social" aria-label="@ngons@mathstodon.xyz - my mastodon social" ><i class="fab fa-mastodon fa-lg" aria-hidden="true"></i></a><a class="mr-2 mx-lg-1 u-url" rel="me" href="https://github.com/thomasburgess" title="my code at github." aria-label="my code at github." ><i class="fab fa-github fa-lg" aria-hidden="true"></i></a><a class="mr-2 mx-lg-1 u-email" href="mailto:nxpnsv+thomastburgess@gmail.com?subject=Thomas%20T%20Burgess's%20Blog%20web%20-%20Optimizing%20matrix%20multiplication" title="My personal email" aria-label="My personal email" ><i class="far fa-envelope fa-lg" aria-hidden="true"></i></a>
+							<a class="mr-2 mx-lg-1 u-url" rel="me" href="https://orcid.org/0000-0002-6993-5918" title="My Orcid" aria-label="My Orcid" ><i class="fa-brands fa-orcid fa-lg" aria-hidden="true"></i></a></div></div>
+				</div>
+				</div>
+</aside>
+			<article id="maincontent" class="col-lg-8 mt-3 e-content">
+	<button class="btn btn-primary btn-sm rounded-right position-fixed chulapa-btn-sidebar bs-canvas-anim chulapa-btn-nofocus chulapa-fa-static" id='demo' onclick="openSideBar()" aria-label="Open Sidebar" aria-expanded="false" aria-controls="sideBar">
+		<i class="fa-solid fa-plus"></i><span class="sr-only">Open Sidebar</span>
+	</button>
+	<div class="bs-canvas bs-canvas-anim bs-canvas-left position-fixed navbar-chulapa h-100" id='sideBar'>
+		<p class="pt-2 pb-1 px-3">
+			<button type="button" class="navbar-text close chulapa-btn-nofocus chulapa-fa-static" aria-label="Close" onclick="closeSideBar()">
+				<i class="fa-solid fa-times"></i><span class="sr-only">Close Sidebar</span>
+			</button>
+		</p>
+		<nav class="navbar-nav px-3 my-auto">		  <p class="mb-2" ><a class="nav-link font-weight-bold lead" href="#">Optimizing matrix multiplication</a></p>		
+			<ul class="nav flex-column" id="sidetoc"><li class="nav-item nav d-block"><a href="#project-setup" class="nav-link">Project setup</a><ul><li class="nav-item nav d-block"><a href="#generating-data" class="nav-link">Generating data</a></li><li class="nav-item nav d-block"><a href="#evaluating-calculations" class="nav-link">Evaluating calculations</a></li></ul></li><li class="nav-item nav d-block"><a href="#problem-1---long-vector-u" class="nav-link">Problem 1 - long vector \(u\)</a><ul><li class="nav-item nav d-block"><a href="#blas" class="nav-link">BLAS</a></li><li class="nav-item nav d-block"><a href="#algebraic-manipulation" class="nav-link">Algebraic manipulation</a></li><li class="nav-item nav d-block"><a href="#sparse-matrices" class="nav-link">Sparse matrices</a></li></ul></li><li class="nav-item nav d-block"><a href="#problem-2---short-vector-v" class="nav-link">Problem 2 - short vector \(v\)</a></li><li class="nav-item nav d-block"><a href="#summary" class="nav-link">Summary</a></li></ul>
+		</nav>   
+	</div>
+            <nav aria-label="table-of-contents">
+			<ul class="chulapa-toc-wrapper list-group mb-5 mx-3 mx-lg-5" id="toc"><li class="list-group-item font-weight-bold py-1 pr-0 mr-0 chulapa-toc-reset"><a href="#project-setup">Project setup</a><ul><li class="list-group-item font-weight-bold py-1 pr-0 mr-0 chulapa-toc-reset"><a href="#generating-data">Generating data</a></li><li class="list-group-item font-weight-bold py-1 pr-0 mr-0 chulapa-toc-reset"><a href="#evaluating-calculations">Evaluating calculations</a></li></ul></li><li class="list-group-item font-weight-bold py-1 pr-0 mr-0 chulapa-toc-reset"><a href="#problem-1---long-vector-u">Problem 1 - long vector \(u\)</a><ul><li class="list-group-item font-weight-bold py-1 pr-0 mr-0 chulapa-toc-reset"><a href="#blas">BLAS</a></li><li class="list-group-item font-weight-bold py-1 pr-0 mr-0 chulapa-toc-reset"><a href="#algebraic-manipulation">Algebraic manipulation</a></li><li class="list-group-item font-weight-bold py-1 pr-0 mr-0 chulapa-toc-reset"><a href="#sparse-matrices">Sparse matrices</a></li></ul></li><li class="list-group-item font-weight-bold py-1 pr-0 mr-0 chulapa-toc-reset"><a href="#problem-2---short-vector-v">Problem 2 - short vector \(v\)</a></li><li class="list-group-item font-weight-bold py-1 pr-0 mr-0 chulapa-toc-reset"><a href="#summary">Summary</a></li></ul>
+			</nav>
+			 <p><em>Header image credit</em><sup id="fnref:1"><a href="#fn:1" class="footnote" rel="footnote" role="doc-noteref">1</a></sup></p>
+<h1 id="introduction">Introduction</h1>
+<p>I was asked to speed the inner loop that runs many times inside a 
+<a href="https://en.wikipedia.org/wiki/Markov_chain_Monte_Carlo">Markov Chain Monte Carlo</a>.</p>
+<p>The slowest part of each iteration is taking the product of the 
+<a href="https://en.wikipedia.org/wiki/Standard_score">Z-scores</a> of a constant matrix, \(X\), 
+and float-valued vectors \(u\) or \(v\). Here, \(X\) is a tall \(n \times m\) matrix 
+with \(n=45000\) and \(m=3\) with all elements in \(X\) are \(-1\), \(0\) or \(1\). 
+The vectors \(u\) and \(v\) have lengths \(m\) (long) and \(n\) (short) respectively.</p>
+<p>\[
+    a = \left(\frac{X-\mu_X}{\sigma_X}\right)^T u
+    \,,\quad\,
+    b = \left(\frac{X-\mu_X}{\sigma_X}\right) v \,.
+\]</p>
+<p>This post is about different approaches to improving performance. Possibly, some 
+insights here are applicable beyond the details of the specific problem.</p>
+<h2 id="project-setup">Project setup</h2>
+<p>I wrote and evaluated this code in a <a href="https://jupyter.org">jupyter lab (v3.5.2)</a> 
+notebook in <a href="https://www.python.org">python (v3.10.4)</a> on my M1-pro MacBook Pro. 
+Additionally, the <a href="https://numpy.org">numpy (v1.22.4)</a> and 
+<a href="https://scipy.org">scipy (v1.8.1)</a> packages were installed.</p>
+<details>
+  <summary><i>Click to expand imports for python code...</i><br />&nbsp;<br /></summary>
+ <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Imports
+</span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">from</span> <span class="nn">scipy.linalg</span> <span class="kn">import</span> <span class="n">blas</span>
+<span class="kn">from</span> <span class="nn">scipy.sparse</span> <span class="kn">import</span> <span class="n">csc_matrix</span>
+</code></pre></div></div>
+</details>
+<h3 id="generating-data">Generating data</h3>
+<p>A random \(X\) is generated with <code class="highlighter-rouge">make_X</code>. 
+This generates an \(r\times c\) matrix \(M\) with uniform random numbers,
+and return a version with elements \(-1\) when \(M_{ij}&lt;p\),
+\(+1\) when \(M_{ij} &gt; 1-p\), and \(0\) otherwise. 
+For this data, <code class="highlighter-rouge">dtype</code> can be set to 
+<a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.byte"><code class="highlighter-rouge">np.byte</code></a>.
+The vectors \(u\) and \(v\) are generated directly with the random number generator.</p>
+<details>
+  <summary><i>Click to expand data generation python code...</i><br />&nbsp;<br /></summary>
+ <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">make_X</span><span class="p">(</span><span class="n">rows</span><span class="p">,</span> <span class="n">cols</span><span class="p">,</span> <span class="n">rng</span><span class="p">,</span> <span class="n">prob</span><span class="p">):</span>
+    <span class="s">"""Generate random data
+
+    Args:
+        rows (int): Number of rows to generate
+        cols (int): Number of columns to generate
+        rng (np.random.Generator): Random number generator instance to use
+        prob (float): probability of getting -1 or 1
+
+    Returns:
+        np.ndarray: rows x cols Matrix with -1, 0, 1 elements
+    """</span>
+    <span class="k">return</span> <span class="n">np</span><span class="p">.</span><span class="n">where</span><span class="p">(</span><span class="n">M</span> <span class="o">&lt;</span> <span class="n">prob</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">np</span><span class="p">.</span><span class="n">where</span><span class="p">(</span><span class="n">M</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">prob</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)).</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">byte</span><span class="p">)</span>
+
+
+<span class="c1"># Constants
+</span><span class="n">ROWS</span> <span class="o">=</span> <span class="mi">45000</span>  <span class="c1"># Random X matrix rows
+</span><span class="n">COLS</span> <span class="o">=</span> <span class="mi">3</span>  <span class="c1"># Random X matrix columns
+</span><span class="n">SEED</span> <span class="o">=</span> <span class="mi">1337</span>  <span class="c1"># Random seed
+</span><span class="n">PROB</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">10</span>  <span class="c1"># Probability of -1 and +1 in matrix
+</span>
+<span class="c1"># Get the random number generator
+</span><span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">SEED</span><span class="p">)</span>
+
+<span class="c1"># Make X matrix and e vector
+</span><span class="n">X</span> <span class="o">=</span> <span class="n">make_X</span><span class="p">(</span><span class="n">rows</span><span class="o">=</span><span class="n">ROWS</span><span class="p">,</span> <span class="n">cols</span><span class="o">=</span><span class="n">COLS</span><span class="p">,</span> <span class="n">rng</span><span class="o">=</span><span class="n">rng</span><span class="p">,</span> <span class="n">prob</span><span class="o">=</span><span class="n">PROB</span><span class="p">)</span>
+<span class="n">u</span> <span class="o">=</span> <span class="n">rng</span><span class="p">.</span><span class="n">random</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">ROWS</span><span class="p">)</span>
+<span class="n">v</span> <span class="o">=</span> <span class="n">rng</span><span class="p">.</span><span class="n">random</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">COLS</span><span class="p">)</span>
+
+<span class="c1"># Mean and std for Z score calculation
+</span><span class="n">X_mu</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">mean</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">X_sigma</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">std</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</code></pre></div></div>
+</details>
+<h3 id="evaluating-calculations">Evaluating calculations</h3>
+<p>Different implementations are tested using <code class="highlighter-rouge">time_calc</code>. 
+It asserts that the function reproduces a known output. 
+Furthermore, it measures performance with the 
+<a href="https://docs.python.org/3/library/timeit.html"><code class="highlighter-rouge">%timeit</code></a> 
+notebook magic that only works in a notebook.</p>
+<details>
+  <summary><i>Click to expand `time_calc` python code...</i><br />&nbsp;<br /></summary>
+ <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">time_calc</span><span class="p">(</span><span class="n">calc</span><span class="p">,</span> <span class="n">expected</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">tag</span><span class="o">=</span><span class="s">""</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="s">"""
+    Args:
+        calc (callable): function to evaluate with keyword arguments
+        expected (optional): known output to compare to calc output
+        tag (str): Tag to print to remember what was evaluated
+        kwargs (dict): keyword arguments to pass to calc
+    """</span>
+    <span class="k">if</span> <span class="n">tag</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"--- [</span><span class="si">{</span><span class="n">tag</span><span class="si">}</span><span class="s">] ---"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">expected</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">np</span><span class="p">.</span><span class="n">testing</span><span class="p">.</span><span class="n">assert_almost_equal</span><span class="p">(</span><span class="n">calc</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">),</span> <span class="n">expected</span><span class="p">)</span>
+    <span class="o">%</span><span class="n">timeit</span> <span class="n">calc</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</code></pre></div></div>
+</details>
+<h2 id="problem-1---long-vector-u">Problem 1 - long vector \(u\)</h2>
+<p>The baseline implementation <code class="highlighter-rouge">calc_baseline</code> provides the known 
+output (<code class="highlighter-rouge">expected</code>) and performance data to compare other approaches.</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">calc_baseline</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">X_mu</span><span class="p">,</span> <span class="n">X_sigma</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">((</span><span class="n">X</span> <span class="o">-</span> <span class="n">X_mu</span><span class="p">)</span> <span class="o">/</span> <span class="n">X_sigma</span><span class="p">).</span><span class="n">T</span> <span class="o">@</span> <span class="n">u</span>
+
+<span class="c1"># Compute expected result, to be used in subsequent calls to time_calc
+</span><span class="n">expected</span> <span class="o">=</span> <span class="n">calc_baseline</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">u</span><span class="o">=</span><span class="n">u</span><span class="p">,</span> <span class="n">X_mu</span><span class="o">=</span><span class="n">X_mu</span><span class="p">,</span> <span class="n">X_sigma</span><span class="o">=</span><span class="n">X_sigma</span><span class="p">)</span>
+</code></pre></div></div>
+<details>
+  <summary><i>Click to expand `time_calc` call for `calc_baseline`...</i><br />&nbsp;<br /></summary>
+ <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">time_calc</span><span class="p">(</span>
+    <span class="n">calc</span><span class="o">=</span><span class="n">calc_baseline</span><span class="p">,</span>
+    <span class="n">tag</span><span class="o">=</span><span class="s">"baseline"</span><span class="p">,</span>
+    <span class="n">expected</span><span class="o">=</span><span class="n">expected</span><span class="p">,</span>
+    <span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span>
+    <span class="n">u</span><span class="o">=</span><span class="n">u</span><span class="p">,</span>
+    <span class="n">X_mu</span><span class="o">=</span><span class="n">X_mu</span><span class="p">,</span>
+    <span class="n">X_sigma</span><span class="o">=</span><span class="n">X_sigma</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="o">---</span> <span class="p">[</span><span class="n">blas</span><span class="p">]</span> <span class="o">---</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="mf">1.02</span> <span class="n">ms</span> <span class="err">±</span> <span class="mf">4.42</span> <span class="n">µs</span> <span class="n">per</span> <span class="n">loop</span> <span class="p">(</span><span class="n">mean</span> <span class="err">±</span> <span class="n">std</span><span class="p">.</span> <span class="n">dev</span><span class="p">.</span> <span class="n">of</span> <span class="mi">7</span> <span class="n">runs</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span><span class="mi">000</span> <span class="n">loops</span> <span class="n">each</span><span class="p">)</span>
+</code></pre></div></div>
+</details>
+<p>One loop takes 1 ms. If it runs a million times, the baseline implementation contributes
+15 minutes to the run time.</p>
+<p>As \(X\), \(\mu_X\), and \(\sigma_X\) are constant, an obvious improvement would be to 
+pre-calculated the normalized matrix:</p>
+<p>\[
+X_Z = \frac{X - \mu_X}{\sigma_X}\,.
+\]</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="k">def</span> <span class="nf">calc_Z</span><span class="p">(</span><span class="n">X_Z</span><span class="p">,</span> <span class="n">u</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">X_Z</span> <span class="o">@</span> <span class="n">u</span>
+</code></pre></div></div>
+<details>
+  <summary><i>Click to expand `time_calc` call for `calc_Z`...</i><br />&nbsp;<br /></summary>
+ <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">time_calc</span><span class="p">(</span><span class="n">calc</span><span class="o">=</span><span class="n">calc_Z</span><span class="p">,</span> <span class="n">tag</span><span class="o">=</span><span class="s">"Z"</span><span class="p">,</span> <span class="n">expected</span><span class="o">=</span><span class="n">expected</span><span class="p">,</span> <span class="n">X_Z</span><span class="o">=</span><span class="p">((</span><span class="n">X</span> <span class="o">-</span> <span class="n">X_mu</span><span class="p">)</span> <span class="o">/</span> <span class="n">X_sigma</span><span class="p">).</span><span class="n">T</span><span class="p">,</span> <span class="n">u</span><span class="o">=</span><span class="n">u</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="o">---</span> <span class="p">[</span><span class="n">Z</span><span class="p">]</span> <span class="o">---</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="mi">447</span> <span class="n">µs</span> <span class="err">±</span> <span class="mf">3.51</span> <span class="n">µs</span> <span class="n">per</span> <span class="n">loop</span> <span class="p">(</span><span class="n">mean</span> <span class="err">±</span> <span class="n">std</span><span class="p">.</span> <span class="n">dev</span><span class="p">.</span> <span class="n">of</span> <span class="mi">7</span> <span class="n">runs</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span><span class="mi">000</span> <span class="n">loops</span> <span class="n">each</span><span class="p">)</span>
+</code></pre></div></div>
+</details>
+<p>which already cuts the baseline runtime in more than half!</p>
+<h3 id="blas">BLAS</h3>
+<p>Numpy uses <a href="https://netlib.org/blas/"><code class="highlighter-rouge">BLAS</code></a> behind the scenes. 
+Sometimes it is faster to call BLAS directly.
+SciPy exposes matrix-vector multiplication as 
+<a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.linalg.blas.dgemv.html#scipy.linalg.blas.dgemv"><code class="highlighter-rouge">dgemv</code></a>. 
+(Here, <code class="highlighter-rouge">d</code> stands for double precision <code class="highlighter-rouge">ge</code> for general matrix, and <code class="highlighter-rouge">mv</code> for matrix-vector). By giving <code class="highlighter-rouge">trans=1</code> to the method, there is no need to transpose the input matrix.</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">calc_blas</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">X_mu</span><span class="p">,</span> <span class="n">X_sigma</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">blas</span><span class="p">.</span><span class="n">dgemv</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="p">(</span><span class="n">X</span> <span class="o">-</span> <span class="n">X_mu</span><span class="p">)</span> <span class="o">/</span> <span class="n">X_sigma</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">trans</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">calc_blas_Z</span><span class="p">(</span><span class="n">X_Z</span><span class="p">,</span> <span class="n">u</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">blas</span><span class="p">.</span><span class="n">dgemv</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">X_Z</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">trans</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</code></pre></div></div>
+<p>BLAS performance depends on the memory layout of the arrays used, this can be changed by 
+<a href="https://numpy.org/doc/stable/reference/generated/numpy.copy.html">copying</a> arrays to F 
+(FORTRAN) order. The same is true for <code class="highlighter-rouge">numpy</code> routines, so to evaluate direct BLAS calls, 
+I will compare plain calls, calls with F ordering, and non-BLAS calls with F-ordering.</p>
+<details>
+  <summary><i>Click to expand `time_calc` calls and results...</i><br />&nbsp;<br /></summary>
+ <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">time_calc</span><span class="p">(</span>
+    <span class="n">calc</span><span class="o">=</span><span class="n">calc_blas</span><span class="p">,</span> <span class="n">tag</span><span class="o">=</span><span class="s">"blas"</span><span class="p">,</span> <span class="n">expected</span><span class="o">=</span><span class="n">expected</span><span class="p">,</span> <span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">u</span><span class="o">=</span><span class="n">u</span><span class="p">,</span> <span class="n">X_mu</span><span class="o">=</span><span class="n">X_mu</span><span class="p">,</span> <span class="n">X_sigma</span><span class="o">=</span><span class="n">X_sigma</span>
+<span class="p">)</span>
+<span class="n">time_calc</span><span class="p">(</span>
+    <span class="n">calc</span><span class="o">=</span><span class="n">calc_blas_Z</span><span class="p">,</span> <span class="n">tag</span><span class="o">=</span><span class="s">"blas Z"</span><span class="p">,</span> <span class="n">expected</span><span class="o">=</span><span class="n">expected</span><span class="p">,</span> <span class="n">X_Z</span><span class="o">=</span><span class="p">((</span><span class="n">X</span> <span class="o">-</span> <span class="n">X_mu</span><span class="p">)</span> <span class="o">/</span> <span class="n">X_sigma</span><span class="p">),</span> <span class="n">u</span><span class="o">=</span><span class="n">u</span>
+<span class="p">)</span>
+<span class="n">time_calc</span><span class="p">(</span>
+    <span class="n">calc</span><span class="o">=</span><span class="n">calc_blas</span><span class="p">,</span>
+    <span class="n">tag</span><span class="o">=</span><span class="s">"blas F"</span><span class="p">,</span>
+    <span class="n">expected</span><span class="o">=</span><span class="n">expected</span><span class="p">,</span>
+    <span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">.</span><span class="n">copy</span><span class="p">(</span><span class="n">order</span><span class="o">=</span><span class="s">"F"</span><span class="p">),</span>
+    <span class="n">u</span><span class="o">=</span><span class="n">u</span><span class="p">,</span>
+    <span class="n">X_mu</span><span class="o">=</span><span class="n">X_mu</span><span class="p">,</span>
+    <span class="n">X_sigma</span><span class="o">=</span><span class="n">X_sigma</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">time_calc</span><span class="p">(</span>
+    <span class="n">calc</span><span class="o">=</span><span class="n">calc_blas_Z</span><span class="p">,</span>
+    <span class="n">tag</span><span class="o">=</span><span class="s">"blas Z F"</span><span class="p">,</span>
+    <span class="n">expected</span><span class="o">=</span><span class="n">expected</span><span class="p">,</span>
+    <span class="n">X_Z</span><span class="o">=</span><span class="p">((</span><span class="n">X</span> <span class="o">-</span> <span class="n">X_mu</span><span class="p">)</span> <span class="o">/</span> <span class="n">X_sigma</span><span class="p">).</span><span class="n">copy</span><span class="p">(</span><span class="n">order</span><span class="o">=</span><span class="s">"F"</span><span class="p">),</span>
+    <span class="n">u</span><span class="o">=</span><span class="n">u</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">time_calc</span><span class="p">(</span>
+    <span class="n">calc</span><span class="o">=</span><span class="n">calc_baseline</span><span class="p">,</span>
+    <span class="n">tag</span><span class="o">=</span><span class="s">"baseline F"</span><span class="p">,</span>
+    <span class="n">expected</span><span class="o">=</span><span class="n">expected</span><span class="p">,</span>
+    <span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">.</span><span class="n">copy</span><span class="p">(</span><span class="n">order</span><span class="o">=</span><span class="s">"F"</span><span class="p">),</span>
+    <span class="n">u</span><span class="o">=</span><span class="n">u</span><span class="p">,</span>
+    <span class="n">X_mu</span><span class="o">=</span><span class="n">X_mu</span><span class="p">,</span>
+    <span class="n">X_sigma</span><span class="o">=</span><span class="n">X_sigma</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">time_calc</span><span class="p">(</span>
+    <span class="n">calc</span><span class="o">=</span><span class="n">calc_Z</span><span class="p">,</span>
+    <span class="n">tag</span><span class="o">=</span><span class="s">"Z F"</span><span class="p">,</span>
+    <span class="n">expected</span><span class="o">=</span><span class="n">expected</span><span class="p">,</span>
+    <span class="n">X_Z</span><span class="o">=</span><span class="p">((</span><span class="n">X</span> <span class="o">-</span> <span class="n">X_mu</span><span class="p">)</span> <span class="o">/</span> <span class="n">X_sigma</span><span class="p">).</span><span class="n">copy</span><span class="p">(</span><span class="n">order</span><span class="o">=</span><span class="s">"F"</span><span class="p">).</span><span class="n">T</span><span class="p">,</span>
+    <span class="n">u</span><span class="o">=</span><span class="n">u</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="o">---</span> <span class="p">[</span><span class="n">blas</span><span class="p">]</span> <span class="o">---</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="mi">642</span> <span class="n">µs</span> <span class="err">±</span> <span class="mf">9.64</span> <span class="n">µs</span> <span class="n">per</span> <span class="n">loop</span> <span class="p">(</span><span class="n">mean</span> <span class="err">±</span> <span class="n">std</span><span class="p">.</span> <span class="n">dev</span><span class="p">.</span> <span class="n">of</span> <span class="mi">7</span> <span class="n">runs</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span><span class="mi">000</span> <span class="n">loops</span> <span class="n">each</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="o">---</span> <span class="p">[</span><span class="n">blas</span> <span class="n">Z</span><span class="p">]</span> <span class="o">---</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="mf">72.3</span> <span class="n">µs</span> <span class="err">±</span> <span class="mi">334</span> <span class="n">ns</span> <span class="n">per</span> <span class="n">loop</span> <span class="p">(</span><span class="n">mean</span> <span class="err">±</span> <span class="n">std</span><span class="p">.</span> <span class="n">dev</span><span class="p">.</span> <span class="n">of</span> <span class="mi">7</span> <span class="n">runs</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span><span class="mi">000</span> <span class="n">loops</span> <span class="n">each</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="o">---</span> <span class="p">[</span><span class="n">blas</span> <span class="n">F</span><span class="p">]</span> <span class="o">---</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="mi">129</span> <span class="n">µs</span> <span class="err">±</span> <span class="mf">4.5</span> <span class="n">µs</span> <span class="n">per</span> <span class="n">loop</span> <span class="p">(</span><span class="n">mean</span> <span class="err">±</span> <span class="n">std</span><span class="p">.</span> <span class="n">dev</span><span class="p">.</span> <span class="n">of</span> <span class="mi">7</span> <span class="n">runs</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span><span class="mi">000</span> <span class="n">loops</span> <span class="n">each</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="o">---</span> <span class="p">[</span><span class="n">blas</span> <span class="n">Z</span> <span class="n">F</span><span class="p">]</span> <span class="o">---</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="mf">29.6</span> <span class="n">µs</span> <span class="err">±</span> <span class="mi">149</span> <span class="n">ns</span> <span class="n">per</span> <span class="n">loop</span> <span class="p">(</span><span class="n">mean</span> <span class="err">±</span> <span class="n">std</span><span class="p">.</span> <span class="n">dev</span><span class="p">.</span> <span class="n">of</span> <span class="mi">7</span> <span class="n">runs</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span><span class="mi">000</span> <span class="n">loops</span> <span class="n">each</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="o">---</span> <span class="p">[</span><span class="n">baseline</span> <span class="n">F</span><span class="p">]</span> <span class="o">---</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="mi">133</span> <span class="n">µs</span> <span class="err">±</span> <span class="mf">3.69</span> <span class="n">µs</span> <span class="n">per</span> <span class="n">loop</span> <span class="p">(</span><span class="n">mean</span> <span class="err">±</span> <span class="n">std</span><span class="p">.</span> <span class="n">dev</span><span class="p">.</span> <span class="n">of</span> <span class="mi">7</span> <span class="n">runs</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span><span class="mi">000</span> <span class="n">loops</span> <span class="n">each</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="o">---</span> <span class="p">[</span><span class="n">Z</span> <span class="n">F</span><span class="p">]</span> <span class="o">---</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="mf">30.4</span> <span class="n">µs</span> <span class="err">±</span> <span class="mi">671</span> <span class="n">ns</span> <span class="n">per</span> <span class="n">loop</span> <span class="p">(</span><span class="n">mean</span> <span class="err">±</span> <span class="n">std</span><span class="p">.</span> <span class="n">dev</span><span class="p">.</span> <span class="n">of</span> <span class="mi">7</span> <span class="n">runs</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span><span class="mi">000</span> <span class="n">loops</span> <span class="n">each</span><span class="p">)</span>
+</code></pre></div></div>
+</details>
+<p>Just using BLAS does make the code run 2-6x faster. Changing to F-ordered memory makes 
+it 8-15x faster. This improvement also happens for the original Numpy-only functions.</p>
+<p>Lesson: memory layout can make a big difference. With the correct input, BLAS doesn’t 
+improve performance. The Z method with F-ordering now is 35x faster than the baseline 
+method!</p>
+<h3 id="algebraic-manipulation">Algebraic manipulation</h3>
+<p>The Z-method misses the structure of \(X\). The product \(X^T u\) should run faster than 
+\((X-X_\mu)^T u\) as the matrix is all integers and have many zeroes. And by rearranging 
+the expression for \(a\), it is possible to use this instead.</p>
+<p>\[
+    a = 
+    \frac{1}{X_\sigma} \left( X^T u - X_\mu \sum_i u \right)\,.
+\]</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">calc_rearranged</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">X_mu</span><span class="p">,</span> <span class="n">X_sigma</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">X</span><span class="p">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">u</span> <span class="o">-</span> <span class="n">X_mu</span> <span class="o">*</span> <span class="n">u</span><span class="p">.</span><span class="nb">sum</span><span class="p">())</span> <span class="o">/</span> <span class="n">X_sigma</span>
+
+</code></pre></div></div>
+<details>
+  <summary><i>Click to expand `time_calc` calls and results.for `calc_rearranged`..</i><br />&nbsp;<br /></summary>
+ <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">time_calc</span><span class="p">(</span>
+    <span class="n">calc</span><span class="o">=</span><span class="n">calc_rearranged</span><span class="p">,</span>
+    <span class="n">tag</span><span class="o">=</span><span class="s">"rearranged"</span><span class="p">,</span>
+    <span class="n">expected</span><span class="o">=</span><span class="n">expected</span><span class="p">,</span>
+    <span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span>
+    <span class="n">u</span><span class="o">=</span><span class="n">u</span><span class="p">,</span>
+    <span class="n">X_mu</span><span class="o">=</span><span class="n">X_mu</span><span class="p">,</span>
+    <span class="n">X_sigma</span><span class="o">=</span><span class="n">X_sigma</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="o">---</span> <span class="p">[</span><span class="n">rearranged</span><span class="p">]</span> <span class="o">---</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="mf">84.8</span> <span class="n">µs</span> <span class="err">±</span> <span class="mf">1.25</span> <span class="n">µs</span> <span class="n">per</span> <span class="n">loop</span> <span class="p">(</span><span class="n">mean</span> <span class="err">±</span> <span class="n">std</span><span class="p">.</span> <span class="n">dev</span><span class="p">.</span> <span class="n">of</span> <span class="mi">7</span> <span class="n">runs</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span><span class="mi">000</span> <span class="n">loops</span> <span class="n">each</span><span class="p">)</span>
+</code></pre></div></div>
+</details>
+<p>This runs 84\(\mu\)s, which is much better than the baseline, but still worse than using
+\(X_Z\) with F-ordering. Here, tricks with memory layout or using BLAS no longer 
+improves the performance. Perhaps, <code class="highlighter-rouge">bool</code> matrices are even faster? Taking \(X_+\) as a 
+boolean matrix with <code class="highlighter-rouge">True</code> for positive elements in \(X\), and similarly, for negatives 
+with \(X_-\), the expression can be further rearranged:
+\[
+    a = 
+    \frac{1}{\sigma_X} \left( X_+^T u - X_-^T u - \mu_X \sum_i  u_i \right)\,.
+\]</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">calc_split</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">X_mu</span><span class="p">,</span> <span class="n">X_sigma</span><span class="p">,</span> <span class="n">X_plus</span><span class="p">,</span> <span class="n">X_minus</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">X_plus</span><span class="p">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">u</span> <span class="o">-</span> <span class="n">X_minus</span><span class="p">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">u</span> <span class="o">-</span> <span class="n">X_mu</span> <span class="o">*</span> <span class="n">u</span><span class="p">.</span><span class="nb">sum</span><span class="p">())</span> <span class="o">/</span> <span class="n">X_sigma</span>
+</code></pre></div></div>
+<details>
+  <summary><i>Click to expand `time_calc` calls and results for `calc_split`...</i><br />&nbsp;<br /></summary>
+ <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">time_calc</span><span class="p">(</span>
+    <span class="n">calc</span><span class="o">=</span><span class="n">calc_split</span><span class="p">,</span>
+    <span class="n">tag</span><span class="o">=</span><span class="s">"split"</span><span class="p">,</span>
+    <span class="n">expected</span><span class="o">=</span><span class="n">expected</span><span class="p">,</span>
+    <span class="n">u</span><span class="o">=</span><span class="n">u</span><span class="p">,</span>
+    <span class="n">X_mu</span><span class="o">=</span><span class="n">X_mu</span><span class="p">,</span>
+    <span class="n">X_sigma</span><span class="o">=</span><span class="n">X_sigma</span><span class="p">,</span>
+    <span class="n">X_plus</span><span class="o">=</span><span class="n">X</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="n">X_minus</span><span class="o">=</span><span class="n">X</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="mi">156</span> <span class="n">µs</span> <span class="err">±</span> <span class="mi">293</span> <span class="n">ns</span> <span class="n">per</span> <span class="n">loop</span> <span class="p">(</span><span class="n">mean</span> <span class="err">±</span> <span class="n">std</span><span class="p">.</span> <span class="n">dev</span><span class="p">.</span> <span class="n">of</span> <span class="mi">7</span> <span class="n">runs</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span><span class="mi">000</span> <span class="n">loops</span> <span class="n">each</span><span class="p">)</span>
+</code></pre></div></div>
+</details>
+<p>That’s half the speed of <code class="highlighter-rouge">calc_rearranged</code>. Building on the split method, one can avoid 
+the matrix product altogether! Let \(d_{i,j}^\pm\) be the indices \(i,j\) corresponding 
+to the non-zero elements in \(X_\pm\). Now the product becomes 
+\(X_+^T u = \sum_iu_{d_{i,j}}^+\), so that</p>
+<p>\[
+ a = \frac{1}{\sigma_X} \left( \sum_{i} u_{d_{i,j}}^+ - \sum_i u_{d_{i,j}}^- - \mu_X \sum_i u_i \right)\,.
+\]</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="k">def</span> <span class="nf">extract_indices</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">q</span><span class="p">):</span>
+    <span class="n">rc</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">argwhere</span><span class="p">(</span><span class="n">X</span> <span class="o">==</span> <span class="n">q</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">extract</span><span class="p">(</span><span class="n">rc</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">i</span><span class="p">,</span> <span class="n">rc</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">X</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+
+
+<span class="k">def</span> <span class="nf">calc_index</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">X_mu</span><span class="p">,</span> <span class="n">X_sigma</span><span class="p">,</span> <span class="n">X_idx_plus</span><span class="p">,</span> <span class="n">X_idx_minus</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">(</span>
+        <span class="n">np</span><span class="p">.</span><span class="n">fromiter</span><span class="p">(</span>
+            <span class="p">(</span>
+                <span class="n">u</span><span class="p">[</span><span class="n">X_idx_plus</span><span class="p">[</span><span class="n">i</span><span class="p">]].</span><span class="nb">sum</span><span class="p">()</span> <span class="o">-</span> <span class="n">u</span><span class="p">[</span><span class="n">X_idx_minus</span><span class="p">[</span><span class="n">i</span><span class="p">]].</span><span class="nb">sum</span><span class="p">()</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">X_mu</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="p">),</span>
+            <span class="n">u</span><span class="p">.</span><span class="n">dtype</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="o">-</span> <span class="n">X_mu</span> <span class="o">*</span> <span class="n">u</span><span class="p">.</span><span class="nb">sum</span><span class="p">()</span>
+    <span class="p">)</span> <span class="o">/</span> <span class="n">X_sigma</span>
+
+</code></pre></div></div>
+<details>
+  <summary><i>Click to expand `time_calc` calls and results for `calc_index`...</i><br />&nbsp;<br /></summary>
+ <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">time_calc</span><span class="p">(</span>
+    <span class="n">calc</span><span class="o">=</span><span class="n">calc_index</span><span class="p">,</span>
+    <span class="n">tag</span><span class="o">=</span><span class="s">"index"</span><span class="p">,</span>
+    <span class="n">expected</span><span class="o">=</span><span class="n">expected</span><span class="p">,</span>
+    <span class="n">u</span><span class="o">=</span><span class="n">u</span><span class="p">,</span>
+    <span class="n">X_mu</span><span class="o">=</span><span class="n">X_mu</span><span class="p">,</span>
+    <span class="n">X_sigma</span><span class="o">=</span><span class="n">X_sigma</span><span class="p">,</span>
+    <span class="n">X_idx_plus</span><span class="o">=</span><span class="n">extract_indices</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+    <span class="n">X_idx_minus</span><span class="o">=</span><span class="n">extract_indices</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span>
+<span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="mf">48.2</span> <span class="n">µs</span> <span class="err">±</span> <span class="mi">221</span> <span class="n">ns</span> <span class="n">per</span> <span class="n">loop</span> <span class="p">(</span><span class="n">mean</span> <span class="err">±</span> <span class="n">std</span><span class="p">.</span> <span class="n">dev</span><span class="p">.</span> <span class="n">of</span> <span class="mi">7</span> <span class="n">runs</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span><span class="mi">000</span> <span class="n">loops</span> <span class="n">each</span><span class="p">)</span>
+</code></pre></div></div>
+</details>
+<p>Not quite as good as the Z method with F-ordering. What performs the best likely depends 
+on what data in \(X\) happens to look like.</p>
+<h3 id="sparse-matrices">Sparse matrices</h3>
+<p>There are many 0s in the matrix, perhaps this problem can be approach using 
+<a href="https://en.wikipedia.org/wiki/Sparse_matrix">sparse matrices</a> can be useful, these are 
+availible in <a href="https://docs.scipy.org/doc/scipy/reference/sparse.html">SciPy</a>. For this 
+problem a 
+<a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.csc_array.html#scipy.sparse.csc_array"><code class="highlighter-rouge">csc_matrix</code></a> 
+is the best fit for \(X\). As only \(X\) changes, the method above work with the sparse 
+inputs without any changes except for <code class="highlighter-rouge">calc_index</code> that doesn’t use matrices at all.</p>
+<details>
+  <summary><i>Click to expand `time_calc` calls and results...</i><br />&nbsp;<br /></summary>
+ <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">time_calc</span><span class="p">(</span>
+    <span class="n">calc</span><span class="o">=</span><span class="n">calc_baseline</span><span class="p">,</span>
+    <span class="n">tag</span><span class="o">=</span><span class="s">"sparse baseline"</span><span class="p">,</span>
+    <span class="n">expected</span><span class="o">=</span><span class="n">expected</span><span class="p">,</span>
+    <span class="n">X</span><span class="o">=</span><span class="n">csc_matrix</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="p">.</span><span class="n">byte</span><span class="p">),</span>
+    <span class="n">u</span><span class="o">=</span><span class="n">u</span><span class="p">,</span>
+    <span class="n">X_mu</span><span class="o">=</span><span class="n">X_mu</span><span class="p">,</span>
+    <span class="n">X_sigma</span><span class="o">=</span><span class="n">X_sigma</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">time_calc</span><span class="p">(</span>
+    <span class="n">calc</span><span class="o">=</span><span class="n">calc_Z</span><span class="p">,</span>
+    <span class="n">tag</span><span class="o">=</span><span class="s">"sparse Z"</span><span class="p">,</span>
+    <span class="n">expected</span><span class="o">=</span><span class="n">expected</span><span class="p">,</span>
+    <span class="n">X_Z</span><span class="o">=</span><span class="n">csc_matrix</span><span class="p">(((</span><span class="n">X</span> <span class="o">-</span> <span class="n">X_mu</span><span class="p">)</span> <span class="o">/</span> <span class="n">X_sigma</span><span class="p">).</span><span class="n">T</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">X_mu</span><span class="p">.</span><span class="n">dtype</span><span class="p">),</span>
+    <span class="n">u</span><span class="o">=</span><span class="n">u</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">time_calc</span><span class="p">(</span>
+    <span class="n">calc</span><span class="o">=</span><span class="n">calc_rearranged</span><span class="p">,</span>
+    <span class="n">tag</span><span class="o">=</span><span class="s">"sparse rearranged"</span><span class="p">,</span>
+    <span class="n">expected</span><span class="o">=</span><span class="n">expected</span><span class="p">,</span>
+    <span class="n">X</span><span class="o">=</span><span class="n">csc_matrix</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="p">.</span><span class="n">byte</span><span class="p">),</span>
+    <span class="n">u</span><span class="o">=</span><span class="n">u</span><span class="p">,</span>
+    <span class="n">X_mu</span><span class="o">=</span><span class="n">X_mu</span><span class="p">,</span>
+    <span class="n">X_sigma</span><span class="o">=</span><span class="n">X_sigma</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">time_calc</span><span class="p">(</span>
+    <span class="n">calc</span><span class="o">=</span><span class="n">calc_split</span><span class="p">,</span>
+    <span class="n">tag</span><span class="o">=</span><span class="s">"sparse split"</span><span class="p">,</span>
+    <span class="n">expected</span><span class="o">=</span><span class="n">expected</span><span class="p">,</span>
+    <span class="n">u</span><span class="o">=</span><span class="n">u</span><span class="p">,</span>
+    <span class="n">X_mu</span><span class="o">=</span><span class="n">X_mu</span><span class="p">,</span>
+    <span class="n">X_sigma</span><span class="o">=</span><span class="n">X_sigma</span><span class="p">,</span>
+    <span class="n">X_plus</span><span class="o">=</span><span class="n">csc_matrix</span><span class="p">(</span><span class="n">X</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">),</span>
+    <span class="n">X_minus</span><span class="o">=</span><span class="n">csc_matrix</span><span class="p">(</span><span class="n">X</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">),</span>
+<span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="o">---</span> <span class="p">[</span><span class="n">sparse</span> <span class="n">baseline</span><span class="p">]</span> <span class="o">---</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="mi">153</span> <span class="n">µs</span> <span class="err">±</span> <span class="mf">6.08</span> <span class="n">µs</span> <span class="n">per</span> <span class="n">loop</span> <span class="p">(</span><span class="n">mean</span> <span class="err">±</span> <span class="n">std</span><span class="p">.</span> <span class="n">dev</span><span class="p">.</span> <span class="n">of</span> <span class="mi">7</span> <span class="n">runs</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span><span class="mi">000</span> <span class="n">loops</span> <span class="n">each</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="o">---</span> <span class="p">[</span><span class="n">sparse</span> <span class="n">Z</span><span class="p">]</span> <span class="o">---</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="mi">274</span> <span class="n">µs</span> <span class="err">±</span> <span class="mf">94.4</span> <span class="n">ns</span> <span class="n">per</span> <span class="n">loop</span> <span class="p">(</span><span class="n">mean</span> <span class="err">±</span> <span class="n">std</span><span class="p">.</span> <span class="n">dev</span><span class="p">.</span> <span class="n">of</span> <span class="mi">7</span> <span class="n">runs</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span><span class="mi">000</span> <span class="n">loops</span> <span class="n">each</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="o">---</span> <span class="p">[</span><span class="n">sparse</span> <span class="n">rearranged</span><span class="p">]</span> <span class="o">---</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="mf">64.7</span> <span class="n">µs</span> <span class="err">±</span> <span class="mi">77</span> <span class="n">ns</span> <span class="n">per</span> <span class="n">loop</span> <span class="p">(</span><span class="n">mean</span> <span class="err">±</span> <span class="n">std</span><span class="p">.</span> <span class="n">dev</span><span class="p">.</span> <span class="n">of</span> <span class="mi">7</span> <span class="n">runs</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span><span class="mi">000</span> <span class="n">loops</span> <span class="n">each</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="o">---</span> <span class="p">[</span><span class="n">sparse</span> <span class="n">split</span><span class="p">]</span> <span class="o">---</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="mi">85</span> <span class="n">µs</span> <span class="err">±</span> <span class="mi">101</span> <span class="n">ns</span> <span class="n">per</span> <span class="n">loop</span> <span class="p">(</span><span class="n">mean</span> <span class="err">±</span> <span class="n">std</span><span class="p">.</span> <span class="n">dev</span><span class="p">.</span> <span class="n">of</span> <span class="mi">7</span> <span class="n">runs</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span><span class="mi">000</span> <span class="n">loops</span> <span class="n">each</span><span class="p">)</span>
+</code></pre></div></div>
+</details>
+<p>Sparse matrices improve all the tested methods w.r.t. the baseline. Still, the index 
+method is better, and the best way remains to use the Z-method with F-ordering.</p>
+<h2 id="problem-2---short-vector-v">Problem 2 - short vector \(v\)</h2>
+<p>The baseline for this problem is very similar to the previous one. Only the transpose is
+missing. And the same trick with a pre-calculated \(Z\) is possible</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">calc_baseline</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">X_mu</span><span class="p">,</span> <span class="n">X_sigma</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">((</span><span class="n">X</span><span class="o">-</span><span class="n">X_mu</span><span class="p">)</span><span class="o">/</span><span class="n">X_sigma</span><span class="p">)</span> <span class="o">@</span> <span class="n">v</span>
+
+<span class="k">def</span> <span class="nf">calc_Z</span><span class="p">(</span><span class="n">X_Z</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">X_Z</span> <span class="o">@</span> <span class="n">v</span>
+
+<span class="n">expected</span> <span class="o">=</span> <span class="n">calc_baseline</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">v</span><span class="o">=</span><span class="n">v</span><span class="p">,</span> <span class="n">X_mu</span><span class="o">=</span><span class="n">X_mu</span><span class="p">,</span> <span class="n">X_sigma</span><span class="o">=</span><span class="n">X_sigma</span><span class="p">)</span>
+</code></pre></div></div>
+<p>Next, test <code class="highlighter-rouge">baseline</code> and <code class="highlighter-rouge">Z</code> for the original input, F-ordering and sparse matrices:</p>
+<details>
+  <summary><i>Click to expand `time_calc` calls and results...</i><br />&nbsp;<br /></summary>
+ <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">time_calc</span><span class="p">(</span><span class="n">calc_baseline</span><span class="p">,</span> <span class="n">tag</span><span class="o">=</span><span class="s">"baseline"</span><span class="p">,</span> <span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">v</span><span class="o">=</span><span class="n">v</span><span class="p">,</span> <span class="n">X_mu</span><span class="o">=</span><span class="n">X_mu</span><span class="p">,</span> <span class="n">X_sigma</span><span class="o">=</span><span class="n">X_sigma</span><span class="p">)</span>
+<span class="n">time_calc</span><span class="p">(</span>
+    <span class="n">calc_baseline</span><span class="p">,</span>
+    <span class="n">tag</span><span class="o">=</span><span class="s">"baseline F"</span><span class="p">,</span>
+    <span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">.</span><span class="n">copy</span><span class="p">(</span><span class="n">order</span><span class="o">=</span><span class="s">"F"</span><span class="p">),</span>
+    <span class="n">v</span><span class="o">=</span><span class="n">v</span><span class="p">,</span>
+    <span class="n">X_mu</span><span class="o">=</span><span class="n">X_mu</span><span class="p">,</span>
+    <span class="n">X_sigma</span><span class="o">=</span><span class="n">X_sigma</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">time_calc</span><span class="p">(</span>
+    <span class="n">calc_baseline</span><span class="p">,</span>
+    <span class="n">tag</span><span class="o">=</span><span class="s">"baseline sparse"</span><span class="p">,</span>
+    <span class="n">expected</span><span class="o">=</span><span class="n">expected</span><span class="p">,</span>
+    <span class="n">X</span><span class="o">=</span><span class="n">csc_matrix</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="p">.</span><span class="n">byte</span><span class="p">),</span>
+    <span class="n">v</span><span class="o">=</span><span class="n">v</span><span class="p">,</span>
+    <span class="n">X_mu</span><span class="o">=</span><span class="n">X_mu</span><span class="p">,</span>
+    <span class="n">X_sigma</span><span class="o">=</span><span class="n">X_sigma</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">time_calc</span><span class="p">(</span><span class="n">calc_Z</span><span class="p">,</span> <span class="n">tag</span><span class="o">=</span><span class="s">"Z"</span><span class="p">,</span> <span class="n">expected</span><span class="o">=</span><span class="n">expected</span><span class="p">,</span> <span class="n">X_Z</span><span class="o">=</span><span class="p">(</span><span class="n">X</span> <span class="o">-</span> <span class="n">X_mu</span><span class="p">)</span> <span class="o">/</span> <span class="n">X_sigma</span><span class="p">,</span> <span class="n">v</span><span class="o">=</span><span class="n">v</span><span class="p">)</span>
+<span class="n">time_calc</span><span class="p">(</span>
+    <span class="n">calc_Z</span><span class="p">,</span>
+    <span class="n">tag</span><span class="o">=</span><span class="s">"Z F"</span><span class="p">,</span>
+    <span class="n">expected</span><span class="o">=</span><span class="n">expected</span><span class="p">,</span>
+    <span class="n">X_Z</span><span class="o">=</span><span class="p">((</span><span class="n">X</span> <span class="o">-</span> <span class="n">X_mu</span><span class="p">)</span> <span class="o">/</span> <span class="n">X_sigma</span><span class="p">).</span><span class="n">copy</span><span class="p">(</span><span class="n">order</span><span class="o">=</span><span class="s">"F"</span><span class="p">),</span>
+    <span class="n">v</span><span class="o">=</span><span class="n">v</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">time_calc</span><span class="p">(</span>
+    <span class="n">calc_Z</span><span class="p">,</span>
+    <span class="n">tag</span><span class="o">=</span><span class="s">"Z sparse"</span><span class="p">,</span>
+    <span class="n">expected</span><span class="o">=</span><span class="n">expected</span><span class="p">,</span>
+    <span class="n">X_Z</span><span class="o">=</span><span class="n">csc_matrix</span><span class="p">((</span><span class="n">X</span> <span class="o">-</span> <span class="n">X_mu</span><span class="p">)</span> <span class="o">/</span> <span class="n">X_sigma</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">e</span><span class="p">.</span><span class="n">dtype</span><span class="p">),</span>
+    <span class="n">v</span><span class="o">=</span><span class="n">v</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">time_calc</span><span class="p">(</span><span class="n">calc_baseline</span><span class="p">,</span> <span class="n">tag</span><span class="o">=</span><span class="s">"baseline"</span><span class="p">,</span> <span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">v</span><span class="o">=</span><span class="n">v</span><span class="p">,</span> <span class="n">X_mu</span><span class="o">=</span><span class="n">X_mu</span><span class="p">,</span> <span class="n">X_sigma</span><span class="o">=</span><span class="n">X_sigma</span><span class="p">)</span>
+<span class="n">time_calc</span><span class="p">(</span>
+    <span class="n">calc_baseline</span><span class="p">,</span>
+    <span class="n">tag</span><span class="o">=</span><span class="s">"baseline sparse"</span><span class="p">,</span>
+    <span class="n">expected</span><span class="o">=</span><span class="n">expected</span><span class="p">,</span>
+    <span class="n">X</span><span class="o">=</span><span class="n">csc_matrix</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="p">.</span><span class="n">byte</span><span class="p">),</span>
+    <span class="n">v</span><span class="o">=</span><span class="n">v</span><span class="p">,</span>
+    <span class="n">X_mu</span><span class="o">=</span><span class="n">X_mu</span><span class="p">,</span>
+    <span class="n">X_sigma</span><span class="o">=</span><span class="n">X_sigma</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">ti</span>
+<span class="n">time_calc</span><span class="p">(</span><span class="n">calc_Z</span><span class="p">,</span> <span class="n">tag</span><span class="o">=</span><span class="s">"Z"</span><span class="p">,</span> <span class="n">expected</span><span class="o">=</span><span class="n">expected</span><span class="p">,</span> <span class="n">X_Z</span><span class="o">=</span><span class="p">(</span><span class="n">X</span> <span class="o">-</span> <span class="n">X_mu</span><span class="p">)</span> <span class="o">/</span> <span class="n">X_sigma</span><span class="p">,</span> <span class="n">v</span><span class="o">=</span><span class="n">v</span><span class="p">)</span>
+<span class="n">time_calc</span><span class="p">(</span>
+    <span class="n">calc_Z</span><span class="p">,</span>
+    <span class="n">tag</span><span class="o">=</span><span class="s">"Z sparse"</span><span class="p">,</span>
+    <span class="n">expected</span><span class="o">=</span><span class="n">expected</span><span class="p">,</span>
+    <span class="n">X_Z</span><span class="o">=</span><span class="n">csc_matrix</span><span class="p">((</span><span class="n">X</span> <span class="o">-</span> <span class="n">X_mu</span><span class="p">)</span> <span class="o">/</span> <span class="n">X_sigma</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">v</span><span class="p">.</span><span class="n">dtype</span><span class="p">),</span>
+    <span class="n">v</span><span class="o">=</span><span class="n">v</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="o">---</span> <span class="p">[</span><span class="n">baseline</span><span class="p">]</span> <span class="o">---</span>
+<span class="mi">908</span> <span class="n">µs</span> <span class="err">±</span> <span class="mf">68.9</span> <span class="n">µs</span> <span class="n">per</span> <span class="n">loop</span> <span class="p">(</span><span class="n">mean</span> <span class="err">±</span> <span class="n">std</span><span class="p">.</span> <span class="n">dev</span><span class="p">.</span> <span class="n">of</span> <span class="mi">7</span> <span class="n">runs</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span><span class="mi">000</span> <span class="n">loops</span> <span class="n">each</span><span class="p">)</span>
+<span class="o">---</span> <span class="p">[</span><span class="n">baseline</span> <span class="n">F</span><span class="p">]</span> <span class="o">---</span>
+<span class="mi">260</span> <span class="n">µs</span> <span class="err">±</span> <span class="mf">47.7</span> <span class="n">µs</span> <span class="n">per</span> <span class="n">loop</span> <span class="p">(</span><span class="n">mean</span> <span class="err">±</span> <span class="n">std</span><span class="p">.</span> <span class="n">dev</span><span class="p">.</span> <span class="n">of</span> <span class="mi">7</span> <span class="n">runs</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span><span class="mi">000</span> <span class="n">loops</span> <span class="n">each</span><span class="p">)</span>
+<span class="o">---</span> <span class="p">[</span><span class="n">baseline</span> <span class="n">sparse</span><span class="p">]</span> <span class="o">---</span>
+<span class="mi">302</span> <span class="n">µs</span> <span class="err">±</span> <span class="mf">42.6</span> <span class="n">µs</span> <span class="n">per</span> <span class="n">loop</span> <span class="p">(</span><span class="n">mean</span> <span class="err">±</span> <span class="n">std</span><span class="p">.</span> <span class="n">dev</span><span class="p">.</span> <span class="n">of</span> <span class="mi">7</span> <span class="n">runs</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span><span class="mi">000</span> <span class="n">loops</span> <span class="n">each</span><span class="p">)</span>
+<span class="o">---</span> <span class="p">[</span><span class="n">Z</span><span class="p">]</span> <span class="o">---</span>
+<span class="mf">53.6</span> <span class="n">µs</span> <span class="err">±</span> <span class="mf">1.26</span> <span class="n">µs</span> <span class="n">per</span> <span class="n">loop</span> <span class="p">(</span><span class="n">mean</span> <span class="err">±</span> <span class="n">std</span><span class="p">.</span> <span class="n">dev</span><span class="p">.</span> <span class="n">of</span> <span class="mi">7</span> <span class="n">runs</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span><span class="mi">000</span> <span class="n">loops</span> <span class="n">each</span><span class="p">)</span>
+<span class="o">---</span> <span class="p">[</span><span class="n">Z</span> <span class="n">F</span><span class="p">]</span> <span class="o">---</span>
+<span class="mf">29.2</span> <span class="n">µs</span> <span class="err">±</span> <span class="mf">1.07</span> <span class="n">µs</span> <span class="n">per</span> <span class="n">loop</span> <span class="p">(</span><span class="n">mean</span> <span class="err">±</span> <span class="n">std</span><span class="p">.</span> <span class="n">dev</span><span class="p">.</span> <span class="n">of</span> <span class="mi">7</span> <span class="n">runs</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span><span class="mi">000</span> <span class="n">loops</span> <span class="n">each</span><span class="p">)</span>
+<span class="o">---</span> <span class="p">[</span><span class="n">Z</span> <span class="n">sparse</span><span class="p">]</span> <span class="o">---</span>
+<span class="mf">87.3</span> <span class="n">µs</span> <span class="err">±</span> <span class="mf">1.2</span> <span class="n">µs</span> <span class="n">per</span> <span class="n">loop</span> <span class="p">(</span><span class="n">mean</span> <span class="err">±</span> <span class="n">std</span><span class="p">.</span> <span class="n">dev</span><span class="p">.</span> <span class="n">of</span> <span class="mi">7</span> <span class="n">runs</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span><span class="mi">000</span> <span class="n">loops</span> <span class="n">each</span><span class="p">)</span>
+</code></pre></div></div>
+</details>
+<p>The most efficient calculation is using the Z-method with F-ordering.</p>
+<h2 id="summary">Summary</h2>
+<p>The baseline implementations were improved by pre-calculating the normalized matrix 
+\(X_Z\), using SciPy’s direct interface to BLAS routines, algebraically rearranging the 
+expression, and by using sparse matrices. Sparse matrices can help, especially when the 
+data is sparse enough. It is also possible to exploit the structure of the matrix to get 
+similarly good performance. Overall, the best performance was achieved by using the 
+pre-normalized matrix with F-ordering of the array memory. Table 1 and 2 summarizes the 
+achieved speed-ups for the different improvements.</p>
+<figure>
+<table>
+<thead>
+   <tr>
+     <th>Method</th>
+     <th>Duration (µs)</th>
+     <th>Speed-up</th>
+   </tr>
+ </thead>
+ <tbody>
+   <tr>
+     <td>Baseline</td>
+     <td>1020.0</td>
+     <td>1.00</td>
+   </tr>
+   <tr>
+     <td>Z</td>
+     <td>448.0</td>
+     <td>2.28</td>
+   </tr>
+   <tr>
+     <td>BLAS</td>
+     <td>642.0</td>
+     <td>1.59</td>
+   </tr>
+   <tr>
+     <td>BLAS Z</td>
+     <td>72.3</td>
+     <td>14.11</td>
+   </tr>
+   <tr>
+     <td>BLAS F</td>
+     <td>129.0</td>
+     <td>7.91</td>
+   </tr>
+   <tr>
+     <td>BLAS Z F</td>
+     <td>29.6</td>
+     <td>34.46</td>
+   </tr>
+   <tr>
+     <td>Baseline F</td>
+     <td>133.0</td>
+     <td>7.67</td>
+   </tr>
+   <tr>
+     <td>Z F</td>
+     <td>30.4</td>
+     <td>33.55</td>
+   </tr>
+   <tr>
+     <td>Rearranged</td>
+     <td>83.4</td>
+     <td>12.23</td>
+   </tr>
+   <tr>
+     <td>Split</td>
+     <td>156.0</td>
+     <td>6.54</td>
+   </tr>
+   <tr>
+     <td>index</td>
+     <td>48.2</td>
+     <td>21.16</td>
+   </tr>
+   <tr>
+     <td>sparse baseline</td>
+     <td>159.0</td>
+     <td>6.42</td>
+   </tr>
+   <tr>
+     <td>sparse Z</td>
+     <td>276.0</td>
+     <td>3.70</td>
+   </tr>
+   <tr>
+     <td>sparse rearranged</td>
+     <td>65.6</td>
+     <td>15.55</td>
+   </tr>
+   <tr>
+     <td>sparse split</td>
+     <td>85.8</td>
+     <td>11.89</td>
+   </tr>
+ </tbody>
+</table>
+ <figcaption><strong>Table 1</strong>: Problem 1 - Durations and speed-ups w.r.t. baseline for all tests</figcaption>
+</figure>
+<figure>
+<table>
+<thead>
+   <tr>
+     <th>Method</th>
+     <th>Duration (µs)</th>
+     <th>Speed-up</th>
+   </tr>
+ </thead>
+ <tbody>
+   <tr>
+     <td>baseline</td>
+     <td>908.0</td>
+     <td>1.00</td>
+   </tr>
+   <tr>
+     <td>Baseline F</td>
+     <td>260.0</td>
+     <td>3.49</td>
+   </tr>
+   <tr>
+     <td>Baseline sparse</td>
+     <td>302.0</td>
+     <td>3.01</td>
+   </tr>
+   <tr>
+     <td>Z</td>
+     <td>53.6</td>
+     <td>16.94</td>
+   </tr>
+   <tr>
+     <td>Z F</td>
+     <td>29.2</td>
+     <td>31.10</td>
+   </tr>
+   <tr>
+     <td>Z sparse</td>
+     <td>87.3</td>
+     <td>10.40</td>
+   </tr>
+ </tbody>
+</table>
+ <figcaption><strong>Table 2</strong>: Problem 2 - durations and speed-ups w.r.t. baseline for all tests</figcaption>
+</figure>
+<div class="footnotes" role="doc-endnotes">
+ <ol>
+   <li id="fn:1">
+     <p>Photo by <a href="https://unsplash.com/@mikitayo?utm_content=creditCopyText&amp;utm_medium=referral&amp;utm_source=unsplash">Mikita Yo</a> on <a href="https://unsplash.com/photos/red-and-white-line-illustration-OCrl1Tkt630?utm_content=creditCopyText&amp;utm_medium=referral&amp;utm_source=unsplash">Unsplash</a> <a href="#fnref:1" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+   </li>
+ </ol>
+</div>
+			</article>
+		</div>
+	</main><nav aria-label="Navigation" class="container-lg chulapa-pagination  ">
+ <ul class="col-lg-8 offset-lg-2 pagination chulapa-pagination-round px-0 ">
+   <li class="page-item text-left mr-0 ">
+      <a class="page-link border-0 px-4" href="https://thomasburgess.github.io/2022/12/01/aoc22.html" tabindex="-1">
+	  <i class="fa fa-chevron-left" aria-hidden="true"></i><span class="sr-only">Previous</span>
+	  </a>
+   </li>
+   <li class="page-item border-0 disabled text-left ml-0 mr-auto d-none d-md-inline ">
+     <p class="page-link chulapa-label">Advent of Code 2022</p>
+   </li>
+   <li class="page-item border-0 disabled text-left ml-0 mr-auto d-none d-sm-inline d-md-none ">
+     <p class="page-link chulapa-label">Advent of Code...</p>
+   </li>
+	 <li class="page-item disabled mx-auto invisible">
+	  <p class="page-link">|</p>
+	 </li>	
+	 <li class="page-item border-0 disabled text-right mr-0 ml-auto d-none d-sm-inline d-md-none ">
+	   <p class="page-link chulapa-label">Advent of Code...</p>
+	 </li>
+	 <li class="page-item border-0 disabled text-right mr-0 ml-auto d-none d-md-inline ">
+	   <p class="page-link chulapa-label">Advent of Code 2023</p>
+	 </li>
+   <li class="page-item text-right ml-0 ">
+      <a class="page-link border-0 px-4" href="https://thomasburgess.github.io/2023/12/01/advent2023.html">
+	  <i class="fa fa-chevron-right" aria-hidden="true"></i><span class="sr-only">Next</span></a>
+   </li>
+ </ul>
+</nav>
+<div class="container-lg my-1">
+ <div class="row">
+   <div class="col-lg-8 offset-lg-2 col">
+      <i class="far fa-folder-open fa-xs" aria-hidden="true"></i>
+      <a href="https://thomasburgess.github.io/categories#blog" class="badge chulapa-pill-bg-secondary p-category" rel="tag">blog</a>
+     </div>
+   </div>
+</div>
+<div class="container-lg my-1">
+ <div class="row">
+   <div class="col-lg-8 offset-lg-2 col">
+      <i class="fas fa-tag mr-1 fa-xs" aria-hidden="true"></i>
+      <a href="https://thomasburgess.github.io/tags#blog" class="badge chulapa-pill-bg-primary p-category" rel="tag" >blog</a>
+      <a href="https://thomasburgess.github.io/tags#python" class="badge chulapa-pill-bg-primary p-category" rel="tag" >python</a>
+      <a href="https://thomasburgess.github.io/tags#numpy" class="badge chulapa-pill-bg-primary p-category" rel="tag" >numpy</a>
+      <a href="https://thomasburgess.github.io/tags#coding" class="badge chulapa-pill-bg-primary p-category" rel="tag" >coding</a>
+      <a href="https://thomasburgess.github.io/tags#maths" class="badge chulapa-pill-bg-primary p-category" rel="tag" >maths</a>
+      <a href="https://thomasburgess.github.io/tags#matrix" class="badge chulapa-pill-bg-primary p-category" rel="tag" >matrix</a>
+      <a href="https://thomasburgess.github.io/tags#mcmc" class="badge chulapa-pill-bg-primary p-category" rel="tag" >mcmc</a>
+     </div>
+   </div>
+</div>
+<div class="container-lg mt-1 mb-2">
+ <div class="row">
+   <div class="col-lg-8 offset-lg-2">
+     <hr>
+     <p><i class="fa-solid fa-shuffle fa-xl"></i><span class="sr-only">Related</span></p>
+     <nav class="card-group" aria-label="related-articles">
+        <div class="card  border chulapa-related">
+         <div class="card-body">
+         <p class="card-title chulapa-headingfont"><a href="https://thomasburgess.github.io/2022/05/31/Parameter-Space.html" class="chulapa-text-body-color">Parameter space</a></p>
+         <p class="card-text"><small>Parallel iteration over a parameter space</small></p></div>
+   <div class="card-footer bg-transparent">
+      <small><i class="far fa-calendar" aria-hidden="true"></i> <time datetime="2022-05-31T00:00:00+02:00">may 31, 2022</time></small>
+   </div>
+ </div>
+        <div class="card ml-sm-1 border chulapa-related">
+         <div class="card-body">
+         <p class="card-title chulapa-headingfont"><a href="https://thomasburgess.github.io/2024/11/04/Passwords-with-Polars.html" class="chulapa-text-body-color">Passwords with Polars</a></p>
+         <p class="card-text"><small>Wrangling csv password manager exports</small></p></div>
+   <div class="card-footer bg-transparent">
+      <small><i class="far fa-calendar" aria-hidden="true"></i> <time datetime="2024-11-04T00:00:00+01:00">november 04, 2024</time></small>
+   </div>
+ </div>
+        <div class="card ml-sm-1 border chulapa-related">
+         <div class="card-body">
+         <p class="card-title chulapa-headingfont"><a href="https://thomasburgess.github.io/2024/10/26/mersenne.html" class="chulapa-text-body-color">Mersenne Primes.</a></p>
+         <p class="card-text"><small>Searching for rare numbers with python.</small></p></div>
+   <div class="card-footer bg-transparent">
+      <small><i class="far fa-calendar" aria-hidden="true"></i> <time datetime="2024-10-26T00:00:00+02:00">october 26, 2024</time></small>
+   </div>
+ </div></nav>
+   </div>
+ </div>
+</div><!-- Footer -->
+ <footer class="footer-chulapa text-center mt-0 pt-3">
+   <div class="container">
+         <div class="row">
+           <div class="col-lg-8 offset-lg-2">
+         <script src="https://giscus.app/client.js" data-repo="thomasburgess/thomasburgess.github.io"
+  data-repo-id="MDEwOlJlcG9zaXRvcnkzNzQ0MDI0Mzg=" data-category="General" data-category-id="DIC_kwDOFlDths4Cj1pu"
+  data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top"
+  data-theme="preferred_color_scheme" data-lang="en" data-loading="lazy" crossorigin="anonymous" async>
+  </script>
+           </div>
+        </div>
+      </div>
+   <div class="container">
+     <div class="row">
+       <div class="col-xl-10 offset-xl-1"><div role="navigation" class="d-flex flex-wrap justify-content-center"><a href="https://github.com/thomasburgess" title="footerRepo on Github" class="chulapa-footer-sociallink lead"><span class="fa-stack fa-lg" aria-hidden="true">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+              </span><span class="sr-only">Repo on Github</span>
+            </a><a href="https://thomasburgess.github.io/atom.xml" title="footerRSS" class="chulapa-footer-sociallink lead"><span class="fa-stack fa-lg" aria-hidden="true">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+              </span><span class="sr-only">RSS</span>
+            </a></div><p class="mt-2 mb-3">&copy; 2025 Thomas T Burgess</p>
+          <!-- Do not remove this in order to give  attributions -->
+         <p class="chulapa-footer-brand">Powered by <a href="https://dieghernan.github.io/chulapa"> <span class="chulapa">Chulapa</span> Jekyll Theme</a><br><b>Minty</b> skin by <a href="https://bootswatch.com/">Bootswatch</a></p>
+          <!-- End  attributions -->
+       </div>
+     </div>
+ </div>
+</footer>
+<!-- Footer -->
+<!-- JS, Popper.js, and jQuery -->
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/gh/dieghernan/chulapa@master/assets/js/chulapa_script.js"></script>
+	<!-- start custom scripts to be placed at the bottom of the page -->
+<!-- end custom bottom scripts -->
+	</body>
+</html>

@@ -1,0 +1,763 @@
+<!doctype html>
+<html lang="en-US"><head>
+   <meta charset="utf-8">
+    <!-- Chulapa Jekyll Theme -  -->
+    <!--  MIT License-->
+    <!-- Docs: https://dieghernan.github.io/chulapa -->
+    <!-- Repo: https://github.com/dieghernan/chulapa -->
+    <!-- Page build 2025-01-03 19:53:22 +0100 -->
+    <!--Google Structured Data-->
+    <script type="application/ld+json">
+        {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://thomasburgess.github.io/2023/12/01/advent2023.html"
+      },
+      "headline": "Advent of Code 2023",
+      "image": "https://thomasburgess.github.io/assets/images/2023/12/01/advent_shot.png",
+      "datePublished": "2023-12-01T00:00:00+01:00",
+      "dateModified": "2024-10-31T00:00:00+01:00",
+      "author": {
+        "@type": "Person",
+        "name": "Thomas T Burgess"
+        , "url": "https://mathstodon.xyz/@ngons"
+        ,  "sameAs" : [
+             "https://github.com/thomasburgess"
+            ,
+             "https://orcid.org/0000-0002-6993-5918"
+            ]
+      },
+       "publisher": {
+        "@type": "Organization",
+        "name": "Thomas T Burgess",
+        "url": "https://thomasburgess.github.io/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://github.com/thomasburgess.png"
+        }
+      }
+    }
+    </script>
+        <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://thomasburgess.github.io/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Blog",
+        "item": "https://thomasburgess.github.io/blog"
+      },
+    {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Advent of Code 2023"
+      }]
+    }
+    </script>
+    <script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "WebPage",
+    "name": "Advent of Code 2023",
+    "description": "A new problem, every day, all of december. - I will do this years Advent of Code 2023 in vanilla (only included libraries)  python 3.11. I&#39;ve joined the challenge a few times before - but never finished.  Let&#39;s see how many days I manage this round :D
+"
+    }
+}
+</script><script type="application/ld+json">
+{
+  "@context" : "https://schema.org",
+  "@type" : "Person",
+  "image": "https://github.com/thomasburgess.png",
+  "homeLocation": {
+    "@type": "Place",
+    "name": "Vienna, Austria"
+    },
+  "description": "Publisher",
+  "name" : "Thomas T Burgess",
+  "url" : "https://thomasburgess.github.io/"
+  ,  "sameAs" : [
+  "https://mathstodon.xyz/@ngons",
+  "https://github.com/thomasburgess",
+  "https://orcid.org/0000-0002-6993-5918"
+  ]
+}
+</script>
+   <title>Advent of Code 2023 | Thomas T Burgess's Blog</title>
+  <link rel="canonical" href="https://thomasburgess.github.io/2023/12/01/advent2023.html">
+    <!-- Atom feed -->
+  <link href="https://thomasburgess.github.io/atom.xml" type="application/atom+xml" rel="alternate" title="Atom feed Thomas T Burgess's Blog" >
+    <!-- RSS 2.0 feed -->
+  <link href="https://thomasburgess.github.io/rss.xml" type="application/rss+xml" rel="alternate" title="RSS 2.0 feed Thomas T Burgess's Blog" >
+    <!-- Meta tags -->
+   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+   <meta name="author" content="Thomas T Burgess" >
+   <meta name="copyright" content="Thomas T Burgess" >
+   <meta name="description" content="A new problem, every day, all of december. - I will do this years Advent of Code 2023 in vanilla (only included libraries)  python 3.11. I&#39;ve joined the ...">
+   <meta name="thumbnail" content="https://thomasburgess.github.io/assets/images/2023/12/01/advent_shot.png" >
+   <meta name="robots" content="index, follow"><meta name="keywords" content="">
+    <!-- OpenGraph -->
+   <meta property="og:title" content="Advent of Code 2023 | Thomas T Burgess's Blog" >
+   <meta property="og:site_name" content="Thomas T Burgess's Blog | Numbers, numbers - everywhere!" >
+   <meta property="og:url" content="https://thomasburgess.github.io/2023/12/01/advent2023.html" >
+   <meta property="og:type" content="website" >
+   <meta property="og:description" content="A new problem, every day, all of december. - I will do this years Advent of Code 2023 in vanilla..." >
+   <meta property="og:locale" content="en-US" >
+   <meta property="og:image" content="https://thomasburgess.github.io/assets/images/2023/12/01/advent_shot.png" >
+    <!-- Twitter/X Cards -->
+   <meta name="twitter:card" content="summary_large_image"><!-- start custom head snippets -->
+<!-- this script is inserted before the css stylesheet -->
+<!-- end custom head snippets -->
+<!-- CSS -->
+    <!-- Preconnect with Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Fontawesome-->
+    <!-- v6 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6/css/all.min.css">
+  <link rel="preload" href="https://cdn.jsdelivr.net/gh/dieghernan/chulapa@master/assets/js/chulapa_script.js" as="script" >
+  <link rel="preload" href="https://cdn.jsdelivr.net/gh/dieghernan/chulapa@master/assets/fonts/Chulapa/Chulapa-Bold_vmod.otf" as="font" type="font/otf" crossorigin>
+    <!-- Theme css (Bootstrap included) -->
+  <link rel="stylesheet" id="maincss" href="https://thomasburgess.github.io/assets/css/main.css" >
+    <!-- Highlighter -->
+  <link id="csshigh" rel="stylesheet" href="https://thomasburgess.github.io/assets/css/highlighter.css" >
+    <!-- Custom css -->
+  <link rel="stylesheet" href="https://thomasburgess.github.io/assets/css/custom.css" >
+      <!-- start custom head snippets -->
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/images/favicons/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="96x96" href="/assets/images/favicons/favicon-96x96.png">
+<link rel="manifest" href="/assets/images/favicons/site.webmanifest">
+<link rel="mask-icon" href="/assets/images/favicons/safari-pinned-tab.svg" color="#5bbad5">
+<link rel="shortcut icon" href="/assets/images/favicons/favicon.ico">
+<meta name="msapplication-TileColor" content="#2b5797">
+<meta name="msapplication-TileImage" content="/assets/images/favicons/mstile-144x144.png">
+<meta name="msapplication-config" content="/assets/images/favicons/browserconfig.xml">
+<meta name="theme-color" content="#78c2ad">
+<!-- end custom head snippets --></head>
+<body class="d-flex flex-column h-entry" id="body">
+	<a class="u-url d-none" href="https://thomasburgess.github.io/2023/12/01/advent2023.html">Invisible link to canonical for Microformats</a>
+	<div class="navbar-chulapa-fab d-md-none">
+		<input type="checkbox" class="navbar-chulapa-fab-button d-none" id="navi-toggle">
+		<label for="navi-toggle" class="navbar-toggler p-1 m-0 text-center d-flex">
+			<span class="navbar-toggler-icon m-auto">&nbsp;</span>
+		</label>
+		<div class="navbar-chulapa-fab-background">&nbsp;</div>
+		<nav class="navbar-chulapa-fab-nav" aria-label="alternative-navigation">
+			<ul class="navbar-nav text-center text-uppercase font-weight-light mt-0 mb-1 py-1">
+				<li class="nav-item">
+					<a class="nav-link px-3 navbar-brand mx-1 " href="https://thomasburgess.github.io/"><img src="https://thomasburgess.github.io/assets/images/favicons/favicon-96x96.png" width="30" height="30" class="d-inline-block align-top rounded-lg text-center mr-1" alt="NavbarLogo">Home</a>
+				</li><li class="nav-item my-0 py-1">
+					<a class="nav-link px-3 py-1" href="https://thomasburgess.github.io/blog/">Blog</a>
+				</li><li class="nav-item my-0 py-1">
+					<a class="nav-link px-3 py-1" href="https://thomasburgess.github.io/tags">Tags</a>
+				</li><li class="nav-item my-0 py-1">
+					<a class="nav-link px-3 py-1" href="https://thomasburgess.github.io/categories">Categories</a>
+				</li><li class="nav-item my-0 py-1">
+					<a class="nav-link px-3 py-1" href="https://thomasburgess.github.io/archive">Archive</a>
+				</li><li class="nav-item my-0 py-1">
+					<a class="nav-link px-3 py-1 " href="https://thomasburgess.github.io/search">search</a>
+				</li></ul>
+		</nav>
+	</div>
+	<nav class="navbar navbar-expand sticky-top navbar-chulapa d-none d-md-block " aria-label="primary-navigation">
+	<div class="container-fluid mx-md-2">
+			<a class="navbar-brand text-uppercase font-weight-light" href="https://thomasburgess.github.io/"><img src="https://thomasburgess.github.io/assets/images/favicons/favicon-96x96.png" width="30" height="30" class="d-inline-block align-top rounded-lg mr-1" alt="NavbarLogo">Home</a><ul class="navbar-nav ml-auto"><li class="nav-item mx-2">
+						<a class="nav-link text-uppercase font-weight-light " href="https://thomasburgess.github.io/blog/">Blog</a>
+					</li><li class="nav-item mx-2">
+						<a class="nav-link text-uppercase font-weight-light " href="https://thomasburgess.github.io/tags">Tags</a>
+					</li><li class="nav-item mx-2">
+						<a class="nav-link text-uppercase font-weight-light " href="https://thomasburgess.github.io/categories">Categories</a>
+					</li><li class="nav-item mx-2">
+						<a class="nav-link text-uppercase font-weight-light " href="https://thomasburgess.github.io/archive">Archive</a>
+					</li><li class="nav-item mx-2">
+						<a class="nav-link text-uppercase font-weight-light " href="https://thomasburgess.github.io/search">
+							<i class="fa fa-search" aria-hidden="true"></i><span class="sr-only">search</span>
+						</a>
+					</li></ul></div>
+</nav>	<header class="d-flex align-items-center hero-chulapa-image" style="background-image: linear-gradient(rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.7)), url('https://thomasburgess.github.io/assets/images/2023/12/01/advent_shot.png')"><div class="container-lg py-4">
+   <h1 class="p-name">Advent of Code 2023</h1><hr class="my-3">
+   <p class="chulapa-subtitle p-summary">A new problem, every day, all of december.</p>
+   <div class="btn-group-vertical btn-group-lg mt-2 text-center" role="group">
+      <a href="https://github.com/thomasburgess/advent2023" class="btn chulapa-btn-project" role="button" aria-disabled="true">
+                <i class="fab fa-github fa-lg mr-2"></i>View on Github</a>
+   </div>
+ </div>
+</header>
+	<main class="container-lg pb-3 flex-fill">
+<div class="row my-1">
+<div class="col-lg-5 offset-lg-2 col small">
+ <nav aria-label="breadcrumb">
+  <ol class="breadcrumb my-0 py-0 chulapa-bg-transparent pl-0" itemscope itemtype="https://schema.org/BreadcrumbList">
+            <li class="breadcrumb-item" itemprop="itemListElement" itemscope
+          itemtype="https://schema.org/ListItem"><a href="https://thomasburgess.github.io/" itemprop="item"><span itemprop="name">Home</span></a>
+         <meta itemprop="position" content="1" ></li>
+            <li class="breadcrumb-item" itemprop="itemListElement" itemscope
+          itemtype="https://schema.org/ListItem"><a href="https://thomasburgess.github.io/blog" itemprop="item"><span itemprop="name">Blog</span></a>
+         <meta itemprop="position" content="2" ></li>
+      <li class="breadcrumb-item active" aria-current="page" itemprop="itemListElement" itemscope
+          itemtype="https://schema.org/ListItem">
+        <span itemprop="name">Advent of Code 2023</span>
+       <meta itemprop="position" content="3" >
+     </li>
+ </ol>
+ </nav>
+ <div class="chulapaDateSocial">
+            <time class="dt-updated" datetime="2024-10-31T00:00:00+01:00">31 oct 2024</time> 
+            <i class="fa fa-redo fa-xs" aria-hidden="true"></i>
+            <br>
+            <span class="font-weight-light chulapa-text-line-through">01 dec 2023</span>
+        </div></div>
+         <div class="col-lg-3 col-sm-4 col-3 text-right lead chulapaDateSocial">
+            <a  href="https://twitter.com/intent/tweet?url=https://thomasburgess.github.io/2023/12/01/advent2023.html&text=Advent+of+Code+2023&hashtags=coding,advent,python" title="Share on X" aria-label="Share on X" ><i class="fab fa-square-x-twitter fa-lg" aria-hidden="true"></i></a>
+            <a href="https://toot.kytta.dev/?text=Advent%20of%20Code%202023%20https://thomasburgess.github.io/2023/12/01/advent2023.html%20%23coding%20%23advent%20%23python" title="Share on Mastodon" aria-label="Share on Mastodon"><i class="fa-brands fa-mastodon fa-lg" aria-hidden="true"></i></a>
+            <a  class="d-none d-sm-inline" href="https://www.facebook.com/sharer.php?u=https://thomasburgess.github.io/2023/12/01/advent2023.html" title="Share on Facebook" aria-label="Share on Facebook" ><i class="fab fa-facebook-square fa-lg" aria-hidden="true"></i></a>
+             <a  class="d-none d-sm-inline" href="https://api.whatsapp.com/send?&text=Advent+of+Code+2023%20https://thomasburgess.github.io/2023/12/01/advent2023.html" title="Share on Whatsapp" aria-label="Share on Whatsapp" ><i class="fab fa-whatsapp-square fa-lg" aria-hidden="true"></i></a>
+         <a  class="d-none d-sm-inline" href="https://www.linkedin.com/shareArticle?url=https://thomasburgess.github.io/2023/12/01/advent2023.html&title=Advent+of+Code+2023" title="Share on LinkedIn" aria-label="Share on LinkedIn"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a>
+         </div></div>
+		<div class="row pt-2">
+			<aside class="col-lg-2 mt-lg-3 small"><div rel="author" class="h-card p-author">
+				<div class="row d-flex align-items-center mb-2"><img src="https://github.com/thomasburgess.png" alt="Thomas T Burgess" class="ml-3 mr-0 mx-lg-auto mb-lg-1 chulapa-avatar-size u-photo"><div class="col-9 col-lg-12 text-lg-center p-name">
+						Thomas T Burgess
+					</div>
+				</div>
+				<div class="row mb-2 mb-lg-0">
+					<div class="col text-lg-center"><address class="d-inline d-lg-block mr-2 mx-lg-auto mb-lg-2 small chulapa-links-hover-only">
+						  <a class="pr-lg-0 p-region" href="https://www.google.com/maps/search/?api=1&query=Vienna%2C+Austria">
+						    <i class="fas fa-map-marker-alt fa-lg mr-1" aria-hidden="true"></i>Vienna, Austria</a>
+						</address><div class="d-inline my-1 mx-lg-0 chulapa-links-hover-only"><a class="mr-2 mx-lg-1 u-url" rel="me" href="https://mathstodon.xyz/@ngons" title="@ngons@mathstodon.xyz - my mastodon social" aria-label="@ngons@mathstodon.xyz - my mastodon social" ><i class="fab fa-mastodon fa-lg" aria-hidden="true"></i></a><a class="mr-2 mx-lg-1 u-url" rel="me" href="https://github.com/thomasburgess" title="my code at github." aria-label="my code at github." ><i class="fab fa-github fa-lg" aria-hidden="true"></i></a><a class="mr-2 mx-lg-1 u-email" href="mailto:nxpnsv+thomastburgess@gmail.com?subject=Thomas%20T%20Burgess's%20Blog%20web%20-%20Advent%20of%20Code%202023" title="My personal email" aria-label="My personal email" ><i class="far fa-envelope fa-lg" aria-hidden="true"></i></a>
+							<a class="mr-2 mx-lg-1 u-url" rel="me" href="https://orcid.org/0000-0002-6993-5918" title="My Orcid" aria-label="My Orcid" ><i class="fa-brands fa-orcid fa-lg" aria-hidden="true"></i></a></div></div>
+				</div>
+				</div>
+</aside>
+			<article id="maincontent" class="col-lg-8 mt-3 e-content">
+	<button class="btn btn-primary btn-sm rounded-right position-fixed chulapa-btn-sidebar bs-canvas-anim chulapa-btn-nofocus chulapa-fa-static" id='demo' onclick="openSideBar()" aria-label="Open Sidebar" aria-expanded="false" aria-controls="sideBar">
+		<i class="fa-solid fa-plus"></i><span class="sr-only">Open Sidebar</span>
+	</button>
+	<div class="bs-canvas bs-canvas-anim bs-canvas-left position-fixed navbar-chulapa h-100" id='sideBar'>
+		<p class="pt-2 pb-1 px-3">
+			<button type="button" class="navbar-text close chulapa-btn-nofocus chulapa-fa-static" aria-label="Close" onclick="closeSideBar()">
+				<i class="fa-solid fa-times"></i><span class="sr-only">Close Sidebar</span>
+			</button>
+		</p>
+		<nav class="navbar-nav px-3 my-auto">		  <p class="mb-2" ><a class="nav-link font-weight-bold lead" href="#">Advent of Code 2023</a></p>		
+			<ul class="nav flex-column" id="sidetoc"><li class="nav-item nav d-block"><a href="#template" class="nav-link">Template</a></li><li class="nav-item nav d-block"><a href="#learnings" class="nav-link">Learnings</a></li><li class="nav-item nav d-block"><a href="#day-1-trebuchet" class="nav-link">Day 1: Trebuchet?!</a></li><li class="nav-item nav d-block"><a href="#day-2---cube-conundrum" class="nav-link">Day 2 - Cube Conundrum</a></li><li class="nav-item nav d-block"><a href="#day-3---gear-ratios" class="nav-link">Day 3 - Gear Ratios</a></li><li class="nav-item nav d-block"><a href="#day-4---scratchcards" class="nav-link">Day 4 - Scratchcards</a></li><li class="nav-item nav d-block"><a href="#the-rest-of-the-days" class="nav-link">The rest of the days</a></li></ul>
+		</nav>   
+	</div>
+            <nav aria-label="table-of-contents">
+			<ul class="chulapa-toc-wrapper list-group mb-5 mx-3 mx-lg-5" id="toc"><li class="list-group-item font-weight-bold py-1 pr-0 mr-0 chulapa-toc-reset"><a href="#template">Template</a></li><li class="list-group-item font-weight-bold py-1 pr-0 mr-0 chulapa-toc-reset"><a href="#learnings">Learnings</a></li><li class="list-group-item font-weight-bold py-1 pr-0 mr-0 chulapa-toc-reset"><a href="#day-1-trebuchet">Day 1: Trebuchet?!</a></li><li class="list-group-item font-weight-bold py-1 pr-0 mr-0 chulapa-toc-reset"><a href="#day-2---cube-conundrum">Day 2 - Cube Conundrum</a></li><li class="list-group-item font-weight-bold py-1 pr-0 mr-0 chulapa-toc-reset"><a href="#day-3---gear-ratios">Day 3 - Gear Ratios</a></li><li class="list-group-item font-weight-bold py-1 pr-0 mr-0 chulapa-toc-reset"><a href="#day-4---scratchcards">Day 4 - Scratchcards</a></li><li class="list-group-item font-weight-bold py-1 pr-0 mr-0 chulapa-toc-reset"><a href="#the-rest-of-the-days">The rest of the days</a></li></ul>
+			</nav>
+			 <h1 id="advent-of-code-2023">Advent of Code 2023</h1>
+<p>Last year I posted about <a href="/2022/12/01/aoc22.html">16 problems</a> from 
+<a href="https://adventofcode.com/2022">Advent of Code 2022</a>.
+This year, I will do <a href="https://adventofcode.com/2023">Advent of Code 2023</a> in vanilla 
+(only included libraries) python 3.11. I’ve joined the challenge a few times before - 
+but never finished. Let’s see how many days I manage this round :D</p>
+<p><em>Update: the answer is 4, December is such a busy month :)</em></p>
+<p><strong>NOTE</strong>: This blog contains spoilers - use it responsibly.</p>
+<p>I’ve hidden the details for each day behind <code class="highlighter-rouge">expand details</code> blocks if you want to see 
+only some solutions.</p>
+<p>While my solutions do not use external libraries, I sometimes add graphics made with 
+<a href="https://matplotlib.org">matplotlib</a>.</p>
+<h2 id="template">Template</h2>
+<p>In general, these tasks require input data to be read in and be processed in two 
+different parts. Here is the python template I use to get started:</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+</span><span class="s">"""Advent of code day XX - """</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+
+
+<span class="k">def</span> <span class="nf">read_data</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+    <span class="s">"""Read line data."""</span>
+    <span class="k">with</span> <span class="n">path</span><span class="p">.</span><span class="nb">open</span><span class="p">(</span><span class="s">"r"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">i</span><span class="p">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">f</span><span class="p">.</span><span class="n">readlines</span><span class="p">()]</span>
+
+<span class="k">def</span> <span class="nf">part1</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]):</span>
+    <span class="k">pass</span>
+
+
+<span class="k">def</span> <span class="nf">part2</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="k">pass</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">"__main__"</span><span class="p">:</span>
+    <span class="n">DAY</span> <span class="o">=</span> <span class="s">"XX"</span>
+    <span class="n">exdata</span> <span class="o">=</span> <span class="n">read_data</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="sa">f</span><span class="s">"day</span><span class="si">{</span><span class="n">DAY</span><span class="si">}</span><span class="s">_example.txt"</span><span class="p">))</span>
+    <span class="n">indata</span> <span class="o">=</span> <span class="n">read_data</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="sa">f</span><span class="s">"day</span><span class="si">{</span><span class="n">DAY</span><span class="si">}</span><span class="s">_input.txt"</span><span class="p">))</span>
+
+    <span class="k">print</span><span class="p">(</span><span class="s">"PART 1"</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"</span><span class="se">\t</span><span class="s">example: </span><span class="si">{</span><span class="n">part1</span><span class="p">(</span><span class="n">exdata</span><span class="p">)</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"</span><span class="se">\t</span><span class="s">input: </span><span class="si">{</span><span class="n">part1</span><span class="p">(</span><span class="n">indata</span><span class="p">)</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+
+    <span class="k">print</span><span class="p">(</span><span class="s">"PART 2"</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"</span><span class="se">\t</span><span class="s">example: </span><span class="si">{</span><span class="n">part2</span><span class="p">(</span><span class="n">exdata</span><span class="p">)</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"</span><span class="se">\t</span><span class="s">input: </span><span class="si">{</span><span class="n">part2</span><span class="p">(</span><span class="n">indata</span><span class="p">)</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+</code></pre></div></div>
+<p>I’ll keep my code on this <a href="https://github.com/thomasburgess/advent2023">github repository</a>, 
+most of the code will appear in this blog post.</p>
+<h2 id="learnings">Learnings</h2>
+<p>I learned a few useful things on these challenges so far:</p>
+<ul>
+ <li>Day 2: <a href="https://docs.python.org/3/library/math.html#math.prod">math.prod</a> - like <code class="highlighter-rouge">sum</code> 
+for products!</li>
+</ul>
+<h2 id="day-1-trebuchet">Day 1: Trebuchet?!</h2>
+<ul>
+ <li><a href="https://adventofcode.com/2023/day/1">AOC23 day 1 link</a></li>
+ <li><a href="https://github.com/thomasburgess/advent2023/blob/main/day01.py">code link</a></li>
+</ul>
+<p>The task is to add numbers from a calibration file together.
+Each row of the file encodes a 2-digit number with the first and last single digit in 
+the row.</p>
+<p>Example input data</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1abc2
+pqr3stu8vwx
+a1b2c3d4e5f
+treb7uchet
+</code></pre></div></div>
+<p>So the total should be 12+38+15+77=142.</p>
+<p>In part 2, numbers can also be spelled out: one, two, three, four, five, six, seven, 
+eight, and nine.</p>
+<p>Example input data, Part B:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>two1nine
+eightwothree
+abcone2threexyz
+xtwone3four
+4nineeightseven2
+zoneight234
+7pqrstsixteen
+</code></pre></div></div>
+<p>So the total should be <code class="highlighter-rouge">29+83+13+24+42+14+76=281</code>.</p>
+<details>
+  <summary><i>Click to expand day 1 solution</i><br />&nbsp;<br /></summary>
+ <p>Part 1 is straightforward. Just extract the digits,
+scale the first digit by 10 and add to the second one.
+For part 2, there can be overlaps like ‘eightwothree’,
+to get the correct result i replace numbers with first 
+letter, number, last letter, so that: eight becomes e8t.</p>
+ <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+
+
+<span class="k">def</span> <span class="nf">read_data</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+    <span class="s">"""Read line data."""</span>
+    <span class="k">with</span> <span class="n">path</span><span class="p">.</span><span class="nb">open</span><span class="p">(</span><span class="s">"r"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">i</span><span class="p">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">f</span><span class="p">.</span><span class="n">readlines</span><span class="p">()]</span>
+
+
+<span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+        <span class="n">digits</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">r</span><span class="p">)</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">row</span> <span class="k">if</span> <span class="n">r</span><span class="p">.</span><span class="n">isdigit</span><span class="p">()]</span>
+        <span class="n">result</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">digits</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mi">10</span> <span class="o">+</span> <span class="n">digits</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">result</span>
+
+
+<span class="k">def</span> <span class="nf">part1</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">parse</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+
+
+<span class="k">def</span> <span class="nf">translate_digits</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">a</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span>
+            <span class="p">(</span>
+                <span class="s">"one"</span><span class="p">,</span>
+                <span class="s">"two"</span><span class="p">,</span>
+                <span class="s">"three"</span><span class="p">,</span>
+                <span class="s">"four"</span><span class="p">,</span>
+                <span class="s">"five"</span><span class="p">,</span>
+                <span class="s">"six"</span><span class="p">,</span>
+                <span class="s">"seven"</span><span class="p">,</span>
+                <span class="s">"eight"</span><span class="p">,</span>
+                <span class="s">"nine"</span><span class="p">,</span>
+            <span class="p">),</span>
+            <span class="mi">1</span><span class="p">,</span>
+        <span class="p">):</span>
+            <span class="n">row</span> <span class="o">=</span> <span class="n">row</span><span class="p">.</span><span class="n">replace</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="sa">f</span><span class="s">"</span><span class="si">{</span><span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}{</span><span class="n">i</span><span class="si">}{</span><span class="n">a</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+        <span class="n">result</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">result</span>
+
+
+<span class="k">def</span> <span class="nf">part2</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">part1</span><span class="p">(</span><span class="n">translate_digits</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">"__main__"</span><span class="p">:</span>
+    <span class="n">DAY</span> <span class="o">=</span> <span class="s">"01"</span>
+    <span class="n">exdata</span> <span class="o">=</span> <span class="n">read_data</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="sa">f</span><span class="s">"day</span><span class="si">{</span><span class="n">DAY</span><span class="si">}</span><span class="s">_example.txt"</span><span class="p">))</span>
+    <span class="n">indata</span> <span class="o">=</span> <span class="n">read_data</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="sa">f</span><span class="s">"day</span><span class="si">{</span><span class="n">DAY</span><span class="si">}</span><span class="s">_input.txt"</span><span class="p">))</span>
+
+    <span class="k">print</span><span class="p">(</span><span class="s">"PART 1"</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"</span><span class="se">\t</span><span class="s">example: </span><span class="si">{</span><span class="n">part1</span><span class="p">(</span><span class="n">exdata</span><span class="p">)</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"</span><span class="se">\t</span><span class="s">input: </span><span class="si">{</span><span class="n">part1</span><span class="p">(</span><span class="n">indata</span><span class="p">)</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+
+    <span class="n">exdata_b</span> <span class="o">=</span> <span class="n">read_data</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="sa">f</span><span class="s">"day</span><span class="si">{</span><span class="n">DAY</span><span class="si">}</span><span class="s">_example_b.txt"</span><span class="p">))</span>
+
+    <span class="k">print</span><span class="p">(</span><span class="s">"PART 2"</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"</span><span class="se">\t</span><span class="s">example: </span><span class="si">{</span><span class="n">part2</span><span class="p">(</span><span class="n">exdata_b</span><span class="p">)</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"</span><span class="se">\t</span><span class="s">input: </span><span class="si">{</span><span class="n">part2</span><span class="p">(</span><span class="n">indata</span><span class="p">)</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+</code></pre></div></div>
+</details>
+<h2 id="day-2---cube-conundrum">Day 2 - Cube Conundrum</h2>
+<ul>
+ <li><a href="https://adventofcode.com/2023/day/2">AOC23 Day 2 link</a></li>
+ <li><a href="https://github.com/thomasburgess/advent2023/blob/main/day02.py">code link</a></li>
+</ul>
+<p>Each game is a row in the input. It consists of several sets separated by<code class="highlighter-rouge">;</code>. 
+A set has a <code class="highlighter-rouge">,</code> separated list of count and colour.</p>
+<p>Example input data:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green
+</code></pre></div></div>
+<p>In part 1, we need add the game numbers together for games where all sets satisfy 
+<code class="highlighter-rouge">red&lt;=12</code>, <code class="highlighter-rouge">green&lt;=13</code>, and <code class="highlighter-rouge">blue&lt;=14</code>. In part 2, we need to add up the products of the
+maximum over each colour for all the sets in every game.</p>
+<details>
+  <summary><i>Click to expand day 2 solution</i><br />&nbsp;<br /></summary>
+ <p>The decided to parse the data into r,g,b tuples.
+Then, I added a function to find <code class="highlighter-rouge">max(r),max(g),max(b)</code> over a list of tuples.
+For part 2, I found out about
+<a href="https://docs.python.org/3/library/math.html#math.prod"><code class="highlighter-rouge">math.prod</code></a> 
+which works like <code class="highlighter-rouge">sum</code> but for products!</p>
+ <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">import</span> <span class="nn">math</span>
+
+
+<span class="k">def</span> <span class="nf">read_data</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+    <span class="s">"""Read line data."""</span>
+    <span class="k">with</span> <span class="n">path</span><span class="p">.</span><span class="nb">open</span><span class="p">(</span><span class="s">"r"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">i</span><span class="p">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">f</span><span class="p">.</span><span class="n">readlines</span><span class="p">()]</span>
+
+
+<span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="p">...]]]:</span>
+    <span class="s">"""Turn input rows into list of rgb tuples."""</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">game</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+        <span class="n">subsets</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">sub</span> <span class="ow">in</span> <span class="n">game</span><span class="p">.</span><span class="n">split</span><span class="p">(</span><span class="s">":"</span><span class="p">)[</span><span class="mi">1</span><span class="p">].</span><span class="n">split</span><span class="p">(</span><span class="s">";"</span><span class="p">):</span>
+            <span class="n">cubes</span> <span class="o">=</span> <span class="p">{</span><span class="n">s</span><span class="p">.</span><span class="n">split</span><span class="p">()[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span> <span class="nb">int</span><span class="p">(</span><span class="n">s</span><span class="p">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">sub</span><span class="p">.</span><span class="n">split</span><span class="p">(</span><span class="s">","</span><span class="p">)}</span>
+            <span class="n">subsets</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">cubes</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="p">(</span><span class="s">"red"</span><span class="p">,</span> <span class="s">"green"</span><span class="p">,</span> <span class="s">"blue"</span><span class="p">)))</span>
+        <span class="n">result</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">subsets</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">result</span>
+
+
+<span class="k">def</span> <span class="nf">max_rgb</span><span class="p">(</span><span class="n">game</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="p">...]])</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="p">...]:</span>
+    <span class="s">"""Find max of rgb tuples."""</span>
+    <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">game</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="n">t</span><span class="p">[</span><span class="n">i</span><span class="p">])[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">game</span><span class="p">[</span><span class="mi">0</span><span class="p">])))</span>
+
+
+<span class="k">def</span> <span class="nf">part1</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">limit</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="p">...]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">14</span><span class="p">)):</span>
+    <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span>
+        <span class="n">igame</span> <span class="o">*</span> <span class="nb">all</span><span class="p">((</span><span class="n">i</span> <span class="o">&lt;=</span> <span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">max_rgb</span><span class="p">(</span><span class="n">game</span><span class="p">),</span> <span class="n">limit</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">igame</span><span class="p">,</span> <span class="n">game</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">parse</span><span class="p">(</span><span class="n">data</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">part2</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]):</span>
+    <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">math</span><span class="p">.</span><span class="n">prod</span><span class="p">(</span><span class="n">max_rgb</span><span class="p">(</span><span class="n">game</span><span class="p">))</span> <span class="k">for</span> <span class="n">igame</span><span class="p">,</span> <span class="n">game</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">parse</span><span class="p">(</span><span class="n">data</span><span class="p">),</span> <span class="mi">1</span><span class="p">))</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">"__main__"</span><span class="p">:</span>
+    <span class="n">DAY</span> <span class="o">=</span> <span class="s">"02"</span>
+    <span class="n">exdata</span> <span class="o">=</span> <span class="n">read_data</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="sa">f</span><span class="s">"day</span><span class="si">{</span><span class="n">DAY</span><span class="si">}</span><span class="s">_example.txt"</span><span class="p">))</span>
+    <span class="n">indata</span> <span class="o">=</span> <span class="n">read_data</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="sa">f</span><span class="s">"day</span><span class="si">{</span><span class="n">DAY</span><span class="si">}</span><span class="s">_input.txt"</span><span class="p">))</span>
+
+    <span class="k">print</span><span class="p">(</span><span class="s">"PART 1"</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"</span><span class="se">\t</span><span class="s">example: </span><span class="si">{</span><span class="n">part1</span><span class="p">(</span><span class="n">exdata</span><span class="p">)</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"</span><span class="se">\t</span><span class="s">input: </span><span class="si">{</span><span class="n">part1</span><span class="p">(</span><span class="n">indata</span><span class="p">)</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+
+    <span class="k">print</span><span class="p">(</span><span class="s">"PART 2"</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"</span><span class="se">\t</span><span class="s">example: </span><span class="si">{</span><span class="n">part2</span><span class="p">(</span><span class="n">exdata</span><span class="p">)</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"</span><span class="se">\t</span><span class="s">input: </span><span class="si">{</span><span class="n">part2</span><span class="p">(</span><span class="n">indata</span><span class="p">)</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+</code></pre></div></div>
+</details>
+<h2 id="day-3---gear-ratios">Day 3 - Gear Ratios</h2>
+<ul>
+ <li><a href="https://adventofcode.com/2023/day/3">AOC23 Day 1 link</a></li>
+ <li><a href="https://github.com/thomasburgess/advent2023/blob/main/day03.py">code link</a></li>
+</ul>
+<p>In part 1 we search an array with numerics, dots and other charactes for integers that
+are connected to a character that is not a dot. In part 2, we search for pairs of 
+numbers connected to the same <code class="highlighter-rouge">*</code> character.</p>
+<p>Example input</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>467..114..
+...*......
+..35..633.
+......#...
+617*......
+.....+.58.
+..592.....
+......755.
+...$.*....
+.664.598..
+</code></pre></div></div>
+<p>Here, 114 and 58 have no connections, and only (467,35) and (755,598) are connected by a
+<code class="highlighter-rouge">*</code>.</p>
+<details>
+  <summary><i>Click to expand day 3 solution</i><br />&nbsp;<br /></summary>
+ <p>This was a little tricky. I decided to find the connection points and collect a list of
+all numbers connected to them.</p>
+ <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">import</span> <span class="nn">itertools</span>
+<span class="kn">import</span> <span class="nn">math</span>
+
+
+<span class="k">def</span> <span class="nf">read_data</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+    <span class="s">"""Read line data."""</span>
+    <span class="k">with</span> <span class="n">path</span><span class="p">.</span><span class="nb">open</span><span class="p">(</span><span class="s">"r"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">i</span><span class="p">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">f</span><span class="p">.</span><span class="n">readlines</span><span class="p">()]</span>
+
+
+<span class="k">def</span> <span class="nf">checks</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">x</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">chr</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">|</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span> <span class="ow">in</span> <span class="n">itertools</span><span class="p">.</span><span class="n">product</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">c</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">y</span> <span class="o">+</span> <span class="n">dy</span><span class="p">][</span><span class="n">x</span> <span class="o">+</span> <span class="n">dx</span><span class="p">]</span>
+        <span class="k">except</span> <span class="nb">IndexError</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="k">if</span> <span class="n">c</span> <span class="o">==</span> <span class="nb">chr</span> <span class="k">if</span> <span class="nb">chr</span> <span class="k">else</span> <span class="ow">not</span> <span class="p">(</span><span class="n">c</span><span class="p">.</span><span class="n">isnumeric</span><span class="p">()</span> <span class="ow">or</span> <span class="n">c</span> <span class="o">==</span> <span class="s">"."</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="n">dx</span><span class="p">,</span> <span class="n">y</span> <span class="o">+</span> <span class="n">dy</span><span class="p">)</span>
+    <span class="k">return</span> <span class="bp">None</span>
+
+
+<span class="k">def</span> <span class="nf">find_connections</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">chr</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]:</span>
+    <span class="n">connections</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">conn</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="k">for</span> <span class="n">y</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+        <span class="n">number</span> <span class="o">=</span> <span class="s">""</span>
+        <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">row</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">c</span><span class="p">.</span><span class="n">isnumeric</span><span class="p">():</span>
+                <span class="n">number</span> <span class="o">+=</span> <span class="n">c</span>
+                <span class="n">conn</span> <span class="o">=</span> <span class="n">checks</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="nb">chr</span><span class="p">)</span> <span class="ow">or</span> <span class="n">conn</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">x</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">row</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">c</span><span class="p">.</span><span class="n">isnumeric</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">number</span> <span class="ow">and</span> <span class="n">conn</span><span class="p">:</span>
+                    <span class="n">connections</span><span class="p">[</span><span class="n">conn</span><span class="p">]</span> <span class="o">=</span> <span class="n">connections</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="p">[])</span> <span class="o">+</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">number</span><span class="p">)]</span>
+                <span class="n">conn</span> <span class="o">=</span> <span class="bp">None</span>
+                <span class="n">number</span> <span class="o">=</span> <span class="s">""</span>
+    <span class="k">return</span> <span class="n">connections</span>
+
+
+<span class="k">def</span> <span class="nf">part1</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">find_connections</span><span class="p">(</span><span class="n">data</span><span class="p">).</span><span class="n">values</span><span class="p">(),</span> <span class="p">[]))</span>
+
+
+<span class="k">def</span> <span class="nf">part2</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="n">connections</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">find_connections</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">chr</span><span class="o">=</span><span class="s">"*"</span><span class="p">).</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">math</span><span class="p">.</span><span class="n">prod</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">connections</span><span class="p">.</span><span class="n">values</span><span class="p">())</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">"__main__"</span><span class="p">:</span>
+    <span class="n">DAY</span> <span class="o">=</span> <span class="s">"03"</span>
+    <span class="n">exdata</span> <span class="o">=</span> <span class="n">read_data</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="sa">f</span><span class="s">"day</span><span class="si">{</span><span class="n">DAY</span><span class="si">}</span><span class="s">_example.txt"</span><span class="p">))</span>
+    <span class="n">indata</span> <span class="o">=</span> <span class="n">read_data</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="sa">f</span><span class="s">"day</span><span class="si">{</span><span class="n">DAY</span><span class="si">}</span><span class="s">_input.txt"</span><span class="p">))</span>
+
+    <span class="k">print</span><span class="p">(</span><span class="s">"PART 1"</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"</span><span class="se">\t</span><span class="s">example: </span><span class="si">{</span><span class="n">part1</span><span class="p">(</span><span class="n">exdata</span><span class="p">)</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"</span><span class="se">\t</span><span class="s">input: </span><span class="si">{</span><span class="n">part1</span><span class="p">(</span><span class="n">indata</span><span class="p">)</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+
+    <span class="k">print</span><span class="p">(</span><span class="s">"PART 2"</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"</span><span class="se">\t</span><span class="s">example: </span><span class="si">{</span><span class="n">part2</span><span class="p">(</span><span class="n">exdata</span><span class="p">)</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"</span><span class="se">\t</span><span class="s">input: </span><span class="si">{</span><span class="n">part2</span><span class="p">(</span><span class="n">indata</span><span class="p">)</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+</code></pre></div></div>
+</details>
+<h2 id="day-4---scratchcards">Day 4 - Scratchcards</h2>
+<ul>
+ <li><a href="https://adventofcode.com/2023/day/4">AOC23 Day 4 link</a></li>
+ <li><a href="https://github.com/thomasburgess/advent2023/blob/main/day04.py">code link</a></li>
+</ul>
+<p>We get a list of cards like this</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Card 1: 41 48 83 86 17 | 83 86  6 31 17  9 48 53
+</code></pre></div></div>
+<p>we need to consider the number of matches between the two lists separated by <code class="highlighter-rouge">|</code>.
+In part 1, we count a score based on the number of matches. In part 2, we get copies
+of the next number matches cards added to the stack.</p>
+<details>
+  <summary><i>Click to expand day 4 solution</i><br />&nbsp;<br /></summary>
+ <p>I used a regexp match all to parse the lines. I first parsed everything and then made a
+match counter. In principle it would be more efficient to just insert that into the 
+parser, but I didn’t know I wouldn’t need the paresed lists before part 2. For part 2 I
+just keep track of the number of instances of each card.</p>
+ <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">import</span> <span class="nn">re</span>
+
+
+<span class="k">def</span> <span class="nf">read_data</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+    <span class="s">"""Read line data."""</span>
+    <span class="k">with</span> <span class="n">path</span><span class="p">.</span><span class="nb">open</span><span class="p">(</span><span class="s">"r"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">i</span><span class="p">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">f</span><span class="p">.</span><span class="n">readlines</span><span class="p">()]</span>
+
+
+<span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">set</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="nb">set</span><span class="p">[</span><span class="nb">int</span><span class="p">]]]:</span>
+    <span class="n">pattern</span> <span class="o">=</span> <span class="sa">r</span><span class="s">"Card\s+(\d+):\s*(.+?)\s*\|\s*(.+)"</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+        <span class="n">match</span> <span class="o">=</span> <span class="n">re</span><span class="p">.</span><span class="n">findall</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span>
+        <span class="n">card</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">match</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">result</span><span class="p">.</span><span class="n">append</span><span class="p">((</span><span class="nb">int</span><span class="p">(</span><span class="n">card</span><span class="p">),</span> <span class="nb">set</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">a</span><span class="p">.</span><span class="n">split</span><span class="p">())),</span> <span class="nb">set</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">b</span><span class="p">.</span><span class="n">split</span><span class="p">()))))</span>
+    <span class="k">return</span> <span class="n">result</span>
+
+
+<span class="k">def</span> <span class="nf">wins</span><span class="p">(</span><span class="n">parsed</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">set</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="nb">set</span><span class="p">[</span><span class="nb">int</span><span class="p">]]])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]:</span>
+    <span class="k">return</span> <span class="p">[(</span><span class="n">i</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">w</span><span class="p">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">n</span><span class="p">)))</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">parsed</span><span class="p">]</span>
+
+
+<span class="k">def</span> <span class="nf">part1</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]):</span>
+    <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="mi">2</span> <span class="o">**</span> <span class="p">(</span><span class="n">w</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">wins</span><span class="p">(</span><span class="n">parse</span><span class="p">(</span><span class="n">data</span><span class="p">)))</span>
+
+
+<span class="k">def</span> <span class="nf">part2</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]):</span>
+    <span class="n">cards</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="p">{</span><span class="s">"wins"</span><span class="p">:</span> <span class="n">v</span><span class="p">,</span> <span class="s">"count"</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">wins</span><span class="p">(</span><span class="n">parse</span><span class="p">(</span><span class="n">data</span><span class="p">))}</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">cards</span><span class="p">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">c</span><span class="p">[</span><span class="s">"wins"</span><span class="p">]):</span>
+            <span class="n">cards</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="s">"count"</span><span class="p">]</span> <span class="o">+=</span> <span class="n">c</span><span class="p">[</span><span class="s">"count"</span><span class="p">]</span>
+    <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="s">"count"</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">cards</span><span class="p">.</span><span class="n">items</span><span class="p">())</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">"__main__"</span><span class="p">:</span>
+    <span class="n">DAY</span> <span class="o">=</span> <span class="s">"04"</span>
+    <span class="n">exdata</span> <span class="o">=</span> <span class="n">read_data</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="sa">f</span><span class="s">"day</span><span class="si">{</span><span class="n">DAY</span><span class="si">}</span><span class="s">_example.txt"</span><span class="p">))</span>
+    <span class="n">indata</span> <span class="o">=</span> <span class="n">read_data</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="sa">f</span><span class="s">"day</span><span class="si">{</span><span class="n">DAY</span><span class="si">}</span><span class="s">_input.txt"</span><span class="p">))</span>
+
+    <span class="k">print</span><span class="p">(</span><span class="s">"PART 1"</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"</span><span class="se">\t</span><span class="s">example: </span><span class="si">{</span><span class="n">part1</span><span class="p">(</span><span class="n">exdata</span><span class="p">)</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"</span><span class="se">\t</span><span class="s">input: </span><span class="si">{</span><span class="n">part1</span><span class="p">(</span><span class="n">indata</span><span class="p">)</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+
+    <span class="k">print</span><span class="p">(</span><span class="s">"PART 2"</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"</span><span class="se">\t</span><span class="s">example: </span><span class="si">{</span><span class="n">part2</span><span class="p">(</span><span class="n">exdata</span><span class="p">)</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"</span><span class="se">\t</span><span class="s">input: </span><span class="si">{</span><span class="n">part2</span><span class="p">(</span><span class="n">indata</span><span class="p">)</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+</code></pre></div></div>
+</details>
+<h2 id="the-rest-of-the-days">The rest of the days</h2>
+<p>I did not have the time to go on this year, maybe I will have better luck in 2024.</p>
+			</article>
+		</div>
+	</main><nav aria-label="Navigation" class="container-lg chulapa-pagination  ">
+ <ul class="col-lg-8 offset-lg-2 pagination chulapa-pagination-round px-0 ">
+   <li class="page-item text-left mr-0 ">
+      <a class="page-link border-0 px-4" href="https://thomasburgess.github.io/2023/02/02/Matrix_Multiplication.html" tabindex="-1">
+	  <i class="fa fa-chevron-left" aria-hidden="true"></i><span class="sr-only">Previous</span>
+	  </a>
+   </li>
+   <li class="page-item border-0 disabled text-left ml-0 mr-auto d-none d-md-inline ">
+     <p class="page-link chulapa-label">Optimizing matrix multiplic...</p>
+   </li>
+   <li class="page-item border-0 disabled text-left ml-0 mr-auto d-none d-sm-inline d-md-none ">
+     <p class="page-link chulapa-label">Optimizing mat...</p>
+   </li>
+	 <li class="page-item disabled mx-auto invisible">
+	  <p class="page-link">|</p>
+	 </li>	
+	 <li class="page-item border-0 disabled text-right mr-0 ml-auto d-none d-sm-inline d-md-none ">
+	   <p class="page-link chulapa-label">Rectangle areas!</p>
+	 </li>
+	 <li class="page-item border-0 disabled text-right mr-0 ml-auto d-none d-md-inline ">
+	   <p class="page-link chulapa-label">Rectangle areas!</p>
+	 </li>
+   <li class="page-item text-right ml-0 ">
+      <a class="page-link border-0 px-4" href="https://thomasburgess.github.io/2024/07/30/rectangles.html">
+	  <i class="fa fa-chevron-right" aria-hidden="true"></i><span class="sr-only">Next</span></a>
+   </li>
+ </ul>
+</nav>
+<div class="container-lg my-1">
+ <div class="row">
+   <div class="col-lg-8 offset-lg-2 col">
+      <i class="far fa-folder-open fa-xs" aria-hidden="true"></i>
+      <a href="https://thomasburgess.github.io/categories#blog" class="badge chulapa-pill-bg-secondary p-category" rel="tag">blog</a>
+      <a href="https://thomasburgess.github.io/categories#advent" class="badge chulapa-pill-bg-secondary p-category" rel="tag">advent</a>
+     </div>
+   </div>
+</div>
+<div class="container-lg my-1">
+ <div class="row">
+   <div class="col-lg-8 offset-lg-2 col">
+      <i class="fas fa-tag mr-1 fa-xs" aria-hidden="true"></i>
+      <a href="https://thomasburgess.github.io/tags#coding" class="badge chulapa-pill-bg-primary p-category" rel="tag" >coding</a>
+      <a href="https://thomasburgess.github.io/tags#advent" class="badge chulapa-pill-bg-primary p-category" rel="tag" >advent</a>
+      <a href="https://thomasburgess.github.io/tags#python" class="badge chulapa-pill-bg-primary p-category" rel="tag" >python</a>
+     </div>
+   </div>
+</div>
+<div class="container-lg mt-1 mb-2">
+ <div class="row">
+   <div class="col-lg-8 offset-lg-2">
+     <hr>
+     <p><i class="fa-solid fa-shuffle fa-xl"></i><span class="sr-only">Related</span></p>
+     <nav class="card-group" aria-label="related-articles">
+        <div class="card  border chulapa-related">
+         <div class="card-body">
+         <p class="card-title chulapa-headingfont"><a href="https://thomasburgess.github.io/2022/12/01/aoc22.html" class="chulapa-text-body-color">Advent of Code 2022</a></p>
+         <p class="card-text"><small>A new problem, every day, all of december.</small></p></div>
+   <div class="card-footer bg-transparent">
+      <small><i class="far fa-calendar" aria-hidden="true"></i> <time datetime="2022-12-01T00:00:00+01:00">december 01, 2022</time></small>
+   </div>
+ </div>
+        <div class="card ml-sm-1 border chulapa-related">
+         <div class="card-body">
+         <p class="card-title chulapa-headingfont"><a href="https://thomasburgess.github.io/2024/11/04/Passwords-with-Polars.html" class="chulapa-text-body-color">Passwords with Polars</a></p>
+         <p class="card-text"><small>Wrangling csv password manager exports</small></p></div>
+   <div class="card-footer bg-transparent">
+      <small><i class="far fa-calendar" aria-hidden="true"></i> <time datetime="2024-11-04T00:00:00+01:00">november 04, 2024</time></small>
+   </div>
+ </div>
+        <div class="card ml-sm-1 border chulapa-related">
+         <div class="card-body">
+         <p class="card-title chulapa-headingfont"><a href="https://thomasburgess.github.io/2023/02/02/Matrix_Multiplication.html" class="chulapa-text-body-color">Optimizing matrix multiplication</a></p>
+         <p class="card-text"><small>Speeding up sloww matrix operations in python</small></p></div>
+   <div class="card-footer bg-transparent">
+      <small><i class="far fa-calendar" aria-hidden="true"></i> <time datetime="2023-02-02T00:00:00+01:00">february 02, 2023</time></small>
+   </div>
+ </div></nav>
+   </div>
+ </div>
+</div><!-- Footer -->
+ <footer class="footer-chulapa text-center mt-0 pt-3">
+   <div class="container">
+         <div class="row">
+           <div class="col-lg-8 offset-lg-2">
+         <script src="https://giscus.app/client.js" data-repo="thomasburgess/thomasburgess.github.io"
+  data-repo-id="MDEwOlJlcG9zaXRvcnkzNzQ0MDI0Mzg=" data-category="General" data-category-id="DIC_kwDOFlDths4Cj1pu"
+  data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top"
+  data-theme="preferred_color_scheme" data-lang="en" data-loading="lazy" crossorigin="anonymous" async>
+  </script>
+           </div>
+        </div>
+      </div>
+   <div class="container">
+     <div class="row">
+       <div class="col-xl-10 offset-xl-1"><div role="navigation" class="d-flex flex-wrap justify-content-center"><a href="https://github.com/thomasburgess" title="footerRepo on Github" class="chulapa-footer-sociallink lead"><span class="fa-stack fa-lg" aria-hidden="true">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+              </span><span class="sr-only">Repo on Github</span>
+            </a><a href="https://thomasburgess.github.io/atom.xml" title="footerRSS" class="chulapa-footer-sociallink lead"><span class="fa-stack fa-lg" aria-hidden="true">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+              </span><span class="sr-only">RSS</span>
+            </a></div><p class="mt-2 mb-3">&copy; 2025 Thomas T Burgess</p>
+          <!-- Do not remove this in order to give  attributions -->
+         <p class="chulapa-footer-brand">Powered by <a href="https://dieghernan.github.io/chulapa"> <span class="chulapa">Chulapa</span> Jekyll Theme</a><br><b>Minty</b> skin by <a href="https://bootswatch.com/">Bootswatch</a></p>
+          <!-- End  attributions -->
+       </div>
+     </div>
+ </div>
+</footer>
+<!-- Footer -->
+<!-- JS, Popper.js, and jQuery -->
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/gh/dieghernan/chulapa@master/assets/js/chulapa_script.js"></script>
+	<!-- start custom scripts to be placed at the bottom of the page -->
+<!-- end custom bottom scripts -->
+	</body>
+</html>
