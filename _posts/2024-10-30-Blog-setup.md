@@ -73,8 +73,8 @@ updates pages as they are edited, trace prints more detailed error messages.
 ## Customization
 
 I enabled a few options:
-* ~Enabled tag for Google [Analytics](https://analytics.google.com) and 
-  [Search Console](https://search.google.com/search-console/about)~
+* ~~Enabled tag for Google [Analytics](https://analytics.google.com) and 
+  [Search Console](https://search.google.com/search-console/about)~~
   * I removed this as I don't really benefit from the added tracking...
 * Enabled [AddToAny](https://www.addtoany.com/) support for easy sharing of posts
 
